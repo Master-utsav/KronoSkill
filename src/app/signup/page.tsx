@@ -14,10 +14,10 @@ export default function SignUp() {
   };
 
   return (
-    <div className="w-[100vw] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] h-[100vh] overflow-x-hidden bg-white/40 dark:bg-black">
+    <div className="w-[100vw] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] h-[100vh] overflow-x-hidden overflow-y-hidden bg-white/40 dark:bg-black">
       <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white/20 dark:bg-black/40 mt-32 ">
         <Spotlight
-          className="-top-40 left-0 md:left-60 md:-top-20"
+          className="-top-40 left-0 md:left-60 md:top-20"
           fill="skyblue"
         />
         <h2 className="font-bold text-xl text-center text-neutral-800 dark:text-neutral-200">

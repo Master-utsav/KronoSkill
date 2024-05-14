@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import React from "react";
 import { BackgroundGradient } from "./ui/background-gradient";
 import courseData from "../data/music_courses.json";

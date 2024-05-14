@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React from "react";
 import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
 

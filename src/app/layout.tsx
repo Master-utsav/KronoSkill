@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={inter.className}>
         <Providers>
-          <div className="relative w-full flex justify-normal items-center">
+          <div className="relative w-full flex justify-normal items-center box-content m-0 p-0">
             <Navbar />
           </div>
           {children}
