@@ -1,27 +1,25 @@
-"use client";
-import React from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
-import { BottomGradient } from "@/components/ui/BottomGradient";
-import { Spotlight } from "@/components/ui/Spotlight";
-import Link from "next/link";
+"use client"
+import ProductivityComponent from '@/components/ui/master_light'
+import React from 'react'
+import { BottomGradient } from '@/components/ui/BottomGradient'
+import Link from 'next/link'
+import { LabelInputContainer } from '@/components/ui/LabelInputContainer'
+import { Label } from '@radix-ui/react-label'
+import { Input } from '@/components/ui/input'
 
-export default function Login() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+const Login = () => {
+   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted");
   };
-
   return (
-    <div className="w-[100vw] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] h-[100vh]  bg-white/40 dark:bg-black overflow-x-hidden overflow-y-hidden">
+    <div className='w-[100vw] h-[100vh] '>
+      <ProductivityComponent />
+      <div className="w-[100vw] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] h-[100vh]  bg-white/0 dark:bg-black/0 overflow-x-hidden overflow-y-hidden ">
       <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white/20 dark:bg-black/40 mt-32 ">
-        <Spotlight
-          className="-top-40 left-0 md:left-80 md:top-10"
-          fill="skyblue"
-        />
         <h2 className="font-bold text-xl text-center text-neutral-800 dark:text-neutral-200">
-          Welcome to Music Academy
+          Welcome to Shakambari Avenue
         </h2>
         <p className="text-neutral-600 text-center text-lg max-w-sm mt-2 dark:text-cyan-500">
           Login Now
@@ -29,7 +27,7 @@ export default function Login() {
 
         <form className="my-8" onSubmit={handleSubmit}>
           <LabelInputContainer className="mb-4">
-            <Label htmlFor="identity">username or email</Label>
+              <Label  htmlFor="identity">username or email</Label>
             <Input id="identity" placeholder="master_utsav" type="text" />
           </LabelInputContainer>
 
@@ -62,5 +60,8 @@ export default function Login() {
         </form>
       </div>
     </div>
-  );
+    </div>
+  )
 }
+
+export default Login

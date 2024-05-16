@@ -1,0 +1,113 @@
+.container {
+    position: absolute;
+    min-width: 100%;
+    min-height: 100%;
+    overflow: hidden;
+    background: transparent;
+    z-index: -10;
+}
+
+.light-rays {
+    position: absolute;
+    top: 0%;
+    left: 40%;
+    transform: translateX(10%);
+    transform: rotate(45deg);
+    width: 120px;
+    height: 100%;
+    background: radial-gradient(circle, rgba(0, 255, 0, 0)10%, rgba(255, 87, 235, 0.356) 100%);
+    animation: lightRays 5s forwards ease-in-out;
+    opacity: 0;
+    filter: blur(20px);
+    pointer-events: none;
+}
+
+@keyframes lightRays {
+    0% {
+        top: 0%;
+        opacity: 0;
+        transform: rotate(5deg) translateX(480%) translateY(0%) scale(1);
+    }
+
+    100% {
+        top: 30%;
+        opacity: 0.99;
+        transform: rotate(30deg) translateX(-40%) translateY(20%) scale(3);
+    }
+
+    /* 100% {
+    top: 30%;
+    opacity: 0;
+    transform: rotate(-45deg) translateX(100%) translateY(20%) scale(3);
+  } */
+}
+
+.light-rays2 {
+    position: absolute;
+    top: -40%;
+    left: 20%;
+    transform: translateX(10%);
+    transform: rotate(45deg);
+    width: 80px;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 255, 0, 0)10%, rgba(192, 88, 248, 0.56) 100%);
+    animation: lightRays2 5s forwards ease-in-out;
+    opacity: 0;
+    filter: blur(30px);
+    pointer-events: none;
+}
+
+@keyframes lightRays2 {
+    0% {
+        top: -10%;
+        opacity: 0;
+        transform: rotate(5deg) translateX(480%) translateY(-20%) scale(1);
+    }
+
+    100% {
+        top: 30%;
+        opacity: 0.99;
+        transform: rotate(40deg) translateX(-40%) translateY(40%) scale(3);
+    }
+
+    /* 100% {
+        top: 30%;
+        opacity: 0;
+        transform: rotate(-45deg) translateX(100%) translateY(20%) scale(3);
+    } */
+}
+
+.light-rays3 {
+    position: absolute;
+    top: 0%;
+    right: 50%;
+    transform: translateX(10%);
+    transform: rotate(45deg);
+    width: 100px;
+    height: 180%;
+    background: radial-gradient(circle, rgba(0, 255, 0, 0)10%, rgba(33, 52, 219, 0.3) 100%);
+    animation: lightRays3 5s forwards ease-in-out;
+    opacity: 0;
+    filter: blur(20px);
+    pointer-events: none;
+}
+
+@keyframes lightRays3 {
+    0% {
+        top: 0%;
+        opacity: 0;
+        transform: rotate(5deg) translateX(80%) translateY(0%) scale(1);
+    }
+
+    100% {
+        top: 30%;
+        opacity: 0.99;
+        transform: rotate(40deg) translateX(-40%) translateY(20%) scale(5);
+    }
+
+    /* 100% {
+        top: 30%;
+        opacity: 0;
+        transform: rotate(-45deg) translateX(100%) translateY(20%) scale(3);
+    } */
+}

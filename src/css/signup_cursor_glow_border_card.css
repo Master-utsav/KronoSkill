@@ -1,0 +1,58 @@
+:root {
+    --s-form-bg-color: rgba(0, 0, 0, 0.3);
+}
+
+.dark {
+    --s-form-bg-color: rgba(0, 0, 0, 0.3);
+    --s-cursor-bg-color: rgba(20, 212, 251, 0.18);
+    --s-cursor-shadow-color: rgba(20, 236, 251, 0.15);
+    --s-box-border-color: rgb(8, 194, 245);
+    --s-box-border-shadow: rgba(8, 194, 245, 0.1);
+}
+
+.glow-container {
+    position: relative;
+    background-color: var(--s-form-bg-color);
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.cursor-glow {
+    position: absolute;
+    top: -200px;
+    left: 0;
+    width: 200px;
+    height: 100px;
+    background-color: var(--s-cursor-bg-color);
+    border-radius: 50%;
+    filter: blur(20px);
+    pointer-events: none;
+    box-shadow: 0 0 100px 80px var(--s-cursor-shadow-color);
+    transform: translate(-50%, -50%);
+    transition: opacity 0.2s;
+    opacity: 0;
+}
+
+.cursor-glow:hover .cursor-glow {
+    opacity: 1;
+}
+
+.border-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.border-part {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: var(--s-box-border-color);
+    box-shadow: 0 0 20px 2px var(--s-box-border-shadow);
+    border-radius: 10px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
