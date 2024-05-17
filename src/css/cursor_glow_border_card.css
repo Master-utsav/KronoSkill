@@ -1,14 +1,3 @@
-:root{
-    --form-bg-color: rgba(0, 0, 0, 0.3);
-}
-.dark{
-    --form-bg-color: rgba(0, 0, 0, 0.3);
-    --cursor-bg-color: rgba(174, 20, 251, 0.18);
-    --cursor-shadow-color: rgba(174, 20, 251, 0.15);
-    --box-border-color: rgba(174, 20, 251, 1);
-    --box-border-shadow: rgba(174, 20, 251, 0.1);
-}
-
 .glow-container {
     position: relative;
     background-color: var(--form-bg-color) ;

@@ -1,0 +1,70 @@
+.bg_spinner {
+    background-color: transparent;
+}
+
+.loader_spinner {
+    position: relative;
+    display: inline-block;
+    background-color: transparent;
+}
+
+.loader_spinner::before {
+    content: '';
+    left: 0;
+    top: 0;
+    position: absolute;
+    width: calc(var(--spinner-size) * 1.5);
+    height: calc(var(--spinner-size) * 1.5);
+    border-radius: 50%;
+    background-color: var(--spinner-color);
+    background-image:
+        radial-gradient(circle calc(var(--spinner-size) * 0.33) at calc(var(--spinner-size) * 0.75) calc(var(--spinner-size) * 0.75), var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.16) at calc(var(--spinner-size) * 0.75) 0px, var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.16) at 0px calc(var(--spinner-size) * 0.75), var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.16) at calc(var(--spinner-size) * 1.5) calc(var(--spinner-size) * 0.75), var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.16) at calc(var(--spinner-size) * 0.75) calc(var(--spinner-size) * 1.5), var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.16) at calc(var(--spinner-size) * 1.25) calc(var(--spinner-size) * 0.2083), var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.16) at calc(var(--spinner-size) * 1.25) calc(var(--spinner-size) * 0.2083), var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.16) at calc(var(--spinner-size) * 1.25) calc(var(--spinner-size) * 1.25), var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.16) at calc(var(--spinner-size) * 0.2083) calc(var(--spinner-size) * 1.25), var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.16) at calc(var(--spinner-size) * 0.2083) calc(var(--spinner-size) * 0.2083), var(--base-color) 100%, transparent 0);
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+    animation: rotationBack 3s linear infinite;
+}
+
+.loader_spinner::after {
+    content: '';
+    left: calc(var(--spinner-size)* 1.4583);
+    top: calc(var(--spinner-size) * 0.625);
+    position: absolute;
+    width: var(--spinner-size);
+    height: var(--spinner-size);
+    border-radius: 50%;
+    background-color: var(--spinner-color);
+    background-image:
+        radial-gradient(circle calc(var(--spinner-size) * 0.2083) at calc(var(--spinner-size) * 0.5) calc(var(--spinner-size) * 0.5), var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.1041) at calc(var(--spinner-size) * 0.5) 0px, var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.1041) at 0px calc(var(--spinner-size) * 0.5), var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.1041) at calc(var(--spinner-size)) calc(var(--spinner-size) * 0.5), var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.1041) at calc(var(--spinner-size) * 0.5) calc(var(--spinner-size)), var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.1041) at calc(var(--spinner-size) * 0.8333) calc(var(--spinner-size) * 0.125), var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.1041) at calc(var(--spinner-size) * 0.8333) calc(var(--spinner-size) * 0.125), var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.1041) at calc(var(--spinner-size)* 0.8333) calc(var(--spinner-size) * 0.8333), var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.1041) at calc(var(--spinner-size) * 0.125) calc(var(--spinner-size) * 0.8333), var(--base-color) 100%, transparent 0),
+        radial-gradient(circle calc(var(--spinner-size) * 0.1041) at calc(var(--spinner-size) * 0.125)calc(var(--spinner-size) * 0.125), var(--base-color) 100%, transparent 0);
+
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+    animation: rotationBack 4s linear infinite reverse;
+}
+
+@keyframes rotationBack {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-360deg);
+    }
+}

@@ -2,14 +2,35 @@
 import React, { useEffect } from "react";
 import "@/css/cursor_glow_border_card.css";
 
-export const CursorBorderGlowCard = ({
+
+interface CursorBorderProps{
+    bg_card_cursor_color?: string;
+    cursor_color?: string;
+    cursor_shadow?: string;
+    box_border_shadow?: string;
+    box_border?: string;
+  className?: string
+  children?: React.ReactNode
+
+}
+
+export const CursorBorderGlowCard: React.FC<CursorBorderProps> = ({
   children,
   className,
-}: {
-  children: React.ReactNode;
-        className?: string;
-  
+  bg_card_cursor_color,
+  cursor_color,
+  cursor_shadow,
+  box_border,
+  box_border_shadow,
 }) => {
+  const style = {
+    "--form-bg-color": bg_card_cursor_color,
+    "--cursor-bg-color": cursor_color,
+    "--cursor-shadow-color": cursor_shadow,
+    "--box-border-shadow": box_border_shadow,
+    "--box-border-color" : box_border,
+  } as React.CSSProperties;
+
   useEffect(() => {
     const container = document.querySelector(".glow-container") as HTMLElement;
     const cursorGlow = document.createElement("div") as HTMLElement;
@@ -134,5 +155,5 @@ export const CursorBorderGlowCard = ({
     };
   }, []);
 
-  return <div className={`glow-container ${className}`}>{children}</div>;
+  return <div className={`glow-container ${className}`} style={style}>{children}</div>;
 };

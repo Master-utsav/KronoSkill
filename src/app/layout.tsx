@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import { Providers } from "./Providers";
 import { Toaster } from "react-hot-toast";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -17,13 +18,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={inter.className}>
         <Providers>
-          <div className="relative w-full flex justify-normal items-center box-content m-0 p-0">
-            <Navbar />
-          </div>
           {children}
           <Toaster position="bottom-right" reverseOrder={false} />
         </Providers>

@@ -15,7 +15,7 @@
     transform: rotate(45deg);
     width: 120px;
     height: 100%;
-    background: radial-gradient(circle, rgba(0, 255, 0, 0)10%, rgba(255, 87, 235, 0.356) 100%);
+    background: radial-gradient(circle,  var(--bg-rays-color) 10%,  var(--ray-one-color) 100%);
     animation: lightRays 5s forwards ease-in-out;
     opacity: 0;
     filter: blur(20px);
@@ -50,7 +50,7 @@
     transform: rotate(45deg);
     width: 80px;
     height: 200%;
-    background: radial-gradient(circle, rgba(0, 255, 0, 0)10%, rgba(192, 88, 248, 0.56) 100%);
+    background: radial-gradient(circle, var(--bg-rays-color) 10%, var(--ray-two-color)  100%);
     animation: lightRays2 5s forwards ease-in-out;
     opacity: 0;
     filter: blur(30px);
@@ -85,7 +85,7 @@
     transform: rotate(45deg);
     width: 100px;
     height: 180%;
-    background: radial-gradient(circle, rgba(0, 255, 0, 0)10%, rgba(33, 52, 219, 0.3) 100%);
+    background: radial-gradient(circle, var(--bg-rays-color) 10%, var(--ray-three-color) 100%);
     animation: lightRays3 5s forwards ease-in-out;
     opacity: 0;
     filter: blur(20px);
@@ -111,3 +111,4 @@
         transform: rotate(-45deg) translateX(100%) translateY(20%) scale(3);
     } */
 }
+  

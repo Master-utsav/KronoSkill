@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function VerifyEmailPage() {
     const [token, setToken] = useState("");
@@ -72,10 +73,11 @@ async function handelClick() {
           </Link>
         </div>
       ) : (
-        <div>
+        <div className="flex justify-center items-center flex-col space-y-10">
           <h1 className="dark:text-cyan-500 text-4xl font-serif">
             Verified successfully Redirecting.....
-          </h1>
+            </h1>
+            <Spinner size="100px" bg_color="#000000" spinner_color="cyan" className="w-[180px] h-[120px]"/>
         </div>
       )}
     </div>
