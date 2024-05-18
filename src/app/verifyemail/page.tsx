@@ -63,7 +63,7 @@ async function handelClick() {
           <h1 className="dark:text-cyan-500 text-6xl font-serif">
             Verify Your Email
           </h1>
-          <Link onClick={handelClick} href={`/verify?token=${token}`}>
+          <Link onClick={handelClick} href={`/verifyemail?token=${token}`}>
             <Button
               borderRadius="2rem"
               className="bg-white dark:bg-slate-900/60 text-4xl h-32 w-64 text-black dark:text-white border-neutral-200 dark:border-slate-800"

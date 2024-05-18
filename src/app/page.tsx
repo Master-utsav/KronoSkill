@@ -1,4 +1,3 @@
-
 import FeaturedCourses from "@/components/FeaturedCourses";
 import HeroSection from "@/components/HeroSection";
 import TestimonialCards from "@/components/TestimonialCards";
@@ -17,7 +16,7 @@ export default function Home() {
        <div className="relative w-full flex justify-normal items-center box-content m-0 p-0">
               <Navbar />
         </div>
-      <main className="min-h-screen bg-black/[0.96] antialiased bg-dot-white/[0.1]">
+      <main className="min-h-screen antialiased ">
         <HeroSection />
         <FeaturedCourses />
         <WhyChooseUs />

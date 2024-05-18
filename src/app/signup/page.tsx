@@ -12,6 +12,8 @@ import { useRouter } from "next/navigation";
 import {Spinner} from "@/components/ui/spinner";
 import { Button } from "@/components/ui/moving-border";
 import { CursorBorderGlowCard } from "@/components/ui/cursor-border-glow-card";
+import { VscEyeClosed } from "react-icons/vsc";
+import { VscEye } from "react-icons/vsc";
 
 interface User {
     firstname: string,
@@ -32,6 +34,9 @@ export default function SignUp() {
   })
   const [loading, setLoading] = useState(false);
   const redirect = useRouter()
+
+  const [isClickedConfirmPassword , setIsClickedConfirmPassword] = useState(false);
+  const [isClickedPassword , setIsClickedPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -54,6 +59,7 @@ export default function SignUp() {
 
       const data = response.data;
       toast.success(data.message);
+      toast.success(data.message2);
       redirect.push("/login");
 
     } catch (error: any) {
@@ -67,7 +73,14 @@ export default function SignUp() {
       setLoading(false);
     }
   };
+  
+  const handleEyePassword = (): void => {
+    setIsClickedPassword(!isClickedPassword);
+  };
 
+  const handleEyeConfirmPassword = (): void => {
+    setIsClickedConfirmPassword(!isClickedConfirmPassword);
+  };
 
 
   return (
@@ -129,19 +142,21 @@ export default function SignUp() {
               <Label htmlFor="username">username</Label>
               <Input required id="username" placeholder="master_utsav" type="text" onChange={handleChange} name="username" value={user.username} />
             </LabelInputContainer>
-            <LabelInputContainer className="mb-4">
+            <LabelInputContainer className="mb-4 relative">
               <Label htmlFor="password">Password</Label>
-              <Input required id="password" placeholder="••••••••" type="password" onChange={handleChange} name="password" value={user.password} />
+              <Input required id="password" placeholder="••••••••" type={isClickedPassword ? "text" : "password"} onChange={handleChange} name="password" value={user.password} />
+              {isClickedPassword ?<VscEye  className="absolute right-2 top-7 text-xl cursor-pointer" onClick={handleEyePassword}/> : <VscEyeClosed  className="absolute right-2 top-7 text-xl cursor-pointer" onClick={handleEyePassword}/> }
             </LabelInputContainer>
-            <LabelInputContainer className="mb-4">
+            <LabelInputContainer className="mb-4 relative">
               <Label htmlFor="confirmpassword">Confirm Password</Label>
               <Input
                 id="confirmpassword"
                 placeholder="••••••••"
-                type="password"
+                type={isClickedConfirmPassword ? "text" : "password"}
                 onChange={handleChange} name="confirmpassword" value={user.confirmpassword}
                 required
               />
+              {isClickedConfirmPassword ?<VscEye  className="absolute right-2 top-7 text-xl cursor-pointer" onClick={handleEyeConfirmPassword}/> : <VscEyeClosed  className="absolute right-2 top-7 text-xl cursor-pointer"  onClick={handleEyeConfirmPassword}/> }
               <Link
                 href={"/login"}
                 className=" text-sm hover:underline text-indigo-500 hover:text-cyan-500"

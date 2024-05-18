@@ -3,17 +3,35 @@ import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken"
+import validator from "validator"
 
 connect();
 
 export async function POST(request: NextRequest) {
+  function isValidUsername(username: string): boolean {
+    const usernamePattern = /^[A-Za-z_]+$/;
+    return usernamePattern.test(username);
+    }
   try {
     const reqBody = await request.json();
     const { identity, password } = reqBody;
+
+    let inputEmail: string = "";
+    let inputUsername: string = "";
+    if (validator.isEmail(identity)) {
+      inputEmail = identity;
+    }
+    else {
+      inputUsername = identity;
+    }
+
     const user = await User.findOne({
       $or: [{ email: identity }, { user_name: identity }],
     });
-
+    
+    if(!isValidUsername(inputUsername) && inputUsername?.trim() !== "") {
+            return NextResponse.json({ error: "username accepts alphabets , _" }, { status: 400 });
+    }
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
@@ -21,7 +39,7 @@ export async function POST(request: NextRequest) {
     const validPassword = await bcryptjs.compare(password, user.password);
     if (!validPassword) {
       return NextResponse.json(
-        { error: "check your credentials" },
+        { error: "check your password" },
         { status: 404 }
       );
       }
@@ -35,6 +53,9 @@ export async function POST(request: NextRequest) {
       const response = NextResponse.json({
           message: "logged in Success",
           success : true,
+          userId: user._id,
+          username : user.user_name,
+          firstname : user.first_name,
       })
 
       response.cookies.set("token", token, {
