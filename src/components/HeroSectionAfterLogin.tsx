@@ -11,6 +11,7 @@ const HeroSectionAfterLogin = () => {
     userId : "",
     username : "",
     firstname : "",
+    uuid : "",
   })
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const HeroSectionAfterLogin = () => {
       light_ray2="#0c80fc70"
       light_ray3="#0000ff3c"
     />
-      <Link href={"/profile"} className="absolute top-14 right-40 z-50">
+      <Link href={`/profile/${userData.uuid}`} className="absolute top-14 right-40 z-50">
         <Button
           borderRadius="1rem"
           borderClassName="bg-[radial-gradient(var(--blue-500)_40%,transparent_60%)]"

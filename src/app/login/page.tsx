@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
 import { CursorBorderGlowCard } from "@/components/ui/cursor-border-glow-card";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
+import { v4 as uuidv4 } from 'uuid';
 
 interface UserLogin {
   identity: string;
@@ -37,6 +38,8 @@ const Login = () => {
     }));
   };
 
+  const userUUID = uuidv4();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(user);
@@ -51,7 +54,7 @@ const Login = () => {
       
       const data = response.data;
       toast.success(data.message);
-      localStorage.setItem("logged User" , JSON.stringify({userId : data.userId , username : data.username , firstname : data.firstname }))
+      localStorage.setItem("logged User" , JSON.stringify({userId : data.userId , username : data.username , firstname : data.firstname , uuid : userUUID}))
       redirect.push("/");
     } catch (error: any) {
       console.log("Fetching request failed", error);

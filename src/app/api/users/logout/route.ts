@@ -8,24 +8,28 @@ connect();
 export async function POST(request : NextRequest) { 
     try {
         const reqBody = await request.json();
-        const {email} = reqBody;
+        const {email , userId} = reqBody;
         
+        // const userValid = await User.findOne({_id : userId});
+        // if(!userValid){
+        //     return NextResponse.json({error : "⚠️ Warning userId didn't match"} , {status : 404})
+        // }
         if(!validator.isEmail(email)){
             return NextResponse.json({error : "Invalid email address"} , {status : 404})
         }
-        const user = await User.findOne({email : email});
+        const user = await User.findOne({$and : [{email : email} , {_id : userId}]});
 
         if(!user){
             return NextResponse.json({error : "user not found"} , {status : 400})
         }
-
+        
         const response = NextResponse.json({
             message: "Logout Successfully",
             success : true,
         })
-        response.cookies.set("token", "", {
+        response.cookies.set("token" , "", {
             httpOnly: true,
-            expires: new Date(0)
+            maxAge: 0
         },)
 
         return response;

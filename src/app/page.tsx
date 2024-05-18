@@ -13,9 +13,9 @@ import Navbar from "@/components/Navbar";
 export default function Home() {
   return (
     <TracingBeam className="px-6">
-       <div className="relative w-full flex justify-normal items-center box-content m-0 p-0">
-              <Navbar />
-        </div>
+      <div className="relative w-full flex justify-normal items-center box-content m-0 p-0">
+            <Navbar />
+      </div>
       <main className="min-h-screen antialiased ">
         <HeroSection />
         <FeaturedCourses />

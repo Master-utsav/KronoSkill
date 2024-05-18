@@ -7,24 +7,42 @@ import { Label } from "@/components/ui/label";
 import ProductivityComponent from "@/components/ui/master_light";
 import { Spinner } from "@/components/ui/spinner";
 import axios from "axios";
+import { cookies } from "next/headers";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const LogoutPage = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [email, setEmail] = useState<string>("");
     const redirect = useRouter()
+
+    const [userData, setUserData] = useState({
+      userId: "",
+      username: "",
+      firstname: "",
+      userUUID : "",
+    });
+  
+    useEffect(() => {
+      const loggedUser = localStorage.getItem("logged User");
+      if (loggedUser) {
+        setUserData(JSON.parse(loggedUser));
+      }
+    }, []);
+
     const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
       setEmail(e.target.value);
       };
     
+    
       const emailSendToLogoutRoute = async (e: React.FormEvent<HTMLFormElement>) => {
+      
       e.preventDefault();
       try {
         setLoading(true);
-        const response = await axios.post("/api/users/logout", {email});
+        const response = await axios.post("/api/users/logout", {email : email , userId : userData.userId });
         if (response.status !== 200) {
           toast.error("failed");
           throw new Error("There is an error");

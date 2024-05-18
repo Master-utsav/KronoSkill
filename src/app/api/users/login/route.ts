@@ -9,7 +9,7 @@ connect();
 
 export async function POST(request: NextRequest) {
   function isValidUsername(username: string): boolean {
-    const usernamePattern = /^[A-Za-z_]+$/;
+    const usernamePattern = /^[A-Za-z0-9_]+$/;
     return usernamePattern.test(username);
     }
   try {
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     });
     
     if(!isValidUsername(inputUsername) && inputUsername?.trim() !== "") {
-            return NextResponse.json({ error: "username accepts alphabets , _" }, { status: 400 });
+            return NextResponse.json({ error: "username accepts alphabets , _ , digits" }, { status: 400 });
     }
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });

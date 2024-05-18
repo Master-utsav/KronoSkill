@@ -16,9 +16,10 @@ export default function VerifyEmailPage() {
     const [token, setToken] = useState("");
     const [verfied, setVerified] = useState(false);
     const router = useRouter();
-   
+    
     const [isLoggedIn, setIsLoggedIn] = useState<User | null>(null);
     useEffect(() => {
+
       const loggedUser = localStorage.getItem("logged User");
       if (loggedUser) {
         setIsLoggedIn(JSON.parse(loggedUser));

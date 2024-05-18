@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     return alphabetPattern.test(input); 
     }
     function isValidUsername(username: string): boolean {
-    const usernamePattern = /^[A-Za-z_]+$/;
+    const usernamePattern = /^[A-Za-z0-9_]+$/;
     return usernamePattern.test(username);
     }
     
@@ -34,16 +34,19 @@ export async function POST(request: NextRequest) {
         const reqBody = await request.json()
         const { firstname, lastname, username, password, email, confirmpassword }: SignUpBody = reqBody
 
-        const user = await User.findOne({
-               $and: [{ email }, { user_name: username }]})
+        const user = await User.findOne({user_name: username })
+        const useremail = await User.findOne({email: email })
+        if(useremail){
+            return NextResponse.json({ error: "email already exists" }, { status: 400 });
+        }
         if (user) {
-            return NextResponse.json({ error: "user already exists" }, { status: 400 });
+            return NextResponse.json({ error: "username already exists" }, { status: 400 });
         }
         if (!(isAlphabetic(firstname) || isAlphabetic(lastname))) {
             return NextResponse.json({ error: "alphabets allowed in name*" }, { status: 400 });
         }
         if (!isValidUsername(username)) {
-            return NextResponse.json({ error: "username accepts alphabets , _" }, { status: 400 });
+            return NextResponse.json({ error: "username accepts alphabets , _ , digits" }, { status: 400 });
         }
         if (!validator.isEmail(email)) {
             return NextResponse.json({ error: "Invalid email" }, { status: 400 });
