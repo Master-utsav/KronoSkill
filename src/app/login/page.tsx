@@ -72,15 +72,16 @@ const Login = () => {
   return (
     <div className="w-[100vw] h-[100vh] ">
       <ProductivityComponent
-        bg_color="#00ff0000"
+        bg_color="#00000000"
         light_ray1="#ff57eb5b"
         light_ray2="#c058f88f"
         light_ray3="#2134db4d"
       />
-      <div className="w-[100vw] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] h-[100vh]  bg-white/0 dark:bg-black/0 overflow-x-hidden overflow-y-hidden ">
+      <div className="w-[100vw] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] h-[100vh]  bg-white/0 dark:bg-black/[0] overflow-x-hidden overflow-y-hidden ">
         <Link href={"/"} className="absolute top-14 right-44 z-50">
           <Button
             borderRadius="1rem"
+            borderClassName="bg-[radial-gradient(var(--purple-500)_40%,transparent_60%)]"
             className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
           >
             Home
@@ -89,6 +90,7 @@ const Login = () => {
         <Link href={"/signup"} className="absolute top-14 right-8 z-50">
           <Button
             borderRadius="1rem"
+            borderClassName="bg-[radial-gradient(var(--purple-500)_40%,transparent_60%)]"
             className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
           >
             signup

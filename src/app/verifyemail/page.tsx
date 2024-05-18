@@ -8,17 +8,35 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Spinner } from "@/components/ui/spinner";
 
+
+interface User{
+  userId : string,
+}
 export default function VerifyEmailPage() {
     const [token, setToken] = useState("");
     const [verfied, setVerified] = useState(false);
     const router = useRouter();
-    
+   
+    const [isLoggedIn, setIsLoggedIn] = useState<User | null>(null);
+    useEffect(() => {
+      const loggedUser = localStorage.getItem("logged User");
+      if (loggedUser) {
+        setIsLoggedIn(JSON.parse(loggedUser));
+      }
+    }, []);
+
     const verfiyUserEmail = async() => {
     try {
-       const response =  await axios.post("/api/users/verifyemail", { token } );
+
+      const response =  await axios.post("/api/users/verifyemail", { token } );
       setVerified(true);
       toast.success(response.data.message);
-       router.push("/")
+      if(isLoggedIn){
+        router.push("/")
+      }
+      else{
+        router.push("/login")
+      }
       
     } catch (error: any) {
       console.log("verification failed", error);
@@ -66,6 +84,7 @@ async function handelClick() {
           <Link onClick={handelClick} href={`/verifyemail?token=${token}`}>
             <Button
               borderRadius="2rem"
+              borderClassName="bg-[radial-gradient(var(--cyan-500)_40%,transparent_60%)]"
               className="bg-white dark:bg-slate-900/60 text-4xl h-32 w-64 text-black dark:text-white border-neutral-200 dark:border-slate-800"
             >
               Verify Email

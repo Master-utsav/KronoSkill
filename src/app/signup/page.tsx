@@ -93,6 +93,7 @@ export default function SignUp() {
           <Link href={"/"} className="absolute top-14 right-44 z-50">
           <Button
             borderRadius="1rem"
+            borderClassName="bg-[radial-gradient(var(--cyan-500)_40%,transparent_60%)]"
             className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
           >
             Home
@@ -101,6 +102,7 @@ export default function SignUp() {
       <Link href={"/login"} className="absolute top-14 right-8 z-50">
           <Button
             borderRadius="1rem"
+            borderClassName="bg-[radial-gradient(var(--cyan-500)_40%,transparent_60%)]"
             className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
           >
             login

@@ -17,7 +17,7 @@ interface SignUpBody{
 }
 export async function POST(request: NextRequest) {
 
-        function containsWhitespace(input: string): boolean {
+    function containsWhitespace(input: string): boolean {
         const whitespacePattern = /\s/;
         return whitespacePattern.test(input);
     }

@@ -31,6 +31,7 @@ const HeroSectionAfterLogin = () => {
       <Link href={"/profile"} className="absolute top-14 right-40 z-50">
         <Button
           borderRadius="1rem"
+          borderClassName="bg-[radial-gradient(var(--blue-500)_40%,transparent_60%)]"
           className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
         >
           Profile
@@ -39,26 +40,31 @@ const HeroSectionAfterLogin = () => {
       <Link href={"/logout"} className="absolute top-14 right-4 z-50">
         <Button
           borderRadius="1rem"
+          borderClassName="bg-[radial-gradient(var(--blue-500)_40%,transparent_60%)]"
           className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
         >
           Logout
         </Button>
       </Link>
-      <div className="p-4 absolute top-40 -left-16 w-full  text-center z-50 space-y-3 ">
+      <div className="p-4 absolute top-40 -left-16 w-full  text-center z-50 space-y-3 flex flex-col gap-4 ">
+        <div>
         <h1 className="md:mt-0 text-center text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-1">
             Welcome, <span className=' bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-[#1366f6] animate-pulse'>{(userData?.firstname).toLowerCase()}</span>
             </h1>
         <h1 className="mt-20 md:mt-0 text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-2">
           Master the art of music
         </h1>
-        <p className="mt-4 font-normal text-base md:text-lg text-neutral-300 max-w-lg mx-auto mb-4">
+        <p className="mt-4 font-normal text-base md:text-lg text-neutral-300 max-w-lg mx-auto mb-10">
           {
             "Dive into our comprehensive music courses and transform your musical journey today. Whether you're a beginner or looking to refine your skills, join us to unlock your true potential."
           }
         </p>
+        </div>
+        
         <Link href={"/courses"} >
           <Button
             borderRadius="1.75rem"
+            borderClassName="bg-[radial-gradient(var(--blue-500)_40%,transparent_60%)]"
             className="bg-white dark:bg-slate-900/60 text-lg h-20 w-40 text-black dark:text-white border-neutral-200 dark:border-slate-800"
           >
             Explore courses

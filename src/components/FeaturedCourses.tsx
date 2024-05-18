@@ -53,6 +53,7 @@ const FeaturedCourses = () => {
           <Link href={"/courses"}>
             <Button
               borderRadius="1.75rem"
+              borderClassName="bg-[radial-gradient(var(--purple-500)_40%,transparent_60%)]"
               className="bg-white dark:bg-slate-900/60 text-lg h-20 w-40 text-black dark:text-white border-neutral-200 dark:border-slate-800"
             >
               View all Courses

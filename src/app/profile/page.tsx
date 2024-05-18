@@ -47,7 +47,8 @@ const ProfilePage = () => {
         <Link href={"/courses"}>
           <Button
             borderRadius="1.75rem"
-            className="bg-white dark:bg-slate-900/60 text-lg h-20 w-40 text-black dark:text-white border-neutral-200 dark:border-slate-800"
+            borderClassName="bg-[radial-gradient(var(--yellow-500)_40%,transparent_80%)]"
+            className="bg-white dark:bg-slate-900/40 text-lg h-20 w-40 text-black dark:text-white border-neutral-200 dark:border-slate-800"
           >
             Explore courses
           </Button>

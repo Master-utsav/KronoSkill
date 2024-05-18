@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { mergeConfigs } from "tailwind-merge";
 import type { Config } from "tailwindcss";
 const defaultTheme = require("tailwindcss/defaultTheme");
@@ -55,6 +56,8 @@ const config: Config = {
        animation: {
         spotlight: "spotlight 2s ease .75s 1 forwards",
         scroll: "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+        zoomin: 'zoomin 1450ms ease-out forwards',
+        blurin: 'blurin 1450ms ease-out forwards',
       },
        boxShadow: {
         input: `0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08)`,
@@ -75,6 +78,26 @@ const config: Config = {
             transform: "translate(calc(-50% - 0.5rem))",
           },
         },
+        zoomin: {
+            '0%': {
+              transform: 'scale(1.4)',
+              opacity: '0',
+              filter : "blur(40px)",
+            },
+            '100%': {
+              transform: 'scale(1)',
+              opacity: "1",
+              filter: "blur(0px)",
+            },
+          },
+        blurin: {
+            '0%': {
+              filter : "blur(0px)",
+            },
+            '100%': {
+              filter : "blur(40px)",
+            },
+          },
       },
      
       backgroundImage: {
