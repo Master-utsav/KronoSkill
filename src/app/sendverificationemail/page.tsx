@@ -13,25 +13,38 @@ import { useRouter } from "next/navigation";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const ForgotPassword = () => {
+const SendVerificationEmail = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [isdisabled , setIsdisabled] = useState<boolean>(true);
 
   const redirect = useRouter()
+
+  const [userData, setUserData] = useState({
+    userId: "",
+    username: "",
+    firstname: "",
+   
+  });
+
+  useEffect(() => {
+    const loggedUser = localStorage.getItem("logged User");
+    if (loggedUser) {
+      setUserData(JSON.parse(loggedUser));
+    }
+    setIsdisabled(false)
+   
+  }, []);
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     };
-   
-    useEffect(()=>{
-      setIsdisabled(false);
-    },[])
+  
     const sendEmailToUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      setIsdisabled(true);
       setLoading(true);
-      const response = await axios.post("/api/users/forgotpassword", {email});
+      setIsdisabled(true);
+      const response = await axios.post("/api/users/sendverificationemail", {email , userId : userData.userId});
       if (response.status !== 200) {
         toast.error("failed");
         throw new Error("There is an error");
@@ -48,8 +61,8 @@ const ForgotPassword = () => {
         toast.error("An unexpected error occurred");
       }
     } finally {
+      setIsdisabled(false)
       setLoading(false);
-      setIsdisabled(false);
     }
   }
 
@@ -58,9 +71,9 @@ const ForgotPassword = () => {
     <div className="w-[100vw] h-[100vh] ">
       <ProductivityComponent
         bg_color="#00ff0000"
-        light_ray1="#10c57393"
-        light_ray2="#0df5668a"
-        light_ray3="#10c57393"
+        light_ray1="#14dbe193"
+        light_ray2="#0dcbf58a"
+        light_ray3="#14dbe193"
       />
       <div className="h-auto md:h-[40rem] w-full rounded-md flex flex-col items-center justify-center relative overflow-hidden mx-auto py-10 md:py-0">
         <Link href={"/signup"} className="absolute top-14 right-48 z-50">
@@ -76,7 +89,6 @@ const ForgotPassword = () => {
         <Link href={"/login"} className="absolute top-14 right-12 z-50">
           <Button
             borderRadius="1rem"
-            disabled={isdisabled}
             borderClassName="bg-[radial-gradient(var(--green-500)_40%,transparent_60%)]"
             className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
           >
@@ -86,20 +98,20 @@ const ForgotPassword = () => {
         <CursorBorderGlowCard
           className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white/20 dark:bg-black/40 mt-32"
           bg_card_cursor_color="#0000004d"
-          cursor_color="#0df56635"
-          cursor_shadow="#0df56635"
-          box_border="#0edb9e"
-          box_border_shadow="#0df56635"
+          cursor_color="#14dae135"
+          cursor_shadow="#14dae135"
+          box_border="#14dae1"
+          box_border_shadow="#14dae135"
         >
           <h2 className="font-bold text-xl text-center text-neutral-800 dark:text-neutral-200">
-            Forgot password
+            Email Verificatiuon
           </h2>
-          <p className="text-neutral-600 text-center text-lg max-w-sm mt-2 dark:text-[#0edb9e]">
+          <p className="text-neutral-600 text-center text-lg max-w-sm mt-2 dark:text-cyan-500">
             enter your email address
           </p>
 
           <form className="my-8" onSubmit={sendEmailToUser}>
-            <LabelInputContainer className="mb-1">
+            <LabelInputContainer className="mb-4">
               <Label htmlFor="email">email address</Label>
               <Input
                 id="email"
@@ -111,14 +123,7 @@ const ForgotPassword = () => {
                 required
               />
             </LabelInputContainer>
-            <LabelInputContainer className="mb-4">
-              <Link
-                href={"/login"}
-                className=" text-sm hover:underline text-indigo-500 hover:text-cyan-500"
-              >
-                {"click here to login"}
-              </Link>
-            </LabelInputContainer>
+           
 
             <button
               className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] "
@@ -144,4 +149,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default SendVerificationEmail;

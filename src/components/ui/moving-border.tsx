@@ -19,13 +19,14 @@ export function Button({
   borderClassName ,
   duration,
   className,
+  disabled,
   ...otherProps
 }: {
   borderRadius?: string;
   children: React.ReactNode;
   as?: any;
   containerClassName?: string;
-
+  disabled?: Boolean;
   borderClassName?: string;
   duration?: number;
   className?: string;
@@ -35,7 +36,8 @@ export function Button({
     <Component
       className={cn(
         "bg-transparent relative text-xl p-[1px] overflow-hidden ",
-        containerClassName
+        containerClassName,
+        disabled 
       )}
       style={{
         borderRadius: borderRadius,

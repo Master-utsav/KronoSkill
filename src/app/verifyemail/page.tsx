@@ -18,17 +18,19 @@ export default function VerifyEmailPage() {
     const router = useRouter();
     
     const [isLoggedIn, setIsLoggedIn] = useState<User | null>(null);
-    useEffect(() => {
+    const [isdisabled , setIsdisabled] = useState<boolean>(true);
 
+    useEffect(() => {
       const loggedUser = localStorage.getItem("logged User");
       if (loggedUser) {
         setIsLoggedIn(JSON.parse(loggedUser));
       }
+      setIsdisabled(false)
     }, []);
 
     const verfiyUserEmail = async() => {
     try {
-
+      setIsdisabled(true);
       const response =  await axios.post("/api/users/verifyemail", { token } );
       setVerified(true);
       toast.success(response.data.message);
@@ -46,6 +48,9 @@ export default function VerifyEmailPage() {
       } else {
         toast.error("An unexpected error occurred");
       }
+    }
+    finally{
+      setIsdisabled(true);
     }
   };
 
@@ -83,9 +88,10 @@ async function handelClick() {
             Verify Your Email
           </h1>
           <Link onClick={handelClick} href={`/verifyemail?token=${token}`}>
-            <Button
+            <Button 
               borderRadius="2rem"
               borderClassName="bg-[radial-gradient(var(--cyan-500)_40%,transparent_60%)]"
+              disabled={isdisabled}
               className="bg-white dark:bg-slate-900/60 text-4xl h-32 w-64 text-black dark:text-white border-neutral-200 dark:border-slate-800"
             >
               Verify Email

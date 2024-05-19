@@ -7,6 +7,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const ProfilePage = ({ params }:any) => {
+  const [isdisabled , setIsdisabled] = useState<boolean>(true);
   const [userData, setUserData] = useState({
     userId: "",
     username: "",
@@ -19,6 +20,7 @@ const ProfilePage = ({ params }:any) => {
     if (loggedUser) {
       setUserData(JSON.parse(loggedUser));
     }
+    setIsdisabled(false);
   }, []);
 
   const paramsId = params?.id;

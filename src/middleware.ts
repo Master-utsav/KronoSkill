@@ -10,9 +10,12 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value || null;
 
   if(path === '/' && token){
-    console.log(path)
     return NextResponse.next();
   }
+  if(path === '/verifyemail' && token){
+    return NextResponse.next();
+  }
+  
   if (isPublicPath && token) {
       return NextResponse.redirect(new URL('/', request.url));
     }
@@ -20,6 +23,10 @@ export function middleware(request: NextRequest) {
   if(!isPublicPath && !token) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
+
+
+  return NextResponse.next();
+
 }
 
 export const config = {
@@ -34,5 +41,6 @@ export const config = {
     "/profile",
     "/resetpassword",
     "/verifyemail",
+    "/sendverificationemail"
   ]
 }

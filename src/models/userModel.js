@@ -33,6 +33,8 @@ const UserSchema = new mongoose.Schema({
   },
   forgotPasswordToken: String,
   forgotPasswordTokenExpiry: Date,
+  emailSendTime : Date,
+  forgotPasswordSendTime : Date,
   verifyToken: String,
   verifyTokenExpiry: Date
 })

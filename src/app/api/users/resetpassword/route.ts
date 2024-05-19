@@ -53,6 +53,7 @@ export async function POST(request: NextRequest) {
     
     user.forgotPasswordToken = undefined;
     user.forgotPasswordTokenExpiry = undefined;
+   
 
     await user.save();
 

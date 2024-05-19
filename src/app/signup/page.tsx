@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
@@ -37,6 +37,7 @@ export default function SignUp() {
 
   const [isClickedConfirmPassword , setIsClickedConfirmPassword] = useState(false);
   const [isClickedPassword , setIsClickedPassword] = useState(false);
+  const [isdisabled , setIsdisabled] = useState<boolean>(true);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -45,10 +46,16 @@ export default function SignUp() {
       [name]: value,
     }));
   };
+
+  useEffect(() => {
+    setIsdisabled(false)
+  } , []);
+
   const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(user)
     try {
+      setIsdisabled(true);
       setLoading(true)
       const response = await axios.post("/api/users/signup", user);
 
@@ -71,6 +78,7 @@ export default function SignUp() {
       }
     } finally {
       setLoading(false);
+      setIsdisabled(false);
     }
   };
   
@@ -92,6 +100,7 @@ export default function SignUp() {
         />
           <Link href={"/"} className="absolute top-14 right-44 z-50">
           <Button
+            disabled={isdisabled}
             borderRadius="1rem"
             borderClassName="bg-[radial-gradient(var(--cyan-500)_40%,transparent_60%)]"
             className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
@@ -99,9 +108,10 @@ export default function SignUp() {
             Home
           </Button>
         </Link>
-      <Link href={"/login"} className="absolute top-14 right-8 z-50">
+      <Link href={"/login"} className="absolute top-14 right-8 z-50" >
           <Button
             borderRadius="1rem"
+            disabled={isdisabled}
             borderClassName="bg-[radial-gradient(var(--cyan-500)_40%,transparent_60%)]"
             className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
           >
@@ -160,7 +170,7 @@ export default function SignUp() {
               />
               {isClickedConfirmPassword ?<VscEye  className="absolute right-2 top-7 text-xl cursor-pointer" onClick={handleEyeConfirmPassword}/> : <VscEyeClosed  className="absolute right-2 top-7 text-xl cursor-pointer"  onClick={handleEyeConfirmPassword}/> }
               <Link
-                href={"/login"}
+                href={"/login"} 
                 className=" text-sm hover:underline text-indigo-500 hover:text-cyan-500"
               >
                 {"Already have an account ?"}
@@ -168,7 +178,7 @@ export default function SignUp() {
             </LabelInputContainer>
             <button
               className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
-              type="submit"
+              type="submit" disabled={isdisabled}
             >
               {loading ?<Spinner size="24px" bg_color="#212121" spinner_color="cyan" className="w-[48px] h-[32px] "/>: "Sign up →"}
               <BottomGradient />

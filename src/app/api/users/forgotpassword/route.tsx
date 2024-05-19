@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
         if(!validator.isEmail(email)){
             return NextResponse.json({ error: "Invalid email" }, { status: 400 });
         }
-
+      
         const user = await User.findOne({ email }).select("-password");
        
         if (!user) {
@@ -22,7 +22,18 @@ export async function POST(request: NextRequest) {
         if (!user.isVerified) {
             return NextResponse.json({ error: "user is not verified" }, { status: 404 });
         }
-        
+        if(user.forgotPasswordSendTime !== undefined){
+            const forgotPasswordSendTime = user.forgotPasswordSendTime.getTime();
+            const currentTime = Date.now();
+            const remainingTime =  forgotPasswordSendTime - currentTime;;
+            const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+            const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+            if(remainingTime > 0){
+               return NextResponse.json({error : `try after ${hours}hr ${minutes}min ${seconds}s`} , {status : 400})
+            }
+        }
+
         //send reset password
         await sendEmail({ email : user.email , emailType: "RESET", userId: user._id })
         
