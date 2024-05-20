@@ -58,8 +58,9 @@ const Login = () => {
       }
       
       const data = response.data;
+      console.log(data);
       toast.success(data.message);
-      localStorage.setItem("logged User" , JSON.stringify({userId : data.userId , username : data.username , firstname : data.firstname , uuid : userUUID}))
+      localStorage.setItem("logged User" , JSON.stringify({userId : data.userId , username : data.username , firstname : data.firstname , uuid : userUUID , isVerify : data.isVerify}))
       redirect.push("/");
     } catch (error: any) {
       console.log("Fetching request failed", error);

@@ -101,13 +101,16 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
       </html>
     `;
     const transporter = nodemailer.createTransport({
-      host: "sandbox.smtp.mailtrap.io",
+      host:  process.env.MAILER_HOST,
       port: 2525,
       auth: {
-        user: "3772268ae1abe7", // !  ❌
-        pass: "8551abd4f91b76", // !  ❌
+        user: process.env.MAILER_USER, 
+        pass: process.env.MAILER_PASS, 
       },
     });
+   
+
+    
 
     const mailOptions = {
       from: "musicAcademy@music.com", // sender address

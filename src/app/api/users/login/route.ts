@@ -56,6 +56,7 @@ export async function POST(request: NextRequest) {
           userId: user._id,
           username : user.user_name,
           firstname : user.first_name,
+          isVerify : user. isVerified,
       })
 
       response.cookies.set("token", token, {

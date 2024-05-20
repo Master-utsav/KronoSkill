@@ -22,7 +22,7 @@ const HeroSectionAfterLogin = () => {
   }, []);
   
   return ( 
-    <div className="h-auto md:h-[40rem] w-[89vw] rounded-md flex flex-col items-center justify-center z-10 overflow-hidden mx-auto py-10 md:py-0 relative dark:bg-black/[0.96]  dark:bg-dot-white/[0.1] ">
+    <div className="h-auto md:h-[40rem] w-[89vw] rounded-md flex flex-col items-center justify-center z-10 overflow-hidden mx-auto py-10 md:py-0 relative min-h-[85%] dark:bg-black/[0.96]  dark:bg-dot-white/[0.1] ">
     <ProductivityComponent
       bg_color="#00000000"
       light_ray1="#0000ff3c"

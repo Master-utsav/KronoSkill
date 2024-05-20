@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import { Providers } from "./Providers";
+// import { Providers } from "./Providers";
 import { Toaster } from "react-hot-toast";
-
+import ClockTimer from "@/components/clockTimer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,15 +18,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={inter.className}>
-        <Providers>
-          {children}
-          <Toaster position="bottom-right" reverseOrder={false} />
-        </Providers>
+        <div className="relative w-full flex justify-normal items-center box-content m-0 p-0">
+          <Navbar />
+        </div>
+        {children}
+        <ClockTimer/>
+        <Toaster position="bottom-right" reverseOrder={false} />
       </body>
     </html>
   );

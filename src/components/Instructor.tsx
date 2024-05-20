@@ -49,9 +49,10 @@ const Instructor = () => {
   },
   ];
   return (
-    <div className="relative h-[40rem] overflow-hidden flex items-center justify-center ">
-      <WavyBackground className="" >
-        <h2 className="text-2xl md:text-4xl lg:text-7xl text-white font-bold text-center mb-8">
+    <div className="relative w-[80vw] h-[40rem] overflow-hidden flex items-center z-50 justify-center" style={{backgroundColor: "rgb(248,248,248)"}}>
+      <WavyBackground className="z-10" >
+      <div className="z-50 w-[80vw] h-[40rem] flex flex-col items-center justify-center" style={{backgroundImage: "linear-gradient(90deg, rgba(248,248,248,1) 0%, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,1) 100%, rgba(0,0,0,1) 100%, rgba(0,0,0,1) 100%)"}}>
+      <h2 className="text-2xl md:text-4xl lg:text-7xl text-white font-bold text-center mb-8">
           Meet Our Instructors
         </h2>
         <p className="text-base md:text-lg text-white text-center mb-4">
@@ -61,8 +62,9 @@ const Instructor = () => {
         <div className="flex flex-row items-center justify-center mb-10 w-full mt-10 ">
           <AnimatedTooltip items={instructors} />
         </div>
-      </WavyBackground>
-    </div>
+      </div>
+        </WavyBackground>
+      </div>
   );
 };
 

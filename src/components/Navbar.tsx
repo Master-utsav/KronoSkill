@@ -46,7 +46,7 @@ const Navbar = ({ className }: { className?: string }) => {
         </Menu>
       </div>
       
-      <ThemeSwitch />
+      {/* <ThemeSwitch /> */}
     </div>
   );
 };

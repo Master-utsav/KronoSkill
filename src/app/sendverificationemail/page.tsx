@@ -24,6 +24,7 @@ const SendVerificationEmail = () => {
     userId: "",
     username: "",
     firstname: "",
+    uuid : "",
    
   });
 
@@ -76,23 +77,23 @@ const SendVerificationEmail = () => {
         light_ray3="#14dbe193"
       />
       <div className="h-auto md:h-[40rem] w-full rounded-md flex flex-col items-center justify-center relative overflow-hidden mx-auto py-10 md:py-0">
-        <Link href={"/signup"} className="absolute top-14 right-48 z-50">
+        <Link href={"/"} className="absolute top-14 right-48 z-50">
           <Button
             borderRadius="1rem"
             disabled={isdisabled}
-            borderClassName="bg-[radial-gradient(var(--green-500)_40%,transparent_60%)]"
+            borderClassName="bg-[radial-gradient(var(--cyan-500)_40%,transparent_60%)]"
             className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
           >
-            sign up
+            Home
           </Button>
         </Link>
-        <Link href={"/login"} className="absolute top-14 right-12 z-50">
+        <Link href={`/profile/${userData.uuid}`} className="absolute top-14 right-12 z-50">
           <Button
             borderRadius="1rem"
-            borderClassName="bg-[radial-gradient(var(--green-500)_40%,transparent_60%)]"
+            borderClassName="bg-[radial-gradient(var(--cyan-500)_40%,transparent_60%)]"
             className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
           >
-            login
+            Profile
           </Button>
         </Link>
         <CursorBorderGlowCard
@@ -104,7 +105,7 @@ const SendVerificationEmail = () => {
           box_border_shadow="#14dae135"
         >
           <h2 className="font-bold text-xl text-center text-neutral-800 dark:text-neutral-200">
-            Email Verificatiuon
+            Email Verification
           </h2>
           <p className="text-neutral-600 text-center text-lg max-w-sm mt-2 dark:text-cyan-500">
             enter your email address

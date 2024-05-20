@@ -11,6 +11,7 @@ import { Spinner } from "@/components/ui/spinner";
 
 interface User{
   userId : string,
+  isVerify : boolean,
 }
 export default function VerifyEmailPage() {
     const [token, setToken] = useState("");
@@ -28,16 +29,23 @@ export default function VerifyEmailPage() {
       setIsdisabled(false)
     }, []);
 
+    
+
     const verfiyUserEmail = async() => {
     try {
       setIsdisabled(true);
       const response =  await axios.post("/api/users/verifyemail", { token } );
       setVerified(true);
       toast.success(response.data.message);
+    
       if(isLoggedIn){
+        isLoggedIn.isVerify = response.data.isVerify;
+        const updatedLoggedUserJSON = JSON.stringify(isLoggedIn);
+        localStorage.setItem("logged User", updatedLoggedUserJSON);
         router.push("/")
       }
       else{
+        toast.error('No logged User found in localStorage');
         router.push("/login")
       }
       

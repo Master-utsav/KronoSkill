@@ -15,6 +15,9 @@ export function middleware(request: NextRequest) {
   if(path === '/verifyemail' && token){
     return NextResponse.next();
   }
+  if(path === '/contact' || path === '/courses'){
+    return NextResponse.next();
+  }
   
   if (isPublicPath && token) {
       return NextResponse.redirect(new URL('/', request.url));

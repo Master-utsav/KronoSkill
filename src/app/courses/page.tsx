@@ -21,9 +21,7 @@ interface Course {
 const page = () => {
   return (
     <div className="min-h-screen bg-black py-12 pt-36">
-      <div className="relative w-full flex justify-normal items-center box-content m-0 p-0">
-        <Navbar />
-      </div>
+  
       <h1 className="text-lg md:text-7xl text-center font-sans font-bold mb-8 text-white">
         All courses ({courseData.courses.length})
       </h1>

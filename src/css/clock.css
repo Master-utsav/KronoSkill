@@ -1,0 +1,96 @@
+.face {
+    position: relative;
+    width: var(--s-clock);
+    height: var(--s-clock);
+    border-radius: 50%;
+    outline: calc(var(--s-clock) * 0.05) solid var(--outline-clock-color);
+    background: repeating-radial-gradient(circle at 50% 50%, 
+    var(--box-clock-shadow) 0%,  var(--box-clock-shadow) 2%, 
+    transparent 2%, transparent 3%,  var(--box-clock-shadow) 3%, 
+    transparent 3%), conic-gradient(var(--light-clock-shadow) 0%, var(--dark-clock-shadow) 10%, 
+    var(--light-clock-shadow) 35%, var(--dark-clock-shadow) 45%, var(--light-clock-shadow) 60%, var(--dark-clock-shadow) 70%, 
+    var(--light-clock-shadow) 80%, var(--dark-clock-shadow) 95%, var(--light-clock-shadow) 100%);
+    box-shadow: inset 0 0 calc(var(--s-clock) * 0.111) #0007;
+  }
+  
+  .hour {
+    position: absolute;
+    width: calc(var(--s-clock) * 0.0277);
+    height: calc(var(--s-clock) * 0.333);
+    background: var(--dark-clock-shadow);
+    left: calc(var(--s-clock) * 0.4861);
+    top: calc(var(--s-clock) * 0.228);
+    border-radius: calc(var(--s-clock) * 0.016) calc(var(--s-clock) * 0.016) calc(var(--s-clock) * 0.005) calc(var(--s-clock) * 0.005);
+    transform-origin: calc(var(--s-clock) * 0.011) calc(var(--s-clock) * 0.2611);
+    box-shadow: 0 0 calc(var(--s-clock) * 0.0277) #0005,inset calc(var(--s-clock) * 0.0083) calc(var(--s-clock) * 0.0166) 0px var(--outline-clock-color), inset calc(var(--s-clock) * -0.0083) calc(var(--s-clock) * -0.0166) 0px var(--outline-clock-color);
+    z-index: 1;
+  }
+  
+  .minute {
+    position: absolute;
+    width: calc(var(--s-clock) * 0.022);
+    height: calc(var(--s-clock) * 0.4333);
+    background: var(--dark-clock-shadow);
+    left: calc(var(--s-clock) * 0.488);
+    top: calc(var(--s-clock) * 0.1388);
+    border-radius: calc(var(--s-clock) * 0.016) calc(var(--s-clock) * 0.016) calc(var(--s-clock) * 0.005) calc(var(--s-clock) * 0.005);
+    transform-origin: calc(var(--s-clock) * 0.011)  calc(var(--s-clock) * 0.3611);
+    box-shadow: 0 0 calc(var(--s-clock) * 0.0277) #0005,inset calc(var(--s-clock) * 0.0083) calc(var(--s-clock) * 0.0166) 0px var(--outline-clock-color), inset calc(var(--s-clock) * -0.0083) calc(var(--s-clock) * -0.0166) 0px var(--outline-clock-color);
+    z-index: 2;
+  }
+  
+  .second {
+    position: absolute;
+    width: calc(var(--s-clock) * 0.05);
+    height: calc(var(--s-clock) * 0.05);
+    background: var(--second-clock-color);
+    left: calc(var(--s-clock) * 0.4722);
+    top: calc(var(--s-clock) * 0.4722);
+    border-radius: 50%;
+    border: calc(var(--s-clock) * 0.0.005) solid #eee;
+    z-index: 3;
+  }
+  
+  .second::before {
+    content: "";
+    position: absolute;
+    width: calc(var(--s-clock) * 0.005);
+    height: calc(var(--s-clock) * 0.4722);
+    left: calc(var(--s-clock) * 0.0166);
+    bottom: calc(var(--s-clock) * -0.05);
+    background: var(--second-clock-color);
+    border-radius: calc(var(--s-clock) * 0.011);
+    box-shadow: calc(var(--s-clock) * 0.0277) 0 calc(var(--s-clock) * 0.011) #80808033;
+  }
+  
+  .second::after {
+    content: "";
+    position: absolute;
+    width: calc(var(--s-clock) * 0.022);
+    height: calc(var(--s-clock) * 0.022);
+    left: calc(var(--s-clock) * 0.012);
+    top: calc(var(--s-clock) * 0.012);
+    background: rgb(85, 85, 85);
+    border-radius: 50%;
+  }
+  
+  .v-index {
+    position: absolute;
+    color: var(--outline-clock-color);
+    font-size: calc(var(--s-clock) * 0.1333);
+    left: calc(var(--s-clock) * 0.463838);
+    top: calc(var(--s-clock) * -0.0166);
+    text-shadow: 0 calc(var(--s-clock) * 0.8722) 0 var(--outline-clock-color);
+    z-index: 1
+  }
+  
+  .h-index {
+    position: absolute;
+    color: var(--outline-clock-color);
+    font-size: calc(var(--s-clock) * 0.133);
+    top: calc(var(--s-clock) * 0.4);
+    left: calc(var(--s-clock) * 0.0277);
+    transform: rotate(-90deg);
+    text-shadow: 0 calc(var(--s-clock) * 0.8777) 0 var(--outline-clock-color);
+    z-index: 1;
+  }

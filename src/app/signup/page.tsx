@@ -53,7 +53,6 @@ export default function SignUp() {
 
   const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(user)
     try {
       setIsdisabled(true);
       setLoading(true)
@@ -118,16 +117,16 @@ export default function SignUp() {
             login
           </Button>
         </Link>
-        <CursorBorderGlowCard className="max-w-md w-full mx-auto max-h-[90%] rounded-none md:rounded-2xl p-4 md:py-2 md:px-8 shadow-input bg-white/20 dark:bg-black/40 mt-16 " bg_card_cursor_color='#0000004d' cursor_color='#14d4fb2e' cursor_shadow='#14ecfb26' box_border='#08c2f5' box_border_shadow='#08c2f51a'>
-          <h2 className="font-bold text-xl text-center text-neutral-800 dark:text-neutral-200">
+        <CursorBorderGlowCard className="max-w-md w-full mx-auto max-h-[85%] rounded-none md:rounded-2xl p-4 md:py-2 md:px-8 shadow-input bg-white/20 dark:bg-black/40 mt-32 " bg_card_cursor_color='#0000004d' cursor_color='#14d4fb2e' cursor_shadow='#14ecfb26' box_border='#08c2f5' box_border_shadow='#08c2f51a'>
+          {/* <h2 className="font-bold text-xl text-center text-neutral-800 dark:text-neutral-200">
             Welcome to Shakambari Avenue
-          </h2>
+          </h2> */}
           <p className="text-neutral-600 text-center text-lg max-w-sm mt-2 dark:text-cyan-500">
             Sign up now
           </p>
 
           <form className="my-8" onSubmit={handleSubmit}>
-            <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+            <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-1">
               <LabelInputContainer>
                 <Label htmlFor="firstname">First name</Label>
                 <Input required id="firstname" placeholder="Utsav" type="text" onChange={handleChange} name="firstname" value={user.firstname} />
@@ -138,7 +137,7 @@ export default function SignUp() {
                 <Input required id="lastname" placeholder="Jaiswal" type="text" onChange={handleChange} name="lastname" value={user.lastname} />
               </LabelInputContainer>
             </div>
-            <LabelInputContainer className="mb-4">
+            <LabelInputContainer className="mb-3">
               <Label htmlFor="email">Email Address</Label>
               <Input
                 id="email"
@@ -150,16 +149,16 @@ export default function SignUp() {
                 required
               />
             </LabelInputContainer>
-            <LabelInputContainer className="mb-4">
+            <LabelInputContainer className="mb-3">
               <Label htmlFor="username">username</Label>
               <Input required id="username" placeholder="master_utsav" type="text" onChange={handleChange} name="username" value={user.username} />
             </LabelInputContainer>
-            <LabelInputContainer className="mb-4 relative">
+            <LabelInputContainer className="mb-3 relative">
               <Label htmlFor="password">Password</Label>
               <Input required id="password" placeholder="••••••••" type={isClickedPassword ? "text" : "password"} onChange={handleChange} name="password" value={user.password} />
               {isClickedPassword ?<VscEye  className="absolute right-2 top-7 text-xl cursor-pointer" onClick={handleEyePassword}/> : <VscEyeClosed  className="absolute right-2 top-7 text-xl cursor-pointer" onClick={handleEyePassword}/> }
             </LabelInputContainer>
-            <LabelInputContainer className="mb-4 relative">
+            <LabelInputContainer className="mb-3 relative">
               <Label htmlFor="confirmpassword">Confirm Password</Label>
               <Input
                 id="confirmpassword"

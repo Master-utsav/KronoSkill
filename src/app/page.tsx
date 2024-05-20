@@ -8,14 +8,12 @@ import Footer from "@/components/Footer";
 import React from "react";
 import { TracingBeam } from "@/components/ui/tracing-beam";
 import Navbar from "@/components/Navbar";
+import Clock from "@/components/ui/clock";
 
 
 export default function Home() {
   return (
     <TracingBeam className="px-6">
-      <div className="relative w-full flex justify-normal items-center box-content m-0 p-0">
-            <Navbar />
-      </div>
       <main className="min-h-screen antialiased ">
         <HeroSection />
         <FeaturedCourses />
