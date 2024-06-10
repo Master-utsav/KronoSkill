@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 import { mergeConfigs } from "tailwind-merge";
 import type { Config } from "tailwindcss";
 const defaultTheme = require("tailwindcss/defaultTheme");
@@ -58,6 +58,7 @@ const config: Config = {
         scroll: "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
         zoomin: 'zoomin 1450ms ease-out forwards',
         blurin: 'blurin 1450ms ease-out forwards',
+        opac: 'opac 1450ms ease-in-out ',
       },
        boxShadow: {
         input: `0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08)`,
@@ -91,13 +92,24 @@ const config: Config = {
             },
           },
         blurin: {
-            '0%': {
+          '0%': {
+              
               filter : "blur(0px)",
             },
             '100%': {
               filter : "blur(40px)",
             },
-          },
+        },
+        opac: {
+          '0%': {
+              
+              opacity: '0.4',
+            },
+          '100%': {
+              
+              opacity: "1",
+            },
+        }
       },
      
       backgroundImage: {
@@ -107,7 +119,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [addVariablesForColors , gridSVG],
+  plugins: [addVariablesForColors , gridSVG , require("daisyui")],
 };
 
 

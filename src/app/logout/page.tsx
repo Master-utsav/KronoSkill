@@ -12,12 +12,28 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, SubmitHandler, FormState } from "react-hook-form"
+import { z } from "zod";
 
+
+interface userLogout {
+  email: string;
+}
+
+export const schema = z
+   .object({
+    email: z.string().min(1, "required").regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Please enter a valid email address").email({ message: "Please enter a valid email address" }),
+   })
 const LogoutPage = () => {
     const [loading, setLoading] = useState<boolean>(false);
-    const [email, setEmail] = useState<string>("");
     const [isdisabled , setIsdisabled] = useState<boolean>(true);
 
+  const { register, handleSubmit , formState : {errors}} = useForm<userLogout>({
+    resolver: zodResolver(schema),
+    mode: "all",
+  })
+  
     const redirect = useRouter()
 
     const [userData, setUserData] = useState({
@@ -35,18 +51,12 @@ const LogoutPage = () => {
       setIsdisabled(false);
     }, []);
 
-    const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-      setEmail(e.target.value);
-      };
-    
-    
-      const emailSendToLogoutRoute = async (e: React.FormEvent<HTMLFormElement>) => {
+      const emailSendToLogoutRoute : SubmitHandler<userLogout> = async (user: userLogout) => {
       
-      e.preventDefault();
       try {
         setIsdisabled(true);
         setLoading(true);
-        const response = await axios.post("/api/users/logout", {email : email , userId : userData.userId });
+        const response = await axios.post("/api/users/logout", {email : user.email , userId : userData.userId });
         if (response.status !== 200) {
           toast.error("failed");
           throw new Error("There is an error");
@@ -93,18 +103,16 @@ const LogoutPage = () => {
             enter your email 
           </p>
 
-          <form className="my-8 relative" onSubmit={emailSendToLogoutRoute} >
-            <LabelInputContainer className="mb-5">
+          <form className="my-8 relative" onSubmit={handleSubmit(emailSendToLogoutRoute)} >
+            <LabelInputContainer className="mb-5 relative">
               <Label htmlFor="email">email address</Label>
               <Input
-                id="email"
+                {...register("email")}
                 placeholder="master_utsav@gmail.com"
                 type="text"
                 name="email"
-                onChange={handleEmailChange}
-                value={email}
-                required
               />
+              {errors.email && <p className="text-[12px] text-red-600 absolute -bottom-4 right-1">{errors.email?.message}</p>}
             </LabelInputContainer>
 
             <button

@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
         if (password !== confirmpassword) {
             return NextResponse.json({ error: "password doesn't match" }, { status: 400 }); 
         }
-        if ((password?.trim()).length <= 6) {
+        if ((password?.trim()).length < 6) {
             return NextResponse.json({ error: "weak password" }, { status: 400 }); 
         }
 

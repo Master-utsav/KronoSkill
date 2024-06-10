@@ -13,40 +13,59 @@ import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
 import { CursorBorderGlowCard } from "@/components/ui/cursor-border-glow-card";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { z } from "zod";
 
 interface UserLogin {
   identity: string;
   password: string;
 }
 
-const Login = () => {
-  const [user, setUser] = useState<UserLogin>({
-    identity: "",
-    password: "",
-  });
+export const schema = z
+  .object({
+    identity: z
+      .string()
+      .min(1, "required"),
+    password: z
+      .string()
+      .min(1, "required")
+      .regex(/^\S+$/, "spaces are not allowed in the password")
+      .min(6, "not a valid password"),
+  })
+  .refine(
+    (schema) =>
+      ((/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/).test(schema.identity) || (/^[a-zA-Z0-9_]+$/).test(schema.identity)),
+    {
+      message: "must be a valid email or username",
+      path: ["identity"],
+    }
+  );
 
+const Login = () => {
   const [loading, setLoading] = useState(false);
-  const [isClickedPassword , setIsClickedPassword] = useState(false);
-  const [isdisabled , setIsdisabled] = useState<boolean>(true);
+  const [isClickedPassword, setIsClickedPassword] = useState(false);
+  const [isdisabled, setIsdisabled] = useState<boolean>(true);
 
   const redirect = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUser((prevUser) => ({
-      ...prevUser,
-      [name]: value,
-    }));
-  };
+  const {
+    formState: { errors },
+    register,
+    handleSubmit,
+  } = useForm<UserLogin>({
+    mode: "all",
+    resolver: zodResolver(schema),
+  });
 
   const userUUID = uuidv4();
-  useEffect(()=>{
+  useEffect(() => {
     setIsdisabled(false);
-  },[])
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
- 
+  }, []);
+
+  const submit: SubmitHandler<UserLogin> = async (user: UserLogin) => {
+    console.log(user);
     try {
       setIsdisabled(true);
       setLoading(true);
@@ -56,18 +75,25 @@ const Login = () => {
         toast.error("login failed");
         throw new Error("There is an error");
       }
-      
+
       const data = response.data;
       console.log(data);
       toast.success(data.message);
-      localStorage.setItem("logged User" , JSON.stringify({userId : data.userId , username : data.username , firstname : data.firstname , uuid : userUUID , isVerify : data.isVerify}))
+      localStorage.setItem(
+        "logged User",
+        JSON.stringify({
+          userId: data.userId,
+          username: data.username,
+          firstname: data.firstname,
+          uuid: userUUID,
+          isVerify: data.isVerify,
+        })
+      );
       redirect.push("/");
-    } catch (error: any) {
+    } catch (error : any) {
       console.log("Fetching request failed", error);
       if (error.response && error.response.data && error.response.data.error) {
         toast.error(error.response.data.error);
-      } else {
-        toast.error("An unexpected error occurred");
       }
     } finally {
       setLoading(false);
@@ -78,7 +104,7 @@ const Login = () => {
   const handleEyePassword = (): void => {
     setIsClickedPassword(!isClickedPassword);
   };
-  
+
   return (
     <div className="w-[100vw] h-[100vh] ">
       <ProductivityComponent
@@ -123,32 +149,47 @@ const Login = () => {
             Login Now
           </p>
 
-          <form className="my-8" onSubmit={handleSubmit}>
-            <LabelInputContainer className="mb-4">
+          <form className="my-8" onSubmit={handleSubmit(submit)}>
+            <LabelInputContainer className="mb-4 relative">
               <Label htmlFor="identity">username or email</Label>
               <Input
-                id="identity"
+                {...register("identity")}
                 placeholder="master_utsav"
                 type="text"
                 name="identity"
-                value={user.identity}
-                onChange={handleChange}
-                required
               />
+              {errors.identity && (
+                <p className="text-[12px] text-red-600 absolute -bottom-4 right-1">
+                  {errors.identity?.message}
+                </p>
+              )}
             </LabelInputContainer>
 
             <LabelInputContainer className="mb-4 relative">
               <Label htmlFor="password">Password</Label>
               <Input
+                {...register("password")}
                 id="password"
                 placeholder="••••••••"
                 type={isClickedPassword ? "text" : "password"}
                 name="password"
-                value={user.password}
-                onChange={handleChange}
-                required
               />
-               {isClickedPassword ?<VscEye className="absolute right-2 top-7 text-xl cursor-pointer" onClick={handleEyePassword}/> : <VscEyeClosed  className="absolute right-2 top-7 text-xl cursor-pointer" onClick={handleEyePassword}/> }
+              {errors.password && (
+                <p className="text-[12px] text-red-600 absolute bottom-2 right-1">
+                  {errors.password?.message}
+                </p>
+              )}
+              {isClickedPassword ? (
+                <VscEye
+                  className="absolute right-2 top-7 text-xl cursor-pointer"
+                  onClick={handleEyePassword}
+                />
+              ) : (
+                <VscEyeClosed
+                  className="absolute right-2 top-7 text-xl cursor-pointer"
+                  onClick={handleEyePassword}
+                />
+              )}
               <Link
                 href={"/signup"}
                 className=" text-sm hover:underline text-indigo-500 hover:text-cyan-500"
@@ -159,7 +200,8 @@ const Login = () => {
 
             <button
               className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
-              type="submit" disabled={isdisabled}
+              type="submit"
+              disabled={isdisabled}
             >
               {loading ? (
                 <Spinner
@@ -173,8 +215,8 @@ const Login = () => {
               )}
               <BottomGradient />
             </button>
-            <Link href={"/forgotpassword"}
-              
+            <Link
+              href={"/forgotpassword"}
               className=" text-sm hover:underline text-indigo-500 hover:text-cyan-500 flex justify-end mt-1 cursor-pointer"
             >
               {"Forgot password"}

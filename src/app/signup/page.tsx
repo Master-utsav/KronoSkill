@@ -14,6 +14,10 @@ import { Button } from "@/components/ui/moving-border";
 import { CursorBorderGlowCard } from "@/components/ui/cursor-border-glow-card";
 import { VscEyeClosed } from "react-icons/vsc";
 import { VscEye } from "react-icons/vsc";
+import {  zodResolver  } from "@hookform/resolvers/zod"
+import {SubmitHandler, useForm } from "react-hook-form"
+import { ZodType, z } from "zod";
+
 
 interface User {
     firstname: string,
@@ -23,14 +27,25 @@ interface User {
     password: string,
     confirmpassword: string,
 }
+
+export const schema: ZodType<User> = z
+  .object({
+    firstname: z.string().min(1, "required").regex(/^[a-zA-Z]+$/, "only alphabets are allowed"),
+    lastname: z.string().min(1, "required").regex(/^[a-zA-Z]+$/, "only alphabets are allowed"),
+    username: z.string().min(1, "required").regex(/^[a-zA-Z0-9_]+$/, "invalid username format"),
+    email: z.string().min(1, "required").regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "invalid email format"),
+    password: z.string().regex(/^\S+$/, "spaces are not allowed in the password").min(6, "password is too weak"),
+    confirmpassword: z.string(),
+}).refine((schema) => schema.password === schema.confirmpassword, {
+    message: "passwords do not match",
+    path: ["confirmpassword"]
+})
+
 export default function SignUp() {
-  const [user, setUser] = useState<User>({
-    firstname: "",
-    lastname: "",
-    email: "",
-    username: "",
-    password: "",
-    confirmpassword: "",
+
+  const {register , handleSubmit , formState : {errors}} = useForm<User>({
+    mode: "all",
+    resolver: zodResolver(schema),
   })
   const [loading, setLoading] = useState(false);
   const redirect = useRouter()
@@ -38,22 +53,15 @@ export default function SignUp() {
   const [isClickedConfirmPassword , setIsClickedConfirmPassword] = useState(false);
   const [isClickedPassword , setIsClickedPassword] = useState(false);
   const [isdisabled , setIsdisabled] = useState<boolean>(true);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUser(prevUser => ({
-      ...prevUser,
-      [name]: value,
-    }));
-  };
-
+  
   useEffect(() => {
     setIsdisabled(false)
   } , []);
-
-  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  
+  const submit : SubmitHandler<User> = async(user : User) => {
+    
     try {
+      schema.parse(user);
       setIsdisabled(true);
       setLoading(true)
       const response = await axios.post("/api/users/signup", user);
@@ -62,7 +70,7 @@ export default function SignUp() {
         toast.error("Sign up failed");
         throw new Error("There is an error");
       }
-
+       
       const data = response.data;
       toast.success(data.message);
       toast.success(data.message2);
@@ -72,8 +80,6 @@ export default function SignUp() {
       console.log("Fetching request failed", error);
       if (error.response && error.response.data && error.response.data.error) {
         toast.error(error.response.data.error);
-      } else {
-        toast.error("An unexpected error occurred");
       }
     } finally {
       setLoading(false);
@@ -124,49 +130,53 @@ export default function SignUp() {
           <p className="text-neutral-600 text-center text-lg max-w-sm mt-2 dark:text-cyan-500">
             Sign up now
           </p>
-
-          <form className="my-8" onSubmit={handleSubmit}>
+          
+          <form className="my-8" onSubmit={handleSubmit(submit)}>
             <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-1">
-              <LabelInputContainer>
+
+              <LabelInputContainer className="relative mb-3" >
                 <Label htmlFor="firstname">First name</Label>
-                <Input required id="firstname" placeholder="Utsav" type="text" onChange={handleChange} name="firstname" value={user.firstname} />
+                <Input {...register("firstname")}  placeholder="Utsav" type="text"  name="firstname"  />
+                {errors.firstname && <p className="text-[12px] text-red-600 absolute -bottom-4 right-1">{errors.firstname?.message}</p>}
               </LabelInputContainer>
 
-              <LabelInputContainer className="flex flex-col space-y-2 w-full">
+              <LabelInputContainer className="flex flex-col space-y-2 w-full mb-3 relative">
                 <Label htmlFor="lastname">Last name</Label>
-                <Input required id="lastname" placeholder="Jaiswal" type="text" onChange={handleChange} name="lastname" value={user.lastname} />
+                <Input  {...register("lastname")} placeholder="Jaiswal" type="text" name="lastname" />
+                {errors.lastname && <p className="text-[12px] text-red-600 absolute -bottom-1 right-1">{errors.lastname?.message}</p>}
               </LabelInputContainer>
+
             </div>
-            <LabelInputContainer className="mb-3">
+            <LabelInputContainer className="mb-3 relative">
               <Label htmlFor="email">Email Address</Label>
               <Input
-                id="email"
                 placeholder="info@master_cafe.com"
                 type="email"
-                onChange={handleChange}
+                {...register("email")}
                 name="email"
-                value={user.email}
-                required
               />
+              {errors.email && <p className="text-[12px] text-red-600 absolute -bottom-4 right-1">{errors.email?.message}</p>}
             </LabelInputContainer>
-            <LabelInputContainer className="mb-3">
+            <LabelInputContainer className="mb-3 relative">
               <Label htmlFor="username">username</Label>
-              <Input required id="username" placeholder="master_utsav" type="text" onChange={handleChange} name="username" value={user.username} />
+              <Input {...register("username")} placeholder="master_utsav" type="text"  name="username" />
+              {errors.username && <p className="text-[12px] text-red-600 absolute -bottom-4 right-1">{errors.username?.message}</p>}
             </LabelInputContainer>
             <LabelInputContainer className="mb-3 relative">
               <Label htmlFor="password">Password</Label>
-              <Input required id="password" placeholder="••••••••" type={isClickedPassword ? "text" : "password"} onChange={handleChange} name="password" value={user.password} />
+              <Input  {...register("password")} placeholder="••••••••" type={isClickedPassword ? "text" : "password"}  name="password" />
+              {errors.password && <p className="text-[12px] text-red-600 absolute -bottom-4 right-1">{errors.password?.message}</p>}
               {isClickedPassword ?<VscEye  className="absolute right-2 top-7 text-xl cursor-pointer" onClick={handleEyePassword}/> : <VscEyeClosed  className="absolute right-2 top-7 text-xl cursor-pointer" onClick={handleEyePassword}/> }
             </LabelInputContainer>
             <LabelInputContainer className="mb-3 relative">
               <Label htmlFor="confirmpassword">Confirm Password</Label>
               <Input
-                id="confirmpassword"
+                {...register("confirmpassword")}
                 placeholder="••••••••"
                 type={isClickedConfirmPassword ? "text" : "password"}
-                onChange={handleChange} name="confirmpassword" value={user.confirmpassword}
-                required
+                name="confirmpassword"
               />
+              {errors.confirmpassword && <p className="text-[12px] text-red-600 absolute bottom-3 right-1">{errors.confirmpassword?.message}</p>}
               {isClickedConfirmPassword ?<VscEye  className="absolute right-2 top-7 text-xl cursor-pointer" onClick={handleEyeConfirmPassword}/> : <VscEyeClosed  className="absolute right-2 top-7 text-xl cursor-pointer"  onClick={handleEyeConfirmPassword}/> }
               <Link
                 href={"/login"} 
@@ -184,42 +194,11 @@ export default function SignUp() {
             </button>
 
             <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-4 h-[1px] w-full" />
-
-            {/* <div className="flex flex-col space-y-4">
-          <button
-            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-            type="submit"
-          >
-            <IconBrandGithub className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-            <span className="text-neutral-700 dark:text-neutral-300 text-sm">
-              GitHub
-            </span>
-            <BottomGradient />
-          </button>
-          <button
-            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-            type="submit"
-          >
-            <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-            <span className="text-neutral-700 dark:text-neutral-300 text-sm">
-              Google
-            </span>
-            <BottomGradient />
-          </button>
-          <button
-            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-            type="submit"
-          >
-            <IconBrandOnlyfans className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-            <span className="text-neutral-700 dark:text-neutral-300 text-sm">
-              OnlyFans
-            </span>
-            <BottomGradient />
-          </button>
-        </div> */}
+          
           </form>
         </CursorBorderGlowCard>
       </div>
     </div>
   );
 }
+
