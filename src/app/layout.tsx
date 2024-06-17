@@ -5,6 +5,8 @@ import Navbar from "@/components/Navbar";
 // import { Providers } from "./Providers";
 import { Toaster } from "react-hot-toast";
 import ClockTimer from "@/components/clockTimer";
+import Providers from "./Providers";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +26,9 @@ export default function RootLayout({
         <div className="relative w-full flex justify-normal items-center box-content m-0 p-0">
           <Navbar />
         </div>
-        {children}
+        <Providers>
+          {children}
+        </Providers>
         <ClockTimer/>
         <Toaster position="bottom-right" reverseOrder={false} />
       </body>

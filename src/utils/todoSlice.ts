@@ -1,17 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {v4 as uuidv4} from "uuid"
+import { v4 as uuidv4 } from 'uuid';
 
-type Todo = {
-  id: string;
+interface Todo {
+  id: string | number;
   text: string;
   completed: boolean;
-};
+}
 
 interface TodoState {
   todos: Todo[];
 }
-
-
 
 // Utility function to load state from local storage
 const loadState = (): TodoState => {
@@ -70,9 +68,13 @@ export const todoSlice = createSlice({
       }
       saveState(state);
     },
+    updateTodoOrder: (state, action: PayloadAction<Todo[]>) => {
+      state.todos = action.payload;
+      saveState(state);
+    },
   },
 });
 
-export const { addTodo, removeTodo, toggleTodo, updateTodo } = todoSlice.actions;
+export const { addTodo, removeTodo, toggleTodo, updateTodo, updateTodoOrder } = todoSlice.actions;
 
 export default todoSlice.reducer;

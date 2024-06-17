@@ -31,6 +31,9 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  bookmarks: [{
+    type: String
+  }],
   forgotPasswordToken: String,
   forgotPasswordTokenExpiry: Date,
   emailSendTime : Date,
@@ -38,6 +41,7 @@ const UserSchema = new mongoose.Schema({
   verifyToken: String,
   verifyTokenExpiry: Date
 })
+
 
 
 // next js works on edge so first we check that is there any users collection created or not

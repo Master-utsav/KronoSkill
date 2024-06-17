@@ -1,7 +1,7 @@
 "use client";
 import { BottomGradient } from "@/components/ui/BottomGradient";
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
-import { CursorBorderGlowCard } from "@/components/ui/cursor-border-glow-card";
+import  CursorBorderGlowCard  from "@/components/ui/cursor-border-glow-card";
 import { Input } from "@/components/ui/input";
 import ProductivityComponent from "@/components/ui/master_light";
 import { Button } from "@/components/ui/moving-border";

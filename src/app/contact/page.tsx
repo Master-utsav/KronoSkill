@@ -2,12 +2,11 @@
 "use client";
 import React, { FormEvent, useState } from 'react';
 import { BackgroundBeams } from "@/components/ui/background-beams";
-import ThemeSwitch from '@/components/ThemeSwitch';
-import Navbar from '@/components/Navbar';
 
 const page = () => {
      const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [assistState , setAssistSatate] = useState<boolean>(false)
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -17,15 +16,42 @@ const page = () => {
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-12 pt-36 relative">
       
       <BackgroundBeams className="absolute top-0 left-0 w-full h-full " />
-      <div className="max-w-2xl mx-auto p-4 relative">
+      <div className="max-w-2xl mx-auto p-4 relative space-y-4">
         <h1 className="text-lg md:text-7xl text-center font-sans font-bold mb-8 text-white">
           Contact Us
         </h1>
         <p className="text-neutral-500 max-w-lg mx-auto my-2 text-sm text-center">
-          We&apos;re here to help with any questions about our courses,
-          programs, or events. Reach out and let us know how we can assist you
-          in your musical journey.
+        {"We're here to help with any questions about our courses, programs, or events. Whether you're looking to enhance your skills or need more information about our offerings, we're just a message away."}
         </p>
+        <div className='flex flex-col text-start items-center justify-start w-fit h-auto'>
+        <p className="text-blue-200 hover:text-blue-500 text-lg cursor-pointer text-start" onClick={() => setAssistSatate(!assistState)}>How Can We Assist You?</p>
+        {
+          assistState ? (
+            <ul className='flex flex-col gap-2 mt-2 animate-slidein'>
+          <li className='text-start mr-2 flex w-[100%]'>
+          <span className='text-bold text-white w-[30%]'>Course Inquiries:{" "}</span>
+            <p className='text-white/80 text-md w-[70%] text-start'>{"Have questions about our courses on YouTube? Need help finding the right one? Let us know!"}</p>
+          </li>
+          <li className='text-start mr-2 flex w-[100%]'>
+          <span className='text-bold text-white w-[30%]'>Program Information:{" "}</span>
+            <p className='text-white/80 text-md w-[70%] text-start'>{"Want more details about our skill-enhancing programs? We're happy to provide all the information you need."}</p>
+          </li>
+          <li className='text-start mr-2 flex w-[100%]'>
+          <span className='text-bold text-white w-[30%]'>Event Details:{" "}</span>
+            <p className='text-white/80 text-md w-[70%] text-start'>{"Interested in our upcoming online events? We'll keep you updated on dates, schedules, and how to participate."}</p>
+          </li>
+          <li className='text-start mr-2 flex w-[100%]'>
+          <span className='text-bold text-white w-[30%]'>Technical Support:{" "}</span>
+            <p className='text-white/80 text-md w-[70%] text-start'>{"Facing any issues with accessing our content on YouTube? We're here to troubleshoot and ensure you have a seamless experience."}</p>
+          </li>
+          <li className='text-start mr-2 flex  w-[100%]'>
+          <span className='text-bold text-white w-[30%]'>General Questions:{" "}</span>
+            <p className='text-white/80 text-md w-[70%] text-start'>{"Anything else on your mind? Feel free to ask, and we'll do our best to assist."}</p>
+          </li>
+        </ul>) : ""
+        }
+        </div>
+        <p className='bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 via-[#75f7bde4] to-neutral-50 text-lg text-start'>Feel free to share your thoughts, requirements, and any suggestions you have to improve our site!</p>
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <input
             type="email"

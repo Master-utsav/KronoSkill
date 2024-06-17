@@ -11,7 +11,7 @@ import {toast} from "react-hot-toast"
 import { useRouter } from "next/navigation";
 import {Spinner} from "@/components/ui/spinner";
 import { Button } from "@/components/ui/moving-border";
-import { CursorBorderGlowCard } from "@/components/ui/cursor-border-glow-card";
+import  CursorBorderGlowCard  from "@/components/ui/cursor-border-glow-card";
 import { VscEyeClosed } from "react-icons/vsc";
 import { VscEye } from "react-icons/vsc";
 import {  zodResolver  } from "@hookform/resolvers/zod"

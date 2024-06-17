@@ -1,7 +1,7 @@
 "use client";
 import { BottomGradient } from "@/components/ui/BottomGradient";
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
-import { CursorBorderGlowCard } from "@/components/ui/cursor-border-glow-card";
+import CursorBorderGlowCard  from "@/components/ui/cursor-border-glow-card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import ProductivityComponent from "@/components/ui/master_light";
@@ -83,7 +83,7 @@ const LogoutPage = () => {
     <div className="w-[100vw] h-[100vh] ">
       <ProductivityComponent
         bg_color="#00ff0000"
-        light_ray1="#f53e2d93;"
+        light_ray1="#f53e2d93"
         light_ray2="#f08d138a"
         light_ray3="#f53e2d93"
       />

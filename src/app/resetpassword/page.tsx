@@ -12,7 +12,7 @@ import { BottomGradient } from "@/components/ui/BottomGradient";
 import { LabelInputContainer } from "@/components/ui/LabelInputContainer";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CursorBorderGlowCard } from "@/components/ui/cursor-border-glow-card";
+import  CursorBorderGlowCard  from "@/components/ui/cursor-border-glow-card";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
 
 export default function ResetPassword() {

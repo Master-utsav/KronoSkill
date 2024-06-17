@@ -9,12 +9,12 @@ interface CursorBorderProps{
     cursor_shadow?: string;
     box_border_shadow?: string;
     box_border?: string;
-  className?: string
+    className?: string
   children?: React.ReactNode
 
 }
 
-export const CursorBorderGlowCard: React.FC<CursorBorderProps> = ({
+ const CursorBorderGlowCard: React.FC<CursorBorderProps> = ({
   children,
   className,
   bg_card_cursor_color,
@@ -157,3 +157,5 @@ export const CursorBorderGlowCard: React.FC<CursorBorderProps> = ({
 
   return <div className={`glow-container ${className}`} style={style}>{children}</div>;
 };
+
+export default CursorBorderGlowCard
