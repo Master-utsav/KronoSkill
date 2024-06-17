@@ -34,10 +34,19 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ message: 'User not found' }, { status: 404 });
         }
 
+        if(!user.isVerified){
+            return NextResponse.json({ message: 'User is not verified' }, { status: 400 });
+        }
+
         // Find the playlist by URL
         const playlist = await Playlists.findOne({ playlistUrl });
         if (!playlist) {
             return NextResponse.json({ message: 'Playlist not found' }, { status: 404 });
+        }
+
+        const existingRating = playlist.rating.find((rating:any) => rating.userId.toString() === userId);
+        if (existingRating) {
+            return NextResponse.json({ message: 'User has already rated this playlist' }, { status: 400 });
         }
 
         // Add the rating to the playlist

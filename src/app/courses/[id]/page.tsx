@@ -7,6 +7,10 @@ import AnimatedTooltip from "@/components/ui/animated-tooltip";
 import CursorBorderGlowCard from "@/components/ui/cursor-border-glow-card";
 import Image from "next/image";
 import Rating from "@/components/rating";
+import RatingSubmit from "@/components/rating_submit";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+
 helix.register();
 
 interface SkillInterface {
@@ -27,6 +31,9 @@ interface Playlist {
   description: string;
   skill: string[];
   rating: { rateNumber: number }[];
+  userHasRated : boolean,
+  userRated:number,
+  ratedUser: number
 }
 
 const Course = ({ params }: ParamsProps) => {
@@ -34,14 +41,24 @@ const Course = ({ params }: ParamsProps) => {
   const [instructorData, setInstructorData] = useState<[]>([]);
   const [playlistData, setPlaylistData] = useState<Playlist[]>([]);
   const [expandedDescriptions, setExpandedDescriptions] = useState<{ [key: number]: boolean }>({});
+  const [isRatingSubmited , setIsRatingSubmited] = useState<{ [key: number] : boolean}>({});
+  const [userId, setUserId] = useState<string>("");
+  const router = useRouter();
+
   const paramsId = params?.id;
   const headTitle = paramsId?.split("-").join(" ");
   setColors(headTitle);
-
+ 
   useEffect(() => {
     const fetchData = async () => {
       const data = await getSkillDescription();
       setSkillDescription(data);
+
+      const loggedUser = localStorage.getItem("logged User");
+      if (loggedUser) {
+        const user = JSON.parse(loggedUser);
+        setUserId(user.userId);
+      }
 
       const instructors = await getInstructorsOfThatSkill();
       if (!Array.isArray(instructors)) {
@@ -64,12 +81,15 @@ const Course = ({ params }: ParamsProps) => {
       const filteredPlaylists = playlists.filter(playlist =>
         playlist.skill.includes(headTitle)
       );
-     
+      
       const processedPlaylists:any = filteredPlaylists.map((playlist, index) => {
+        const userRating = playlist.rating.find((rating: any) => rating.userId.toString() === userId);
+        const ratedUser = playlist.rating.length ?  playlist.rating.length : 0
         const totalRatings = playlist.rating.reduce(
           (acc:any, rating:any) => acc + rating.rateNumber,
           0
         );
+        setIsRatingSubmited({[index]: false});
         const rawAverageRating = totalRatings / playlist.rating.length;
         const averageRating = Math.round(rawAverageRating * 2) / 2;
         return {
@@ -79,12 +99,42 @@ const Course = ({ params }: ParamsProps) => {
           thumbnail: playlist.thumbnail,
           title: playlist.title,
           description: playlist.description,
+          userHasRated : !!userRating,
+          userRated : userRating ? userRating.rateNumber : null,
+          ratedUser,
         };
       });
       setPlaylistData(processedPlaylists);
+
     };
+   
     fetchData();
-  }, [headTitle]);
+  }, [headTitle , userId]);
+
+ 
+
+  const handleRatingSubmit = async (rating: number, playlistUrl: string , index:number) => {
+    if(userId === ""){
+      toast.error("Please Login");
+      router.push("/login"); 
+      return;
+    }
+    try {
+      const response = await axios.post("/api/users/rating", {
+        userId: userId, 
+        playlistUrl: playlistUrl,
+        rateNumber: rating,
+      });
+      console.log("Rating submitted:", response.data.rating);
+      toast.success("Rating submitted successfully");
+      setIsRatingSubmited({[index]: true});
+      
+    } catch (error:any) {
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
 
   const handleToggleDescription = (index: number) => {
     setExpandedDescriptions(prevState => ({
@@ -92,7 +142,7 @@ const Course = ({ params }: ParamsProps) => {
       [index]: !prevState[index]
     }));
   };
-
+  
   const headTitleSkillSet: SkillInterface[] =
     skillDescription?.filter((skill) => skill.skill === headTitle) ?? [];
   const description =
@@ -135,9 +185,9 @@ const Course = ({ params }: ParamsProps) => {
             box_border_shadow={box_border_shadow}
           >
         {playlistData.map((playlist , index) => (
-        <div key={playlist.playlistUrl || index} className="min-w-[100%] bg-transparent rounded-none md:rounded-2xl px-2 min-h-[32vh] flex md:flex-row flex-col justify-between items-center relative gap-2 ">
-            <div className="max-w-[70%] text-start pl-4 ">
-              <h1 className="text-xl md:text-4xl text-start font-sans font-bold mb-2 text-white">
+        <div key={playlist.playlistUrl || index} className="min-w-[100%] bg-transparent rounded-none md:rounded-2xl px-2 min-h-[32vh] flex md:flex-row flex-col justify-between items-center relative gap-2 py-4 md:py-0">
+            <div className="w-[70%] text-start pl-4 ">
+              <h1 className="text-lg md:text-4xl text-start font-sans font-bold mb-2 text-white">
               {playlist.title}
               </h1>
               <p className="md:text-base text-sm text-start animate-slidedown text-white/80 mb-2">
@@ -147,9 +197,26 @@ const Course = ({ params }: ParamsProps) => {
               </button>)}
               
             </p>
+             <div className="flex justify-between items-center">
+             <div className="flex flex-col gap-1 justify-center items-start">
+              <p className="">{playlist.ratedUser}{" "}users</p>
               <Rating rating={playlist.averageRating} customColor={box_border} />
+              </div>
+              {(!playlist.userHasRated && !isRatingSubmited[index]) ? (<RatingSubmit
+                  initialRating={0}
+                  customColor={box_border}
+                  onSubmit={(rating) => handleRatingSubmit(rating, playlist.playlistUrl , index)}
+                />) : ( playlist.userRated !== null ? 
+                  (<div className="flex flex-col gap-1 justify-center items-start">
+                   <p className="">You Rated : </p>
+                   <Rating rating={playlist.userRated} customColor={box_border} />
+                   </div>) : (<div className="flex flex-col gap-1 justify-center items-start">
+                              <p className="">Rating Submitted</p>
+                              </div>))
+                   }
+             </div>
             </div>
-            <div className={`max-w-[28%] max-h-[30vh] rounded-lg bg-red-50 border-2 border-[${light_ray2}] flex justify-center items-center overflow-hidden`}>
+            <div className={`md:max-w-[28%] md:max-h-[30vh] max-h-[35vh] max-w-[70%] rounded-lg bg-red-50 border-2 border-[${light_ray2}] flex justify-center items-center overflow-hidden`}>
             <a href={playlist.playlistUrl} target="_blank" rel="noopener noreferrer">
             <Image
                 src={playlist.thumbnail}
@@ -314,8 +381,11 @@ export const getSkillDescription = async () => {
   try {
     const res = await axios.get("/api/manager/skill_description");
     return res.data.skills;
-  } catch (error) {
+  } catch (error:any) {
     console.log(error);
+    if (error.response && error.response.data && error.response.data.message) {
+      toast.error(error.response.data.message);
+    }
     return [];
   }
 };
@@ -324,8 +394,11 @@ export const getInstructorsOfThatSkill = async () => {
   try {
     const response = await axios.get("/api/manager/instructors");
     return response.data.instructors;
-  } catch (error) {
+  } catch (error:any) {
     console.log(error);
+    if (error.response && error.response.data && error.response.data.message) {
+      toast.error(error.response.data.message);
+    }
     return [];
   }
 };

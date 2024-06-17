@@ -31,7 +31,7 @@ const getChannelAvatar = async (channelId: string) => {
     return {channelAvatar: channelAvatar , channelTitle : channelTitle , channelLink: channelLink};
   } catch (error) {
     console.error(error);
-    return {error : "error occur in fetching the image url"};
+    return {message : "error occur in fetching the image url"};
   }
 };
 
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     const regex = /^[a-zA-Z0-9_-]{11,}$/;
 
     if (!regex.test(channelId)) {
-        return NextResponse.json({ error: "Invalid channel ID" }, { status: 400 });
+        return NextResponse.json({ message: "Invalid channel ID" }, { status: 400 });
     }
 
     const val:any= await getChannelAvatar(channelId);
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
         const instSize:number = inst.length;
 
         if(instSize>=1){
-            return NextResponse.json({error : "Channel already exist"})
+            return NextResponse.json({message : "Channel already exist"})
         }
        
         const newInstructor = new Instructor<Instructor>({
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({newInstructor , message : "Uploaded successfully"} , {status : 200});
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ error: "error in adding new instructor" }, { status: 500 });
+        return NextResponse.json({ message: "error in adding new instructor" }, { status: 500 });
     }
 }
 
@@ -79,7 +79,7 @@ export async function GET(){
         return NextResponse.json({instructors , message : "Fetched successfully"} , {status : 200});
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ error: "error in fetching insturctors" }, { status: 500 });
+        return NextResponse.json({ message: "error in fetching insturctors" }, { status: 500 });
     }
 
 }

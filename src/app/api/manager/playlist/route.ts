@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ newPlaylist, message: "Uploaded successfully" }, { status: 200 });
     } catch (error) {
         console.log("error occurred in fetching playlist data", error);
-        return NextResponse.json({ error: "internal server error" }, { status: 500 });
+        return NextResponse.json({ message: "internal server error" }, { status: 500 });
     }
 }
 
@@ -85,7 +85,7 @@ export async function GET() {
         return NextResponse.json({ playlists, message: "fetched successfully" }, { status: 200 });
     } catch (error) {
         console.log(error);
-        return NextResponse.json({ error: "internal server error" }, { status: 500 });
+        return NextResponse.json({ message: "internal server error" }, { status: 500 });
     }
 }
 
