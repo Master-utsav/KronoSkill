@@ -60,7 +60,8 @@ const config: Config = {
         opac: "opac 1450ms ease-in-out ",
         slidein: "slidein 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards",
         slideout: "slideout 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards",
-        slidedown: "slidedown 1000ms cubic-bezier(0.16, 1, 0.3, 1) forwards"
+        slidedown: "slidedown 1000ms cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        popup: "popup 600ms cubic-bezier(0.25, 0.1, 0.25, 1) forwards"
       },
       boxShadow: {
         input: `0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08)`,
@@ -139,7 +140,25 @@ const config: Config = {
             transform: "translateY(0)" /* Move to its final position */,
             opacity: "1" /* Become fully visible */,
           },
-        }
+        },
+        popup: {
+          "0%": {
+            transform: "translateY(50%)",
+            opacity: "0.4"
+          },
+          "40%": {
+            transform: "translateY(20%)",
+            opacity: "0.5"
+          },
+          "70%" :{
+            transform: "translateY(10%)",
+            opacity: "0.75"
+          },
+          "100%": {
+            transform: "translateY(0%)",
+            opacity: "1"
+          }
+        },
       },
 
       backgroundImage: {
@@ -152,7 +171,7 @@ const config: Config = {
   plugins: [
     addVariablesForColors,
     gridSVG,
-    // require("daisyui"),
+    require("daisyui"),
     require("tailwind-scrollbar"),
   ],
 };

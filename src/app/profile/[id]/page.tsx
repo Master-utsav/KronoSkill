@@ -1,75 +1,345 @@
 "use client";
 import Navbar from "@/components/Navbar";
-import { Spotlight } from "@/components/ui/Spotlight";
+import Bookmark from "@/components/bookmark";
+import Rating from "@/components/rating";
+import RatingSubmit from "@/components/rating_submit";
+import CursorBorderGlowCard from "@/components/ui/cursor-border-glow-card";
 import ProductivityComponent from "@/components/ui/master_light";
-import { Button } from "@/components/ui/moving-border";
-import Link from "next/link";
+import Tooltip from "@/components/ui/tooltip";
+import axios from "axios";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { GoBookmarkFill } from "react-icons/go";
+import { helix } from "ldrs";
+import { TbTruckReturn } from "react-icons/tb";
 
-const ProfilePage = ({ params }:any) => {
-  const [isdisabled , setIsdisabled] = useState<boolean>(true);
-  const [userData, setUserData] = useState({
-    userId: "",
-    username: "",
-    firstname: "",
-    uuid : "",
-  });
+helix.register();
+
+interface ParamsProps {
+  params: {
+    id: string;
+  };
+}
+interface Playlist {
+  playlistUrl: string;
+  averageRating: number;
+  thumbnail: string;
+  title: string;
+  description: string;
+  skill: string[];
+  rating: { rateNumber: number }[];
+  userHasRated: boolean;
+  userRated: number;
+  ratedUser: number;
+  isBookMarked: boolean;
+}
+
+const ProfilePage = ({ params }: ParamsProps) => {
+  const [playlistData, setPlaylistData] = useState<Playlist[]>([]);
+  const [expandedDescriptions, setExpandedDescriptions] = useState<{
+    [key: number]: boolean;
+  }>({});
+  const [isRatingSubmited, setIsRatingSubmited] = useState<{
+    [key: number]: boolean;
+  }>({});
+  const [checked, setChecked] = useState<{ [key: number]: boolean }>({});
+  const [userData, setUserData] = useState({ userId: "", uuid: "" });
+
+  const router = useRouter();
 
   useEffect(() => {
     const loggedUser = localStorage.getItem("logged User");
     if (loggedUser) {
       setUserData(JSON.parse(loggedUser));
     }
-    setIsdisabled(false);
-  }, []);
+    const userId = userData.userId;
+
+    const fetchData = async () => {
+      const playlists = await getPlayListData();
+      if (!Array.isArray(playlists)) {
+        throw new Error("Playlists data is not an array");
+      }
+
+      const bookmarkedPlaylistUrls = await getBookmarkPlaylist(userId);
+
+      if(bookmarkedPlaylistUrls === undefined){
+        return [];
+      }
+      if (!Array.isArray(bookmarkedPlaylistUrls)) {
+        toast.error("Bookmarked playlists data is not an array");
+      }
+      const filteredPlaylists = playlists.filter((playlist: any) =>
+        bookmarkedPlaylistUrls.includes(playlist.playlistUrl)
+      );
+
+      const processedPlaylists: any = filteredPlaylists.map(
+        (playlist: any, index: number) => {
+          const userRating = playlist.rating.find(
+            (rating: any) => rating.userId.toString() === userId
+          );
+          const ratedUser = playlist.rating.length ? playlist.rating.length : 0;
+          const totalRatings = playlist.rating.reduce(
+            (acc: any, rating: any) => acc + rating.rateNumber,
+            0
+          );
+          setIsRatingSubmited({ [index]: false });
+          const rawAverageRating = totalRatings / playlist.rating.length;
+          const averageRating = Math.round(rawAverageRating * 2) / 2;
+
+          const isBookMarked =
+            Array.isArray(playlist.bookmarks) &&
+            playlist.bookmarks.some(
+              (bookmark: any) =>
+                bookmark.userId.toString() === userId && bookmark.isMarked
+            );
+
+          setChecked((prevState) => ({
+            ...prevState,
+            [index]: !!isBookMarked,
+          }));
+          return {
+            id: index,
+            playlistUrl: playlist.playlistUrl,
+            averageRating: averageRating.toFixed(1),
+            thumbnail: playlist.thumbnail,
+            title: playlist.title,
+            description: playlist.description,
+            userHasRated: !!userRating,
+            userRated: userRating ? userRating.rateNumber : null,
+            ratedUser,
+            isBookMarked: !!isBookMarked,
+          };
+        }
+      );
+      setPlaylistData(processedPlaylists);
+    };
+
+    fetchData();
+  }, [userData.userId]);
+
+  console.log(playlistData);
+  const handleBookmarks = async (
+    userAction: "add" | "remove",
+    playlistUrl: string,
+    index: number
+  ) => {
+    if (userData.userId === "") {
+      toast.error("Please Login");
+      router.push("/login");
+      return;
+    }
+    try {
+      const respone = await axios.post("/api/users/bookmark", {
+        userId: userData.userId,
+        playlistUrl: playlistUrl,
+        action: userAction,
+      });
+      toast.success(respone.data.message);
+      handleCheckedState(index);
+    } catch (error:any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+  const handleCheckedState = (index: number) => {
+    setChecked((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index],
+    }));
+  };
+  const handleClick = (index: number, playlistUrl: string) => {
+    const currentCheckedState = checked[index];
+    const action = currentCheckedState ? "remove" : "add";
+    handleBookmarks(action, playlistUrl, index);
+  };
+
+  const handleRatingSubmit = async (
+    rating: number,
+    playlistUrl: string,
+    index: number
+  ) => {
+    if (userData.userId === "") {
+      toast.error("Please Login");
+      router.push("/login");
+      return;
+    }
+    try {
+      const response = await axios.post("/api/users/rating", {
+        userId: userData.userId,
+        playlistUrl: playlistUrl,
+        rateNumber: rating,
+      });
+      toast.success(response.data.message);
+      setIsRatingSubmited({ [index]: true });
+    } catch (error:any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+  const handleToggleDescription = (index: number) => {
+    setExpandedDescriptions((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index],
+    }));
+  };
 
   const paramsId = params?.id;
-
+ 
   return (
     <>
       {paramsId === userData.uuid ? (
-        <div className="w-[100vw] h-[100vh] ">
+        <div className="w-[100vw] h-[100vh] overflow-x-hidden">
           <ProductivityComponent
             bg_color="#00ff0000"
-            light_ray1="#ffff0033"
-            light_ray2="#faf6148f"
-            light_ray3="#ffff0033"
+            light_ray1={light_ray1}
+            light_ray2={light_ray2}
+            light_ray3={light_ray3}
           />
-          <div className="h-auto md:h-[40rem] w-full rounded-md flex flex-col items-center justify-center relative overflow-hidden mx-auto py-10 md:py-0">
-          
-            <div className="p-4 relative z-10 w-full text-center">
-              <h1 className="mt-20 md:mt-0 text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
-                Hello Master,{" "}
-                <span className=" bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-[#ecdd6a]">
-                  {(userData?.firstname).toLowerCase()}
-                </span>
-              </h1>
-              <p className="mt-8 font-normal text-base md:text-lg text-neutral-300 max-w-lg mx-auto">
-                {
-                  "Dive into our comprehensive music courses and transform your musical journey today. Whether you're a beginner or looking to refine your skills, join us to unlock your true potential."
-                }
-              </p>
+          <div className="text-xl md:text-4xl text-[#08c2f5] flex gap-2 text-center text-bold justify-center items-center pb-5 md:mt-40 md:mb-5">
+              <GoBookmarkFill />
+              <h1 className="">Bookmarks</h1>
             </div>
-            <div className="mt-4">
-              <Link href={"/courses"}>
-                <Button
-                  borderRadius="1.75rem"
-                  borderClassName="bg-[radial-gradient(var(--yellow-500)_40%,transparent_80%)]"
-                  className="bg-white dark:bg-slate-900/40 text-lg h-20 w-40 text-black dark:text-white border-neutral-200 dark:border-slate-800"
-                >
-                  Explore courses
-                </Button>
-              </Link>
-            </div>
+          <div className="min-h-screen w-full rounded-md flex flex-col items-center justify-center relative mx-auto py-10 md:py-0">
+            
+            {playlistData.length > 0 ? (
+              <CursorBorderGlowCard
+                className="max-w-[90%] w-full mx-auto flex flex-wrap content-center item-center justify-center rounded-none md:rounded-2xl  shadow-input bg-white/20 dark:bg-black/40  animate-slidedown"
+                bg_card_cursor_color="transparent"
+                cursor_color={cursor_color}
+                cursor_shadow={cursor_shadow}
+                box_border={box_border}
+                box_border_shadow={box_border_shadow}
+              >
+                {playlistData.map((playlist, index) => (
+                  <div
+                    key={playlist.playlistUrl || index}
+                    className="min-w-[100%] bg-transparent rounded-none md:rounded-2xl px-2 min-h-[32vh] flex md:flex-row flex-col justify-between items-center relative gap-2 py-4 md:py-0"
+                  >
+                    <div className="w-[70%] text-start pl-4 ">
+                      <div className="flex justify-between items-start">
+                        <h1 className="text-lg md:text-4xl text-start font-sans  font-bold mb-2 text-white">
+                          {playlist.title}
+                        </h1>
+
+                        <Tooltip
+                          text="bookmark"
+                          bottom="bottom-9"
+                          left="-left-9"
+                          animate="animate-popup"
+                        >
+                          <button
+                            className="size-8"
+                            onClick={() =>
+                              handleClick(index, playlist.playlistUrl)
+                            }
+                          >
+                            <Bookmark
+                              primaryColor={box_border}
+                              secondaryColor={bookmark_hover}
+                              circleSize={"45px"}
+                              hoverColor={light_ray2}
+                              size={"30px"}
+                              isChecked={checked[index]}
+                            />
+                          </button>
+                        </Tooltip>
+                      </div>
+                      <p className="md:text-base text-sm text-start animate-slidedown text-white/80 mb-2">
+                        {expandedDescriptions[index]
+                          ? playlist.description
+                          : playlist.description.length > 300
+                          ? playlist.description.slice(0, 300) + "...  "
+                          : playlist.description}
+                        {playlist.description.length > 300 && (
+                          <button
+                            className="hover:text-blue-600 text-white/60"
+                            onClick={() => handleToggleDescription(index)}
+                          >
+                            {expandedDescriptions[index] ? "  Less" : "  More"}
+                          </button>
+                        )}
+                      </p>
+                      <div className="flex justify-between items-center">
+                        <div className="flex flex-col gap-1 justify-center items-start">
+                          <p className="">{playlist.ratedUser} users</p>
+                          <Rating
+                            rating={playlist.averageRating}
+                            customColor={box_border}
+                          />
+                        </div>
+                        {!playlist.userHasRated && !isRatingSubmited[index] ? (
+                          <RatingSubmit
+                            initialRating={0}
+                            customColor={box_border}
+                            onSubmit={(rating) =>
+                              handleRatingSubmit(
+                                rating,
+                                playlist.playlistUrl,
+                                index
+                              )
+                            }
+                          />
+                        ) : playlist.userRated !== null ? (
+                          <div className="flex flex-col gap-1 justify-center items-start">
+                            <p className="">You Rated : </p>
+                            <Rating
+                              rating={playlist.userRated}
+                              customColor={box_border}
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex flex-col gap-1 justify-center items-start">
+                            <p className="">Rating Submitted</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div
+                      className={`md:max-w-[28%] md:max-h-[30vh] max-h-[35vh] max-w-[70%] rounded-lg bg-red-50 border-2 border-[${light_ray2}] flex justify-center items-center overflow-hidden`}
+                    >
+                      <a
+                        href={playlist.playlistUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Image
+                          src={playlist.thumbnail}
+                          alt=""
+                          width={480}
+                          height={360}
+                          className="object-cover"
+                        />
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </CursorBorderGlowCard>
+            ) : (
+              <div className="bg-transparent">
+                <l-helix size="80" speed="1.3" color={light_ray2}></l-helix>
+              </div>
+            )}
           </div>
         </div>
       ) : (
         <div className="w-[100vw] h-[100vh] ">
           <ProductivityComponent
             bg_color="#00ff0000"
-            light_ray1="#ffff0033"
-            light_ray2="#faf6148f"
-            light_ray3="#ffff0033"
+            light_ray1={light_ray1}
+            light_ray2={light_ray2}
+            light_ray3={light_ray3}
           />
           <div className="h-auto md:h-[40rem] w-full rounded-md flex flex-col items-center justify-center relative overflow-hidden mx-auto py-10 md:py-0">
             <Navbar />
@@ -77,7 +347,7 @@ const ProfilePage = ({ params }:any) => {
               <h1 className="mt-20 md:mt-0 text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
                 404 | User not found
               </h1>
-              </div>
+            </div>
           </div>
         </div>
       )}
@@ -85,4 +355,38 @@ const ProfilePage = ({ params }:any) => {
   );
 };
 
+let light_ray1: string = "#14dbe193";
+let light_ray2: string = "#0dcbf58a";
+let light_ray3: string = "#14dbe193";
+let cursor_color: string = "#14d4fb2e";
+let cursor_shadow: string = "#14ecfb26";
+let box_border: string = "#08c2f5";
+let box_border_shadow: string = "#08c2f51a";
+let bookmark_hover: string = "#08c2f54d";
+
+export const getPlayListData = async () => {
+  try {
+    const response = await axios.get("/api/manager/playlist");
+    return response.data.playlists;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+export const getBookmarkPlaylist = async (userId: string) => {
+  try {
+    const response = await axios.post("/api/users/get_bookmarks", { userId });
+    return response.data.playlistUrls;
+  } catch (error:any) {
+    console.log(error);
+    if (
+      error.response &&
+      error.response.data &&
+      error.response.data.message
+    ) {
+      toast.error(error.response.data.message);
+    }
+  }
+};
 export default ProfilePage;

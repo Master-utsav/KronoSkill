@@ -10,6 +10,8 @@ import Rating from "@/components/rating";
 import RatingSubmit from "@/components/rating_submit";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Bookmark from "@/components/bookmark";
+import Tooltip from "@/components/ui/tooltip";
 
 helix.register();
 
@@ -33,7 +35,8 @@ interface Playlist {
   rating: { rateNumber: number }[];
   userHasRated : boolean,
   userRated:number,
-  ratedUser: number
+  ratedUser: number,
+  isBookMarked: boolean; // Added this line
 }
 
 const Course = ({ params }: ParamsProps) => {
@@ -42,6 +45,7 @@ const Course = ({ params }: ParamsProps) => {
   const [playlistData, setPlaylistData] = useState<Playlist[]>([]);
   const [expandedDescriptions, setExpandedDescriptions] = useState<{ [key: number]: boolean }>({});
   const [isRatingSubmited , setIsRatingSubmited] = useState<{ [key: number] : boolean}>({});
+  const [checked, setChecked] = useState<{ [key: number] : boolean}>({});;
   const [userId, setUserId] = useState<string>("");
   const router = useRouter();
 
@@ -82,7 +86,7 @@ const Course = ({ params }: ParamsProps) => {
         playlist.skill.includes(headTitle)
       );
       
-      const processedPlaylists:any = filteredPlaylists.map((playlist, index) => {
+      const processedPlaylists:any = filteredPlaylists.map((playlist:any, index:number) => {
         const userRating = playlist.rating.find((rating: any) => rating.userId.toString() === userId);
         const ratedUser = playlist.rating.length ?  playlist.rating.length : 0
         const totalRatings = playlist.rating.reduce(
@@ -92,6 +96,15 @@ const Course = ({ params }: ParamsProps) => {
         setIsRatingSubmited({[index]: false});
         const rawAverageRating = totalRatings / playlist.rating.length;
         const averageRating = Math.round(rawAverageRating * 2) / 2;
+
+        const isBookMarked = Array.isArray(playlist.bookmarks) && playlist.bookmarks.some(
+          (bookmark: any) => bookmark.userId.toString() === userId && bookmark.isMarked
+        );
+
+        setChecked((prevState) => ({
+          ...prevState,
+          [index]: !!isBookMarked,
+        }));
         return {
           id: index,
           playlistUrl: playlist.playlistUrl,
@@ -102,18 +115,52 @@ const Course = ({ params }: ParamsProps) => {
           userHasRated : !!userRating,
           userRated : userRating ? userRating.rateNumber : null,
           ratedUser,
+          isBookMarked : !!isBookMarked,
         };
       });
       setPlaylistData(processedPlaylists);
 
     };
-   
+
     fetchData();
+
   }, [headTitle , userId]);
+  
+  const handleBookmarks = async(userAction: "add" | "remove", playlistUrl: string , index: number) => {
+    if(userId === ""){
+      toast.error("Please Login");
+      router.push("/login"); 
+      return;
+    }
+    try{
+      const respone = await axios.post("/api/users/bookmark" , {
+        userId: userId,
+        playlistUrl: playlistUrl,
+        action: userAction,
+      });
+      toast.success(respone.data.message);
+      handleCheckedState(index);
+    }
+    catch(error: any){
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+      }
+    }
+  }
+  const handleCheckedState = (index: number) => {
+    setChecked((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index],
+    }));
+  };
+  const handleClick = (index:number, playlistUrl:string) => {
+    const currentCheckedState = checked[index];
+    const action = currentCheckedState ? "remove" : "add";
+    handleBookmarks(action, playlistUrl , index);
+  };
 
- 
 
-  const handleRatingSubmit = async (rating: number, playlistUrl: string , index:number) => {
+  const handleRatingSubmit = async (rating: number, playlistUrl: string , index:number ) => {
     if(userId === ""){
       toast.error("Please Login");
       router.push("/login"); 
@@ -125,8 +172,7 @@ const Course = ({ params }: ParamsProps) => {
         playlistUrl: playlistUrl,
         rateNumber: rating,
       });
-      console.log("Rating submitted:", response.data.rating);
-      toast.success("Rating submitted successfully");
+      toast.success(response.data.message);
       setIsRatingSubmited({[index]: true});
       
     } catch (error:any) {
@@ -141,7 +187,9 @@ const Course = ({ params }: ParamsProps) => {
       ...prevState,
       [index]: !prevState[index]
     }));
+
   };
+  
   
   const headTitleSkillSet: SkillInterface[] =
     skillDescription?.filter((skill) => skill.skill === headTitle) ?? [];
@@ -187,9 +235,18 @@ const Course = ({ params }: ParamsProps) => {
         {playlistData.map((playlist , index) => (
         <div key={playlist.playlistUrl || index} className="min-w-[100%] bg-transparent rounded-none md:rounded-2xl px-2 min-h-[32vh] flex md:flex-row flex-col justify-between items-center relative gap-2 py-4 md:py-0">
             <div className="w-[70%] text-start pl-4 ">
-              <h1 className="text-lg md:text-4xl text-start font-sans font-bold mb-2 text-white">
+              <div className="flex justify-between items-start">
+              <h1 className="text-lg md:text-4xl text-start font-sans  font-bold mb-2 text-white">
               {playlist.title}
               </h1>
+       
+              <Tooltip  text="bookmark" bottom="bottom-9" left="-left-9" animate="animate-popup">
+              <button className="size-8" onClick={() => handleClick(index, playlist.playlistUrl)}>
+              <Bookmark primaryColor={box_border} secondaryColor={bookmark_hover} circleSize={"45px"} hoverColor={light_ray2} size={"30px"} isChecked={checked[index]}  />
+              </button>
+              </Tooltip>
+          
+              </div>
               <p className="md:text-base text-sm text-start animate-slidedown text-white/80 mb-2">
               {expandedDescriptions[index] ? playlist.description : playlist.description.length > 300 ? playlist.description.slice(0, 300) + "...  " : playlist.description}
               {playlist.description.length > 300 && (<button className="hover:text-blue-600 text-white/60" onClick={() => handleToggleDescription(index)}>
@@ -242,6 +299,7 @@ let cursor_color: string = "";
 let cursor_shadow: string = "";
 let box_border: string = "";
 let box_border_shadow: string = "";
+let bookmark_hover: string = "";
 
 const categories = {
   Development: [
@@ -318,6 +376,7 @@ function setColors(id: string) {
     cursor_shadow = "#0df56635";
     box_border = "#0edb9e";
     box_border_shadow = "#0df56635";
+    bookmark_hover = "#0edb9e4d"
   } else if (categories.ProgrammingLanguage.includes(id)) {
     light_ray1 = "#0000ff3c";
     light_ray2 = "#0c80fc70";
@@ -326,6 +385,7 @@ function setColors(id: string) {
     cursor_shadow = "#4f70f426";
     box_border = "#1441f7e9";
     box_border_shadow = "#1441f726";
+    bookmark_hover = "#1441f74d"
   } else if (categories.SoftwareAndTools.includes(id)) {
     light_ray1 = "#14dbe193";
     light_ray2 = "#0dcbf58a";
@@ -334,6 +394,7 @@ function setColors(id: string) {
     cursor_shadow = "#14ecfb26";
     box_border = "#08c2f5";
     box_border_shadow = "#08c2f51a";
+    bookmark_hover = "#08c2f54d"
   } else if (categories.VisualDesign.includes(id)) {
     light_ray1 = "#ff57eb5b";
     light_ray2 = "#c058f88f";
@@ -342,6 +403,7 @@ function setColors(id: string) {
     cursor_shadow = "#ae14fb26";
     box_border = "#ae14fb";
     box_border_shadow = "#ae14fb1a";
+    bookmark_hover = "#ae14fb4d";
   } else if (categories.InteractiveDesign.includes(id)) {
     light_ray1 = "#ffff0033";
     light_ray2 = "#faf6148f";
@@ -350,6 +412,7 @@ function setColors(id: string) {
     cursor_shadow = "#f7de5318";
     box_border = "#ffd900e7";
     box_border_shadow = "#f3d31f18";
+    bookmark_hover = "#ffd9004d";
   } else if (categories.AudioDesign.includes(id)) {
     light_ray1 = "#10c57393";
     light_ray2 = "#0df5668a";
@@ -358,6 +421,7 @@ function setColors(id: string) {
     cursor_shadow = "#0df56635";
     box_border = "#0edb9e";
     box_border_shadow = "#0df56635";
+    bookmark_hover = "#0edb9e4d";
   } else if (categories.ComputerScience.includes(id)) {
     light_ray1 = "#ff57eb5b";
     light_ray2 = "#c058f88f";
@@ -366,6 +430,7 @@ function setColors(id: string) {
     cursor_shadow = "#ae14fb26";
     box_border = "#ae14fb";
     box_border_shadow = "#ae14fb1a";
+    bookmark_hover = "#ae14fb4d";
   } else {
     light_ray1 = "#f53e2d93";
     light_ray2 = "#f08d138a";
@@ -374,6 +439,7 @@ function setColors(id: string) {
     cursor_shadow = "#ef444430";
     box_border = "#ef4444";
     box_border_shadow = "#ef444430";
+    bookmark_hover = "#ef44444d";
   }
 }
 
@@ -413,5 +479,7 @@ export const getPlayListData = async() => {
     return [];
   }
 }
+
+
 
 export default Course;

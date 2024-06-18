@@ -32,7 +32,14 @@ const UserSchema = new mongoose.Schema({
     default: false
   },
   bookmarks: [{
-    type: String
+    playlistUrl: {
+      type: String,
+      unique: true,
+    },
+    isMarked : {
+      type: Boolean,
+      default: true,
+    }
   }],
   forgotPasswordToken: String,
   forgotPasswordTokenExpiry: Date,

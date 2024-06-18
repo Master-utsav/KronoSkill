@@ -11,8 +11,8 @@ import Providers from "./Providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Music Academy",
-  description: "Learn music from best courses",
+  title: "KronoSkill",
+  description: "Master skills from best courses",
 };
 
 export default function RootLayout({

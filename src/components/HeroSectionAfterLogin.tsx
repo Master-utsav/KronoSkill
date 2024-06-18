@@ -29,28 +29,11 @@ const HeroSectionAfterLogin = () => {
       light_ray2="#0c80fc70"
       light_ray3="#0000ff3c"
     />
-      <Link href={`/profile/${userData.uuid}`} className="absolute top-14 right-40 z-50">
-        <Button
-          borderRadius="1rem"
-          borderClassName="bg-[radial-gradient(var(--blue-500)_40%,transparent_60%)]"
-          className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
-        >
-          Profile
-        </Button>
-      </Link>
-      <Link href={"/logout"} className="absolute top-14 right-4 z-50">
-        <Button
-          borderRadius="1rem"
-          borderClassName="bg-[radial-gradient(var(--blue-500)_40%,transparent_60%)]"
-          className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
-        >
-          Logout
-        </Button>
-      </Link>
-      <div className="p-4 absolute top-40 -left-16 w-full  text-center z-50 space-y-3 flex flex-col gap-4 ">
+      
+      <div className="p-4 absolute top-40 -left-8 w-full  text-center z-50 space-y-3 flex flex-col gap-4 ">
         <div>
         <h1 className="md:mt-0 text-center text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-1">
-            Welcome, <span className=' bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-[#065cf1e4] animate-pulse'>{(userData?.firstname).toLowerCase()}</span>
+            Welcome, <span className=' bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-[#065cf1e4] animate-pulse'>{(userData?.firstname).charAt(0).toUpperCase() + (userData?.firstname).slice(1).toLowerCase()}</span>
             </h1>
         <h1 className="mt-20 md:mt-0   text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-2 animate-slidein">
         Unleash Your Potential with Elite Skills!

@@ -36,7 +36,21 @@ const PlaylistSchema = new mongoose.Schema({
           type: Number,
           required: true
         }
-      }]
+      }],
+    bookmarks: [{
+        playlistUrl: {
+          type: String,
+          unique: true,
+        },
+        isMarked : {
+          type: Boolean,
+          default: true,
+        },
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User'
+        },
+      }],
 })
   
   // Ensure virtuals are included in toJSON and toObject outputs
