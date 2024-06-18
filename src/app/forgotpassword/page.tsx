@@ -63,26 +63,7 @@ const ForgotPassword = () => {
         light_ray3="#10c57393"
       />
       <div className="h-auto md:h-[40rem] w-full rounded-md flex flex-col items-center justify-center relative overflow-hidden mx-auto py-10 md:py-0">
-        <Link href={"/signup"} className="absolute top-14 right-48 z-50">
-          <Button
-            borderRadius="1rem"
-            disabled={isdisabled}
-            borderClassName="bg-[radial-gradient(var(--green-500)_40%,transparent_60%)]"
-            className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
-          >
-            sign up
-          </Button>
-        </Link>
-        <Link href={"/login"} className="absolute top-14 right-12 z-50">
-          <Button
-            borderRadius="1rem"
-            disabled={isdisabled}
-            borderClassName="bg-[radial-gradient(var(--green-500)_40%,transparent_60%)]"
-            className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
-          >
-            login
-          </Button>
-        </Link>
+       
         <CursorBorderGlowCard
           className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white/20 dark:bg-black/40 mt-32"
           bg_card_cursor_color="#0000004d"

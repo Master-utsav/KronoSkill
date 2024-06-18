@@ -97,36 +97,14 @@ export default function SignUp() {
 
 
   return (
-    <div className="w-[100vw] h-[100vh] overflow-hidden">
-      <div className="w-[100vw] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] h-[100vh] overflow-x-hidden overflow-y-hidden bg-white/40 dark:bg-black relative">
+    <div className="w-[100vw] h-[100vh] overflow-x-hidden overflow-y-auto">
+      <div className="w-[100vw] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] h-[100vh] overflow-x-hidden overflow-y-scroll bg-white/40 dark:bg-black relative">
         <Spotlight
           className="-top-40 left-0 md:left-60 md:-top-20"
           fill="skyblue"
         />
-          <Link href={"/"} className="absolute top-14 right-44 z-50">
-          <Button
-            disabled={isdisabled}
-            borderRadius="1rem"
-            borderClassName="bg-[radial-gradient(var(--cyan-500)_40%,transparent_60%)]"
-            className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
-          >
-            Home
-          </Button>
-        </Link>
-      <Link href={"/login"} className="absolute top-14 right-8 z-50" >
-          <Button
-            borderRadius="1rem"
-            disabled={isdisabled}
-            borderClassName="bg-[radial-gradient(var(--cyan-500)_40%,transparent_60%)]"
-            className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
-          >
-            login
-          </Button>
-        </Link>
-        <CursorBorderGlowCard className="max-w-md w-full mx-auto max-h-[85%] rounded-none md:rounded-2xl p-4 md:py-2 md:px-8 shadow-input bg-white/20 dark:bg-black/40 mt-32 " bg_card_cursor_color='#0000004d' cursor_color='#14d4fb2e' cursor_shadow='#14ecfb26' box_border='#08c2f5' box_border_shadow='#08c2f51a'>
-          {/* <h2 className="font-bold text-xl text-center text-neutral-800 dark:text-neutral-200">
-            Welcome to Shakambari Avenue
-          </h2> */}
+         
+        <CursorBorderGlowCard className="max-w-md w-full mx-auto md:max-h-[85%] max-h-full rounded-none md:rounded-2xl p-4 md:py-2 md:px-8 shadow-input bg-white/20 dark:bg-black/40 md:mt-32 mt-20" bg_card_cursor_color='#0000004d' cursor_color='#14d4fb2e' cursor_shadow='#14ecfb26' box_border='#08c2f5' box_border_shadow='#08c2f51a'>
           <p className="text-neutral-600 text-center text-lg max-w-sm mt-2 dark:text-cyan-500">
             Sign up now
           </p>

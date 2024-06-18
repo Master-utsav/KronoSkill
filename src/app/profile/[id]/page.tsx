@@ -207,7 +207,7 @@ const ProfilePage = ({ params }: ParamsProps) => {
             light_ray2={light_ray2}
             light_ray3={light_ray3}
           />
-          <div className="text-xl md:text-4xl text-[#08c2f5] flex gap-2 text-center text-bold justify-center items-center pb-5 md:mt-40 md:mb-5">
+          <div className="text-xl md:text-4xl text-[#08c2f5] flex gap-2 text-center text-bold justify-center items-center pb-5 md:mt-40 md:mb-5 mt-32 mb-4">
               <GoBookmarkFill />
               <h1 className="">Bookmarks</h1>
             </div>

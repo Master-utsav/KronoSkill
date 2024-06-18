@@ -16,7 +16,8 @@
       "default",
       {
         "ignore": [
-          "user-select"
+          "user-select",
+          "scrollbar-width"
         ]
       }
     ],

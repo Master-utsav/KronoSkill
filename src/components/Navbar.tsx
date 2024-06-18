@@ -53,7 +53,7 @@ const Navbar = ({ className }: { className?: string }) => {
     <div>
       <div
         className={cn(
-          "fixed top-10 inset-x-0 max-w-2xl mx-auto z-50 ",
+          "fixed top-10 inset-x-0 md:max-w-2xl max-w-lg mx-auto z-50 ",
           className
         )}
       >
@@ -65,31 +65,6 @@ const Navbar = ({ className }: { className?: string }) => {
               item="Home"
             ></MenuItem>
           </Link>
-          <MenuItem setActive={setActive} active={active} item="Our Courses">
-            <div className="flex flex-row-reverse py-1 px-5 text-sm text-start items-start justify-center relative w-[100%] gap-5">
-              {categories.map((course, index) => (
-                <div
-                  key={course._id || index}
-                  className="flex flex-col text-start w-fit "
-                >
-                  <p className="font-bold mb-2">{course.course}</p>
-                  <div className="flex flex-col space-y-2">
-                    {course.skills.map((skill: string, skillIndex: number) => {
-                      const skillLink = skill.replace(/\s+/g, '-');
-                      return (
-                        <HoveredLink
-                          key={skillIndex}
-                          href={`/courses/${skillLink}`}
-                        >
-                          {skill}
-                        </HoveredLink>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </MenuItem>
             <MenuItem
               setActive={setActive}
               active={active}
@@ -124,6 +99,31 @@ const Navbar = ({ className }: { className?: string }) => {
                   </div>
                 </div>
             </MenuItem>
+          <MenuItem setActive={setActive} active={active} item="Courses">
+            <div className="flex flex-col md:flex-row-reverse py-1 px-5 text-sm text-start items-start justify-center relative w-[100%] gap-5">
+              {categories.map((course, index) => (
+                <div
+                  key={course._id || index}
+                  className="flex flex-col text-start w-fit "
+                >
+                  <p className="font-bold mb-2">{course.course}</p>
+                  <div className="flex flex-col space-y-2">
+                    {course.skills.map((skill: string, skillIndex: number) => {
+                      const skillLink = skill.replace(/\s+/g, '-');
+                      return (
+                        <HoveredLink
+                          key={skillIndex}
+                          href={`/courses/${skillLink}`}
+                        >
+                          {skill}
+                        </HoveredLink>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </MenuItem>
           <Link href={"/contact"}>
             <MenuItem
               setActive={setActive}

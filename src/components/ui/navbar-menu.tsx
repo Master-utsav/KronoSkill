@@ -39,15 +39,15 @@ export const MenuItem = ({
           transition={transition}
         >
           {active === item && children && (
-            <div className="absolute top-[calc(100%_+_1.2rem)] left-1/2 transform -translate-x-1/2 pt-4 flex">
+            <div className="absolute top-[calc(100%_+_1.2rem)] left-1/2  transform -translate-x-1/2 pt-4 flex">
               <motion.div
                 transition={transition}
                 layoutId="active" // layoutId ensures smooth animation
-                className="bg-white dark:bg-black backdrop-blur-sm rounded-2xl overflow-hidden border border-black/[0.2] dark:border-white/[0.2] shadow-xl"
+                className="bg-white/80 dark:bg-black/80  rounded-2xl overflow-hidden border border-black/[0.2] dark:border-white/[0.2] shadow-xl"
               >
                 <motion.div
                   layout // layout ensures smooth animation
-                  className="w-max h-full p-4"
+                  className="w-max h-full p-2 backdrop-blur-2xl "
                 >
                   {children}
                 </motion.div>
@@ -70,7 +70,7 @@ export const Menu = ({
   return (
     <nav
       onMouseLeave={() => setActive(null)} // resets the state
-      className="relative text-xl rounded-full boder border-transparent dark:bg-black/60 dark:border-white/[0.2] bg-white/60 shadow-input flex justify-center space-x-12 px-2 py-6 backdrop-blur-xl "
+      className="relative md:text-xl text-base rounded-full boder border-transparent dark:bg-black/60 dark:border-white/[0.2] bg-white/60 shadow-input flex justify-center md:space-x-12 space-x-4 md:px-2 px-2 md:py-6 py-3 backdrop-blur-xl"
     >
       {children}
     </nav>
@@ -113,7 +113,7 @@ export const HoveredLink = ({ children, ...rest }: any) => {
   return (
     <Link
       {...rest}
-      className="text-neutral-700 dark:text-neutral-200 hover:text-black "
+      className="text-neutral-700 dark:text-neutral-300 hover:text-black delay-50 duration-100 transition-all ease-in-out dark:hover:text-white "
     >
       {children}
     </Link>

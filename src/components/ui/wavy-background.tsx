@@ -111,12 +111,13 @@ export const WavyBackground = ({
   }, []);
 
   return (
+   
     <div
       className={cn(
         "h-screen flex flex-col items-center justify-center ",
         containerClassName
       )}
-    >
+    >  
       <canvas
         className="absolute inset-0 z-0 "
         ref={canvasRef}
@@ -125,8 +126,10 @@ export const WavyBackground = ({
           ...(isSafari ? { filter: `blur(${blur}px)` } : {}),
         }}
       ></canvas>
+       <div className="z-0 absolute inset-0 flex flex-col items-center justify-center" style={{backgroundImage: "linear-gradient(90deg, rgba(248,248,248,1) 0%, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,1) 100%, rgba(0,0,0,1) 100%, rgba(0,0,0,1) 100%)"}}>
       <div className={cn("relative z-10", className)} {...props}>
         {children}
+      </div>
       </div>
     </div>
   );

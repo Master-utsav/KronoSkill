@@ -22,7 +22,7 @@ const HeroSectionAfterLogin = () => {
   }, []);
   
   return ( 
-    <div className="h-auto md:h-[45rem] w-[89vw] rounded-md flex flex-col items-center justify-center z-10 overflow-hidden mx-auto py-10 md:py-0 relative min-h-[85%] dark:bg-black/[0.96]  dark:bg-dot-white/[0.1] ">
+    <div className="h-auto  rounded-md flex flex-col items-center justify-center z-10 overflow-hidden mx-auto py-10 md:py-0 relative  dark:bg-black/[0.96]  dark:bg-dot-white/[0.1] ">
     <ProductivityComponent
       bg_color="#00000000"
       light_ray1="#0000ff3c"
@@ -30,7 +30,7 @@ const HeroSectionAfterLogin = () => {
       light_ray3="#0000ff3c"
     />
       
-      <div className="p-4 absolute top-40 -left-8 w-full  text-center z-50 space-y-3 flex flex-col gap-4 ">
+      <div className="p-4 w-full mt-20 md:mt-40 md:mb-10 md:m-5 text-center z-50 space-y-3 flex flex-col gap-4 ">
         <div>
         <h1 className="md:mt-0 text-center text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-1">
             Welcome, <span className=' bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-[#065cf1e4] animate-pulse'>{(userData?.firstname).charAt(0).toUpperCase() + (userData?.firstname).slice(1).toLowerCase()}</span>

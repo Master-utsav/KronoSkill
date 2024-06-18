@@ -114,26 +114,7 @@ const Login = () => {
         light_ray3="#2134db4d"
       />
       <div className="w-[100vw] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] h-[100vh]  bg-white/0 dark:bg-black/[0] overflow-x-hidden overflow-y-hidden ">
-        <Link href={"/"} className="absolute top-14 right-44 z-50">
-          <Button
-            borderRadius="1rem"
-            disabled={isdisabled}
-            borderClassName="bg-[radial-gradient(var(--purple-500)_40%,transparent_60%)]"
-            className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
-          >
-            Home
-          </Button>
-        </Link>
-        <Link href={"/signup"} className="absolute top-14 right-8 z-50">
-          <Button
-            borderRadius="1rem"
-            disabled={isdisabled}
-            borderClassName="bg-[radial-gradient(var(--purple-500)_40%,transparent_60%)]"
-            className="bg-white dark:bg-slate-900/60 text-lg h-12 w-32 text-black dark:text-white border-neutral-200 dark:border-slate-800"
-          >
-            signup
-          </Button>
-        </Link>
+        
         <CursorBorderGlowCard
           className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white/20 dark:bg-black/40 mt-32"
           bg_card_cursor_color="#0000004d"

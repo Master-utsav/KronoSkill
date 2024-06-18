@@ -1,4 +1,3 @@
-
 import FeaturedCourses from "@/components/FeaturedCourses";
 import HeroSection from "@/components/HeroSection";
 import Quotes from "@/components/Quotes";
@@ -6,18 +5,17 @@ import PlaylistHome from "@/components/PlaylistHome";
 import PremiumCourses from "@/components/PremiumCourse";
 import Instructor from "@/components/Instructor";
 import Footer from "@/components/Footer";
-import React  from "react";
+import React from "react";
 import { TracingBeam } from "@/components/ui/tracing-beam";
+import "./globals.css"
 
-
-export default function Home() {
- 
+const Page = () => {
   return (
-    <TracingBeam className="px-6">
-      <main className="min-h-screen antialiased ">
+    <TracingBeam className="md:px-6 h-full">
+      <main className="min-h-screen antialiased " >
         <HeroSection />
-        <FeaturedCourses />
-        <PlaylistHome/>
+        <FeaturedCourses  />
+        <PlaylistHome />
         <Quotes />
         <Instructor />
         <PremiumCourses />
@@ -25,4 +23,7 @@ export default function Home() {
       </main>
     </TracingBeam>
   );
-}
+};
+
+export default Page;
+
