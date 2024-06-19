@@ -32,8 +32,13 @@ const PlaylistHome = () => {
 
   return (
     <div className="p-10">
-     
+      
+    <div className="lg:block hidden">
       <StickyScroll content={playlistContent} />
+    </div>
+    <div className="lg:hidden block">
+
+    </div>
     </div>
   );
 };

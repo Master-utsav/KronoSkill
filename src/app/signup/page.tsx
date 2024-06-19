@@ -17,6 +17,7 @@ import { VscEye } from "react-icons/vsc";
 import {  zodResolver  } from "@hookform/resolvers/zod"
 import {SubmitHandler, useForm } from "react-hook-form"
 import { ZodType, z } from "zod";
+import ProductivityComponent from "@/components/ui/master_light";
 
 
 interface User {
@@ -97,12 +98,14 @@ export default function SignUp() {
 
 
   return (
-    <div className="w-[100vw] h-[100vh] overflow-x-hidden overflow-y-auto">
-      <div className="w-[100vw] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] h-[100vh] overflow-x-hidden overflow-y-scroll bg-white/40 dark:bg-black relative">
-        <Spotlight
-          className="-top-40 left-0 md:left-60 md:-top-20"
-          fill="skyblue"
-        />
+    <div className="w-[100vw] h-[100vh] ">
+      <ProductivityComponent
+        bg_color="#00000000"
+        light_ray1= "#14dbe193"
+         light_ray2 = "#0dcbf58a"
+         light_ray3= "#14dbe193"
+      />
+      <div className="w-[100vw] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] h-[100vh]  bg-white/0 dark:bg-black/[0] overflow-x-hidden md:overflow-y-hidden overflow-y-auto">
          
         <CursorBorderGlowCard className="max-w-md w-full mx-auto md:max-h-[85%] max-h-full rounded-none md:rounded-2xl p-4 md:py-2 md:px-8 shadow-input bg-white/20 dark:bg-black/40 md:mt-32 mt-20" bg_card_cursor_color='#0000004d' cursor_color='#14d4fb2e' cursor_shadow='#14ecfb26' box_border='#08c2f5' box_border_shadow='#08c2f51a'>
           <p className="text-neutral-600 text-center text-lg max-w-sm mt-2 dark:text-cyan-500">

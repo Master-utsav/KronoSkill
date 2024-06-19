@@ -204,9 +204,9 @@ const Course = ({ params }: ParamsProps) => {
         light_ray2={light_ray2}
         light_ray3={light_ray3}
       />
-      <div className="min-h-screen bg-black/0 py-12 pt-36">
+      <div className="min-h-screen bg-black/0 md:py-12 md:pt-36 pt-20 py-8">
         <h1
-          className={`text-lg md:text-5xl text-center font-sans font-bold mb-8 text-white`}
+          className={`text-2xl md:text-5xl text-center font-sans font-bold mb-8 text-white`}
         >
           {headTitle}{" "}
         </h1>
@@ -220,73 +220,132 @@ const Course = ({ params }: ParamsProps) => {
           )}
         </div>
         {instructorData.length > 0 && (
-          <div className="flex flex-row items-center justify-center mb-10 w-full mt-10 animate-opac">
+          <div className="flex flex-row items-center flex-wrap justify-center mb-10 w-full mt-10 animate-opac  px-2">
             {instructorData && <AnimatedTooltip items={instructorData} />}
           </div>
         )}
-          <CursorBorderGlowCard
-            className="max-w-[90%] w-full mx-auto flex flex-wrap content-center  rounded-none md:rounded-2xl  shadow-input bg-white/20 dark:bg-black/40  animate-slidedown"
-            bg_card_cursor_color="transparent"
-            cursor_color={cursor_color}
-            cursor_shadow={cursor_shadow}
-            box_border={box_border}
-            box_border_shadow={box_border_shadow}
-          >
-        {playlistData.map((playlist , index) => (
-        <div key={playlist.playlistUrl || index} className="min-w-[100%] bg-transparent rounded-none md:rounded-2xl px-2 min-h-[32vh] flex md:flex-row flex-col justify-between items-center relative gap-2 py-4 md:py-0">
-            <div className="w-[70%] text-start pl-4 ">
-              <div className="flex justify-between items-start">
-              <h1 className="text-lg md:text-4xl text-start font-sans  font-bold mb-2 text-white">
-              {playlist.title}
-              </h1>
-       
-              <Tooltip  text="bookmark" bottom="bottom-9" left="-left-9" animate="animate-popup">
-              <button className="size-8" onClick={() => handleClick(index, playlist.playlistUrl)}>
-              <Bookmark primaryColor={box_border} secondaryColor={bookmark_hover} circleSize={"45px"} hoverColor={light_ray2} size={"30px"} isChecked={checked[index]}  />
-              </button>
-              </Tooltip>
-          
+         {playlistData.length > 0 ? (
+          <div className="min-h-screen w-full rounded-md flex flex-col  relative mx-auto py-2 md:py-2 md:space-y-1">
+              <CursorBorderGlowCard
+                className="max-w-[90%] w-full mx-auto flex flex-wrap content-center item-center justify-center rounded-none md:rounded-2xl  shadow-input bg-white/20 dark:bg-black/50  animate-slidedown md:py-2 py-5"
+                bg_card_cursor_color="transparent"
+                cursor_color={cursor_color}
+                cursor_shadow={cursor_shadow}
+                box_border={box_border}
+                box_border_shadow={box_border_shadow}
+              >
+                {playlistData.map((playlist, index) => (
+                  <div key={playlist.playlistUrl || index} className="flex flex-col">
+                  <div
+                    className="min-w-[100%] md:min-h-[32vh] bg-transparent rounded-none md:rounded-2xl md:px-2 flex md:flex-row flex-col md:justify-between justify-center items-center relative gap-2 py-4 md:py-0"
+                  >
+                    <div className="md:w-[70%] w-[80%] text-start md:pl-4 ">
+                      <div className="flex justify-between items-start">
+                        <h1 className="text-lg md:text-4xl text-start font-sans  font-bold mb-2 text-white">
+                          {playlist.title}
+                        </h1>
+
+                        <Tooltip
+                          text="bookmark"
+                          bottom="bottom-9"
+                          left="-left-9"
+                          animate="animate-popup"
+                        >
+                          <button
+                            className="size-8"
+                            onClick={() =>
+                              handleClick(index, playlist.playlistUrl)
+                            }
+                          >
+                            <Bookmark
+                              primaryColor={box_border}
+                              secondaryColor={bookmark_hover}
+                              circleSize={"45px"}
+                              hoverColor={light_ray2}
+                              size={"30px"}
+                              isChecked={checked[index]}
+                            />
+                          </button>
+                        </Tooltip>
+                      </div>
+                      <p className="md:text-base text-sm text-start animate-slidedown text-white/80 mb-2">
+                        {expandedDescriptions[index]
+                          ? playlist.description
+                          : playlist.description.length > 300
+                          ? playlist.description.slice(0, 300) + "...  "
+                          : playlist.description}
+                        {playlist.description.length > 300 && (
+                          <button
+                            className={`hover:text-[${box_border}] text-white/60`}
+                            onClick={() => handleToggleDescription(index)}
+                          >
+                            {expandedDescriptions[index] ? "  Less" : "  More"}
+                          </button>
+                        )}
+                      </p>
+                      <div className="flex justify-between items-center">
+                        <div className="flex flex-col gap-1 justify-center items-start">
+                          <p className="">{playlist.ratedUser} users</p>
+                          <Rating
+                            rating={playlist.averageRating}
+                            customColor={box_border}
+                          />
+                        </div>
+                        {!playlist.userHasRated && !isRatingSubmited[index] ? (
+                          <RatingSubmit
+                            initialRating={0}
+                            customColor={box_border}
+                            onSubmit={(rating) =>
+                              handleRatingSubmit(
+                                rating,
+                                playlist.playlistUrl,
+                                index
+                              )
+                            }
+                          />
+                        ) : playlist.userRated !== null ? (
+                          <div className="flex flex-col gap-1 justify-center items-start">
+                            <p className="">You Rated : </p>
+                            <Rating
+                              rating={playlist.userRated}
+                              customColor={box_border}
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex flex-col gap-1 justify-center items-start">
+                            <p className="">Rating Submitted</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div
+                      className={`md:max-w-[28%] md:max-h-[30vh] max-h-[35vh] max-w-[80%] rounded-lg  border-2 border-[${light_ray2}] flex justify-center items-center overflow-hidden`}
+                    >
+                      <a
+                        href={playlist.playlistUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Image
+                          src={playlist.thumbnail}
+                          alt=""
+                          width={480}
+                          height={360}
+                          className="object-cover"
+                        />
+                      </a>
+                    </div>
+                  </div>
+                    <div className="md:my-2 my-4 h-[1px] w-full" style={{backgroundImage: `linear-gradient(to right, transparent, ${box_border}, transparent)`}} />
+                  </div>
+                ))}
+              </CursorBorderGlowCard>
+                </div>
+            ) : (
+              <div className="bg-transparent justify-center items-center flex">
+                <l-helix size="80" speed="1.3" color={light_ray2}></l-helix>
               </div>
-              <p className="md:text-base text-sm text-start animate-slidedown text-white/80 mb-2">
-              {expandedDescriptions[index] ? playlist.description : playlist.description.length > 300 ? playlist.description.slice(0, 300) + "...  " : playlist.description}
-              {playlist.description.length > 300 && (<button className="hover:text-blue-600 text-white/60" onClick={() => handleToggleDescription(index)}>
-                {expandedDescriptions[index] ? "  Less" : "  More"}
-              </button>)}
-              
-            </p>
-             <div className="flex justify-between items-center">
-             <div className="flex flex-col gap-1 justify-center items-start">
-              <p className="">{playlist.ratedUser}{" "}users</p>
-              <Rating rating={playlist.averageRating} customColor={box_border} />
-              </div>
-              {(!playlist.userHasRated && !isRatingSubmited[index]) ? (<RatingSubmit
-                  initialRating={0}
-                  customColor={box_border}
-                  onSubmit={(rating) => handleRatingSubmit(rating, playlist.playlistUrl , index)}
-                />) : ( playlist.userRated !== null ? 
-                  (<div className="flex flex-col gap-1 justify-center items-start">
-                   <p className="">You Rated : </p>
-                   <Rating rating={playlist.userRated} customColor={box_border} />
-                   </div>) : (<div className="flex flex-col gap-1 justify-center items-start">
-                              <p className="">Rating Submitted</p>
-                              </div>))
-                   }
-             </div>
-            </div>
-            <div className={`md:max-w-[28%] md:max-h-[30vh] max-h-[35vh] max-w-[70%] rounded-lg bg-red-50 border-2 border-[${light_ray2}] flex justify-center items-center overflow-hidden`}>
-            <a href={playlist.playlistUrl} target="_blank" rel="noopener noreferrer">
-            <Image
-                src={playlist.thumbnail}
-                alt=""
-                width={480}
-                height={360}
-                className="object-cover"
-              />
-            </a>
-            </div>
-        </div>
-      ))}
-      </CursorBorderGlowCard>
+            )}
       </div>
     </div>
   );

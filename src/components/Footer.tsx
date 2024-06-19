@@ -121,11 +121,12 @@ function Footer() {
           <p>Madhya Pradesh, India</p>
           <p>Indore</p>
           <p>Email: info@youtubeschool.com</p>
+          <p>Developer: master_utsav</p>
           <p>About: CSE student, 2nd Year</p>
         </div>
       </div>
       <p className="text-center text-xs pt-8">
-        © 2024 Music School. All rights reserved.
+        © 2024 KronoSkill. All rights reserved.
       </p>
     </footer>
   );

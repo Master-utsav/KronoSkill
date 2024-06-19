@@ -37,6 +37,7 @@ interface Playlist {
 }
 
 const ProfilePage = ({ params }: ParamsProps) => {
+  const paramsId = params?.id;
   const [playlistData, setPlaylistData] = useState<Playlist[]>([]);
   const [expandedDescriptions, setExpandedDescriptions] = useState<{
     [key: number]: boolean;
@@ -195,8 +196,9 @@ const ProfilePage = ({ params }: ParamsProps) => {
     }));
   };
 
-  const paramsId = params?.id;
+
  
+  console.log(paramsId , userData.uuid)
   return (
     <>
       {paramsId === userData.uuid ? (
@@ -207,15 +209,14 @@ const ProfilePage = ({ params }: ParamsProps) => {
             light_ray2={light_ray2}
             light_ray3={light_ray3}
           />
-          <div className="text-xl md:text-4xl text-[#08c2f5] flex gap-2 text-center text-bold justify-center items-center pb-5 md:mt-40 md:mb-5 mt-32 mb-4">
+          <div className={`text-3xl md:text-4xl  flex gap-2 text-center text-bold justify-center items-center md:pb-5 md:mt-40 md:mb-5 mt-20 mb-2`} style={{color : `${box_border}`}}>
               <GoBookmarkFill />
               <h1 className="">Bookmarks</h1>
             </div>
-          <div className="min-h-screen w-full rounded-md flex flex-col items-center justify-center relative mx-auto py-10 md:py-0">
-            
             {playlistData.length > 0 ? (
+          <div className="min-h-screen w-full rounded-md flex flex-col   relative mx-auto py-2 md:py-2 md:space-y-1">
               <CursorBorderGlowCard
-                className="max-w-[90%] w-full mx-auto flex flex-wrap content-center item-center justify-center rounded-none md:rounded-2xl  shadow-input bg-white/20 dark:bg-black/40  animate-slidedown"
+                className="max-w-[90%] w-full mx-auto flex flex-wrap content-center item-center justify-center rounded-none md:rounded-2xl  shadow-input bg-white/20 dark:bg-black/50  animate-slidedown md:py-2 py-5"
                 bg_card_cursor_color="transparent"
                 cursor_color={cursor_color}
                 cursor_shadow={cursor_shadow}
@@ -223,11 +224,11 @@ const ProfilePage = ({ params }: ParamsProps) => {
                 box_border_shadow={box_border_shadow}
               >
                 {playlistData.map((playlist, index) => (
+                  <div key={playlist.playlistUrl || index} className="flex flex-col">
                   <div
-                    key={playlist.playlistUrl || index}
-                    className="min-w-[100%] bg-transparent rounded-none md:rounded-2xl px-2 min-h-[32vh] flex md:flex-row flex-col justify-between items-center relative gap-2 py-4 md:py-0"
+                    className="min-w-[100%] md:min-h-[32vh] bg-transparent rounded-none md:rounded-2xl md:px-2 flex md:flex-row flex-col md:justify-between justify-center items-center relative gap-2 py-4 md:py-0"
                   >
-                    <div className="w-[70%] text-start pl-4 ">
+                    <div className="md:w-[70%] w-[80%] text-start md:pl-4 ">
                       <div className="flex justify-between items-start">
                         <h1 className="text-lg md:text-4xl text-start font-sans  font-bold mb-2 text-white">
                           {playlist.title}
@@ -264,7 +265,7 @@ const ProfilePage = ({ params }: ParamsProps) => {
                           : playlist.description}
                         {playlist.description.length > 300 && (
                           <button
-                            className="hover:text-blue-600 text-white/60"
+                            className={`hover:text-[${box_border}] text-white/60`}
                             onClick={() => handleToggleDescription(index)}
                           >
                             {expandedDescriptions[index] ? "  Less" : "  More"}
@@ -307,7 +308,7 @@ const ProfilePage = ({ params }: ParamsProps) => {
                       </div>
                     </div>
                     <div
-                      className={`md:max-w-[28%] md:max-h-[30vh] max-h-[35vh] max-w-[70%] rounded-lg bg-red-50 border-2 border-[${light_ray2}] flex justify-center items-center overflow-hidden`}
+                      className={`md:max-w-[28%] md:max-h-[30vh] max-h-[35vh] max-w-[80%] rounded-lg  border-2 border-[${light_ray2}] flex justify-center items-center overflow-hidden`}
                     >
                       <a
                         href={playlist.playlistUrl}
@@ -324,14 +325,17 @@ const ProfilePage = ({ params }: ParamsProps) => {
                       </a>
                     </div>
                   </div>
+                    <div className="md:my-2 my-4 h-[1px] w-full" style={{backgroundImage: `linear-gradient(to right, transparent, ${box_border}, transparent)`}} />
+                  </div>
                 ))}
               </CursorBorderGlowCard>
+                </div>
+
             ) : (
-              <div className="bg-transparent">
+              <div className="bg-transparent justify-center items-center flex">
                 <l-helix size="80" speed="1.3" color={light_ray2}></l-helix>
               </div>
             )}
-          </div>
         </div>
       ) : (
         <div className="w-[100vw] h-[100vh] ">
@@ -374,7 +378,7 @@ export const getPlayListData = async () => {
   }
 };
 
-export const getBookmarkPlaylist = async (userId: string) => {
+ export const getBookmarkPlaylist = async (userId: string) => {
   try {
     const response = await axios.post("/api/users/get_bookmarks", { userId });
     return response.data.playlistUrls;

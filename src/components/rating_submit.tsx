@@ -27,7 +27,7 @@ const RatingSubmit: React.FC<RatingProps> = ({ initialRating, onSubmit, customCo
   };
 
   return (
-    <div className="rating-component flex gap-2">
+    <div className="rating-component md:flex gap-2 flex-wrap space-y-2">
     <div className='flex flex-col gap-1 justify-center items-start'>
       <p>Rate this playlist</p>
       <div className="star-rating flex gap-1">

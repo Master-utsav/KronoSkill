@@ -123,9 +123,6 @@ const Login = () => {
           box_border="#ae14fb"
           box_border_shadow="#ae14fb1a"
         >
-          <h2 className="font-bold text-xl text-center text-neutral-800 dark:text-neutral-200">
-            Welcome to Music Academy
-          </h2>
           <p className="text-neutral-600 text-center text-lg max-w-sm mt-2 dark:text-[#d367f1]">
             Login Now
           </p>

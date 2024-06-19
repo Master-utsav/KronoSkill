@@ -30,15 +30,15 @@ const HeroSectionAfterLogin = () => {
       light_ray3="#0000ff3c"
     />
       
-      <div className="p-4 w-full mt-20 md:mt-40 md:mb-10 md:m-5 text-center z-50 space-y-3 flex flex-col gap-4 ">
+      <div className="p-4 w-full mt-5 md:mt-40 md:mb-10 md:m-5 text-center z-50 space-y-3 flex flex-col ">
         <div>
         <h1 className="md:mt-0 text-center text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-1">
             Welcome, <span className=' bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-[#065cf1e4] animate-pulse'>{(userData?.firstname).charAt(0).toUpperCase() + (userData?.firstname).slice(1).toLowerCase()}</span>
             </h1>
-        <h1 className="mt-20 md:mt-0   text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-2 animate-slidein">
+        <h1 className="mt-0   text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-2 animate-slidein">
         Unleash Your Potential with Elite Skills!
         </h1>
-        <p className="mt-4 font-normal text-base md:text-lg text-neutral-300 max-w-lg mx-auto mb-10">
+        <p className="md:mt-4 mt-1 font-normal text-base md:text-lg text-neutral-300 max-w-lg mx-auto mb-10">
           {
             "Dive into our comprehensive courses and transform your learning journey today. Whether you're a beginner or looking to refine your skills, join us to unlock your true potential."
           }

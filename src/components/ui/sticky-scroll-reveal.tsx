@@ -54,10 +54,10 @@ export const StickyScroll: React.FC<StickyScrollProps> = ({
       animate={{
         backgroundColor: backgroundColors[activeCard % backgroundColors.length],
       }}
-      className="h-[30rem] overflow-y-auto flex justify-center relative space-x-10 rounded-md p-10 scrollbar-thin scrollbar-thumb-green-600/80 scrollbar-track-indigo-200 scrollbar-corner-transparent"
+      className="h-[30rem] overflow-y-auto overflow-x-hidden flex justify-center relative lg:space-x-6 space-x-2 rounded-md lg:p-10 p-2 scrollbar-thin scrollbar-thumb-green-600/80 scrollbar-track-indigo-200 scrollbar-corner-transparent"
       ref={ref}
     >
-      <h1 className="md:mt-0 absolute top-4 left-[40%] text-center text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-1 z-50">
+      <h1 className="md:mt-0 absolute top-4 inset-0  text-center text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-1 z-50">
         Click to view{" "}
         <span className=" bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-[#065cf1e4] animate-pulse">
           Playlist
@@ -67,6 +67,12 @@ export const StickyScroll: React.FC<StickyScrollProps> = ({
         <div className="max-w-2xl">
           {content?.map((item, index) => (
             <div key={item.title + index} className="my-20">
+              <a
+              href={content[activeCard].playlistUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              
+            >
               <motion.h2
                 initial={{ opacity: 0 }}
                 animate={{ opacity: activeCard === index ? 1 : 0.3 }}
@@ -74,6 +80,7 @@ export const StickyScroll: React.FC<StickyScrollProps> = ({
               >
                 {item.title}
               </motion.h2>
+              </a>
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: activeCard === index ? 1 : 0.3 }}
@@ -100,32 +107,31 @@ export const StickyScroll: React.FC<StickyScrollProps> = ({
         </div>
       </div>
       <motion.div
-        className={cn(
-          "hidden lg:block h-[240px] w-[426px] place-content-center  rounded-md bg-white/5 sticky top-20 overflow-hidden",
-          contentClassName
-        )}
-      >
-        {content && content[activeCard] ? (
-          <>
-            <motion.img
-              key={content[activeCard].thumbnail}
-              src={content[activeCard].thumbnail}
-              alt={content[activeCard].title}
-              className="w-full h-full object-cover"
-              // style={{ minHeight: '180px', minWidth: '320px' }}
-              transition={{ duration: 0.5 }}
-            />
-            <a
-              href={content[activeCard].playlistUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="absolute inset-0"
-            />
-          </>
-        ) : (
-          ""
-        )}
-      </motion.div>
+      className={cn(
+        "hidden lg:inline-block h-[240px] min-w-[426px] place-content-center rounded-md bg-white/5 sticky top-20 overflow-hidden",
+        contentClassName
+      )}
+    >
+      {content && content[activeCard] ? (
+        <>
+          <motion.img
+            key={content[activeCard].thumbnail}
+            src={content[activeCard].thumbnail}
+            alt={content[activeCard].title}
+            className="w-full h-full object-cover"
+            transition={{ duration: 0.5 }}
+          />
+          <a
+            href={content[activeCard].playlistUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute inset-0"
+          />
+        </>
+      ) : (
+        ""
+      )}
+    </motion.div>
     </motion.div>
   );
 };

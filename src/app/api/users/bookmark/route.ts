@@ -50,9 +50,11 @@ export async function POST(request: NextRequest) {
 
     if (!user.bookmarks) {
       user.bookmarks = [] as BookmarkData[];
+      await user.save();
     }
     if(!playlist.bookmarks){
         playlist.bookmarks = [] as PlaylistBookmark[];
+        await playlist.save();
     }
 
     const bookmarkIndex = user.bookmarks.findIndex(

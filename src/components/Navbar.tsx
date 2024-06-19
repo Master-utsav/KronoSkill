@@ -1,9 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { HoveredLink, Menu, MenuItem, ProductItem } from "./ui/navbar-menu";
+import { HoveredLink, Menu, MenuItem} from "./ui/navbar-menu";
 import { cn } from "@/utils/cn";
 import Link from "next/link";
-import ThemeSwitch from "./ThemeSwitch";
 import axios from "axios";
 import { CgProfile } from "react-icons/cg";
 import { CiBookmark } from "react-icons/ci";
@@ -30,8 +29,9 @@ const Navbar = ({ className }: { className?: string }) => {
       try {
         const res = await axios.get("/api/manager/course_skills_set");
         const data = res.data.courses;
-        if (Array.isArray(data)) {
-          setCategories(data);
+        const dataReverse = data.slice().reverse()
+        if (Array.isArray(dataReverse)) {
+          setCategories(dataReverse);
         } else {
           console.log("Data fetched is not in expected format:", data);
         }
@@ -53,7 +53,7 @@ const Navbar = ({ className }: { className?: string }) => {
     <div>
       <div
         className={cn(
-          "fixed top-10 inset-x-0 md:max-w-2xl max-w-lg mx-auto z-50 ",
+          "fixed md:top-10 top-3 inset-x-0 md:max-w-2xl max-w-lg mx-auto z-50 backdrop-blur-xl ",
           className
         )}
       >
@@ -100,11 +100,11 @@ const Navbar = ({ className }: { className?: string }) => {
                 </div>
             </MenuItem>
           <MenuItem setActive={setActive} active={active} item="Courses">
-            <div className="flex flex-col md:flex-row-reverse py-1 px-5 text-sm text-start items-start justify-center relative w-[100%] gap-5">
+            <div className="flex flex-wrap md:flex-row py-2 px-2 text-sm text-start items-start justify-evenly relative w-[100%] md:gap-x-5 gap-8 md:max-h-full max-h-[500px] ">
               {categories.map((course, index) => (
                 <div
                   key={course._id || index}
-                  className="flex flex-col text-start w-fit "
+                  className="flex flex-col text-start md:w-fit md:px-2 w-[20%]"
                 >
                   <p className="font-bold mb-2">{course.course}</p>
                   <div className="flex flex-col space-y-2">

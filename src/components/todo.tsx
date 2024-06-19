@@ -93,8 +93,8 @@ const Todo: React.FC<{ visible: boolean }> = ({ visible }) => {
 
   return (
     
-    <div className={`pl-2 pr-2 h-[80%] fixed  backdrop-blur-md rounded-2xl scroll-smooth  flex overflow-y-auto  z-50 max-w-[40%] min-w-[20%]  scrollbar-thin scrollbar-thumb-green-600/80 scrollbar-track-indigo-200 scrollbar-corner-transparent ${visible? "animate-slidein top-0 right-0" : "animate-slideout top-0 -right-20 opacity-0 "}`}>
-      <div className=" p-2 rounded shadow-lg relative mt-2">
+    <div className={`pl-2 pr-2 h-[80%] fixed bg-black/5 backdrop-blur-md rounded-2xl scroll-smooth  flex overflow-y-auto  z-50 max-w-[40%] min-w-[20%]  scrollbar-thin scrollbar-thumb-green-600/80 scrollbar-track-indigo-200 scrollbar-corner-transparent ${visible? "animate-slidein top-0 right-0" : "animate-slideout top-0 -right-20 opacity-0 "}`} style={{WebkitBackdropFilter: "blur(10px)"}}>
+      <div className=" p-2 rounded shadow-lg relative mt-2 backdrop-blur-lg">
         <h1 className="text-2xl font-bold mb-4">Todo List</h1>
         <div className="flex  mb-4 gap-2 relative w-[100%]">
           <div className="flex flex-grow w-[70%] relative">

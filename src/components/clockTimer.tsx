@@ -14,7 +14,7 @@ const ClockTimer: React.FC = () => {
       {isTodoOpen ? (
         <Provider store={store}>
           <div
-            className={`fixed top-[0] right-0 z-50 max-h-[82vh] min-h-[20vh] `}
+            className={`fixed top-[0] right-0 z-50 max-h-[82vh] min-h-[20vh]  `}
           >
             <Todo visible={isTodoOpen} />
           </div>
@@ -24,10 +24,10 @@ const ClockTimer: React.FC = () => {
         </>
       )}
       <span
-        className="fixed top-[39rem] right-6 z-50 cursor-pointer"
+        className="sm:fixed lg:top-[39rem] lg:right-6 top-[62rem] right-2 z-50 cursor-pointer hidden sm:inline-block "
         onClick={() => setIsTodoOpen(!isTodoOpen)}
       >
-        <Tooltip text="ToDo's">
+        <Tooltip text="ToDo's" >
           <Clock
             dark_sdw="#9ec7f9dc"
             size="70px"
