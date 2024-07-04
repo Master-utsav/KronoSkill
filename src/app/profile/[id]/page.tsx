@@ -57,7 +57,27 @@ const ProfilePage = ({ params }: ParamsProps) => {
   const userData: UserData | undefined = userdata;
   const router = useRouter();
   const userId = userData?.userId;
-
+  
+  const getBookmarkPlaylist = async (userId: string | undefined) => {
+    if (!userId){
+      toast.error("please login")
+      return [];
+    };
+    try {
+      const response = await axios.post("/api/users/get_bookmarks", { userId });
+      return response.data.playlistUrls;
+    } catch (error:any) {
+      console.log(error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+  
   useEffect(() => {
     const playlists : Playlist[] | [] = data.playlist || [];
     if (!Array.isArray(playlists)) {
@@ -366,23 +386,5 @@ let box_border: string = "#08c2f5";
 let box_border_shadow: string = "#08c2f51a";
 let bookmark_hover: string = "#08c2f54d";
 
-const getBookmarkPlaylist = async (userId: string | undefined) => {
-  if (!userId){
-    toast.error("please login")
-    return [];
-  };
-  try {
-    const response = await axios.post("/api/users/get_bookmarks", { userId });
-    return response.data.playlistUrls;
-  } catch (error:any) {
-    console.log(error);
-    if (
-      error.response &&
-      error.response.data &&
-      error.response.data.message
-    ) {
-      toast.error(error.response.data.message);
-    }
-  }
-};
+
 export default ProfilePage;

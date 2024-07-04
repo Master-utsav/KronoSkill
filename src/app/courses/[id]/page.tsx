@@ -70,7 +70,19 @@ export function Course({ params }: ParamsProps){
 
   const {data , userdata} = useData();
   const userId = userdata?.userId;
-
+  
+  async function getSkillDescription(){
+    try {
+      const res = await axios.get("/api/manager/skill_description");
+      return res.data.skills;
+    } catch (error:any) {
+      console.log(error);
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+      }
+      return [];
+    }
+  };
  
   useEffect(() => {
     const playlists:Playlist[] | [] = data.playlist || [];  
@@ -517,17 +529,5 @@ function setColors(id: string) {
   }
 }
 
-const getSkillDescription = async () => {
-  try {
-    const res = await axios.get("/api/manager/skill_description");
-    return res.data.skills;
-  } catch (error:any) {
-    console.log(error);
-    if (error.response && error.response.data && error.response.data.message) {
-      toast.error(error.response.data.message);
-    }
-    return [];
-  }
-};
 
 
