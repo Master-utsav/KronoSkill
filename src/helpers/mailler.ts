@@ -32,6 +32,8 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
       // console.log("verfiy time" ,  passUser)
     }
 
+    const domain = process.env.NEXT_PUBLIC_DOMAIN!;
+    console.log(domain);
     const htmlContent =
       emailType === "VERIFY"
         ? `
@@ -57,11 +59,11 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
           <div class="content">
             <p>Hi there,</p>
             <p>Thank you for signing up with us. Please click the button below to verify your email address:</p>
-            <a href="${process.env.NEXT_PUBLIC_DOMAIN}/verifyemail?token=${hashedToken}" class="button">Verify Email</a>
+            <a href="${domain}/verifyemail?token=${hashedToken}" class="button">Verify Email</a>
             <p>If you did not sign up for this account, you can ignore this email.</p>
           </div>
           <div class="footer">
-            <p>© 2024 Your Company. All rights reserved.</p>
+            <p>© 2024 KronoSkill. All rights reserved.</p>
           </div>
         </div>
       </body>
@@ -90,11 +92,11 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
           <div class="content">
             <p>Hi there,</p>
             <p>We received a request to reset your password. Please click the button below to set a new password:</p>
-            <a href="${process.env.NEXT_PUBLIC_DOMAIN}/resetpassword?token=${hashedToken}" class="button">Reset Password</a>
+            <a href="${domain}/resetpassword?token=${hashedToken}" class="button">Reset Password</a>
             <p>If you did not request a password reset, you can ignore this email.</p>
           </div>
           <div class="footer">
-            <p>© 2024 Your Company. All rights reserved.</p>
+            <p>© 2024 KronoSkill. All rights reserved.</p>
           </div>
         </div>
       </body>
