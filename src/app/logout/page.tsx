@@ -21,11 +21,12 @@ interface userLogout {
   email: string;
 }
 
-export const schema = z
+const schema = z
    .object({
     email: z.string().min(1, "required").regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Please enter a valid email address").email({ message: "Please enter a valid email address" }),
    })
-const LogoutPage = () => {
+
+export default function LogoutPage() {
     const [loading, setLoading] = useState<boolean>(false);
     const [isdisabled , setIsdisabled] = useState<boolean>(true);
 
@@ -145,4 +146,3 @@ const LogoutPage = () => {
   );
 };
 
-export default LogoutPage;

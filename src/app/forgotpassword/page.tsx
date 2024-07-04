@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const ForgotPassword = () => {
+export default function ForgotPassword() {
   const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [isdisabled , setIsdisabled] = useState<boolean>(true);
@@ -125,4 +125,3 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;

@@ -43,7 +43,7 @@ interface UserData  {
   uuid : string,
 }
 
-const ProfilePage = ({ params }: ParamsProps) => {
+export default function ProfilePage ({ params }: ParamsProps){
   const paramsId = params?.id;
   const [playlistData, setPlaylistData] = useState<Playlist[]>([]);
   const [expandedDescriptions, setExpandedDescriptions] = useState<{
@@ -77,7 +77,7 @@ const ProfilePage = ({ params }: ParamsProps) => {
       }
     }
   };
-  
+
   useEffect(() => {
     const playlists : Playlist[] | [] = data.playlist || [];
     if (!Array.isArray(playlists)) {
@@ -386,5 +386,3 @@ let box_border: string = "#08c2f5";
 let box_border_shadow: string = "#08c2f51a";
 let bookmark_hover: string = "#08c2f54d";
 
-
-export default ProfilePage;

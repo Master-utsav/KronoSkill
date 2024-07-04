@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const SendVerificationEmail = () => {
+export default function SendVerificationEmail () {
   const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [isdisabled , setIsdisabled] = useState<boolean>(true);
@@ -150,4 +150,3 @@ const SendVerificationEmail = () => {
   );
 };
 
-export default SendVerificationEmail;

@@ -23,7 +23,7 @@ interface UserLogin {
   password: string;
 }
 
-export const schema = z
+const schema = z
   .object({
     identity: z
       .string()
@@ -43,7 +43,8 @@ export const schema = z
     }
   );
 
-const Login = () => {
+
+export default function Login() {
   const [loading, setLoading] = useState(false);
   const [isClickedPassword, setIsClickedPassword] = useState(false);
   const [isdisabled, setIsdisabled] = useState<boolean>(true);
@@ -207,4 +208,3 @@ const Login = () => {
   );
 };
 
-export default Login;

@@ -55,7 +55,7 @@ interface InstructorPlaylist {
 }
 
 
-export function Course({ params }: ParamsProps){
+export default function Course({ params }: ParamsProps){
   const [skillDescription, setSkillDescription] = useState<SkillInterface[]>([]);
   const [instructorData, setInstructorData] = useState<InstructorPlaylist[]>([]);
   const [playlistData, setPlaylistData] = useState<Playlist[]>([]);
@@ -70,7 +70,7 @@ export function Course({ params }: ParamsProps){
 
   const {data , userdata} = useData();
   const userId = userdata?.userId;
-  
+
   async function getSkillDescription(){
     try {
       const res = await axios.get("/api/manager/skill_description");
