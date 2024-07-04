@@ -55,7 +55,7 @@ interface InstructorPlaylist {
 }
 
 
-const Course = ({ params }: ParamsProps) => {
+export function Course({ params }: ParamsProps){
   const [skillDescription, setSkillDescription] = useState<SkillInterface[]>([]);
   const [instructorData, setInstructorData] = useState<InstructorPlaylist[]>([]);
   const [playlistData, setPlaylistData] = useState<Playlist[]>([]);
@@ -517,7 +517,7 @@ function setColors(id: string) {
   }
 }
 
-export const getSkillDescription = async () => {
+const getSkillDescription = async () => {
   try {
     const res = await axios.get("/api/manager/skill_description");
     return res.data.skills;
@@ -530,4 +530,4 @@ export const getSkillDescription = async () => {
   }
 };
 
-export default Course;
+

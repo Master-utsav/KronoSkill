@@ -366,7 +366,7 @@ let box_border: string = "#08c2f5";
 let box_border_shadow: string = "#08c2f51a";
 let bookmark_hover: string = "#08c2f54d";
 
- export const getBookmarkPlaylist = async (userId: string | undefined) => {
+const getBookmarkPlaylist = async (userId: string | undefined) => {
   if (!userId){
     toast.error("please login")
     return [];

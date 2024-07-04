@@ -3,7 +3,7 @@
 import React, { FormEvent, useState } from 'react';
 import { BackgroundBeams } from "@/components/ui/background-beams";
 
-const page = () => {
+export function page(){
      const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [assistState , setAssistSatate] = useState<boolean>(false)
@@ -82,4 +82,4 @@ const page = () => {
   )
 }
 
-export default page
+
