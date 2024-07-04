@@ -22,7 +22,7 @@ const fetchPlaylistData = async (playlistUrl: string) => {
             params: {
                 part: 'snippet',
                 id: playlist,
-                key: process.env.YOUTUBE_V3_API_KEY,
+                key: process.env.NEXT_PRIVATE_YOUTUBE_V3_API_KEY,
             },
         });
         const playlistData = response.data.items[0];

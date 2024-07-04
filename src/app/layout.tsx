@@ -2,11 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-// import { Providers } from "./Providers";
+import { DataProvider } from "@/context/dataContext";
 import { Toaster } from "react-hot-toast";
 import ClockTimer from "@/components/clockTimer";
-import Providers from "./Providers";
-
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,13 +21,14 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={`${inter.className}`}>
-        <div className="relative md:w-full w-[96vw] flex justify-center items-center box-content m-0 p-0 ">
-          <Navbar />
-        </div>
-        <Providers>
+        <DataProvider>
+          <div className="relative md:w-full w-[96vw] flex justify-center items-center box-content m-0 p-0">
+            <Navbar />
+          </div>
+
           {children}
-        </Providers>
-        <ClockTimer/>
+        </DataProvider>
+        <ClockTimer />
         <Toaster position="bottom-right" reverseOrder={false} />
       </body>
     </html>

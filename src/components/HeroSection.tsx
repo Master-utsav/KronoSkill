@@ -1,24 +1,14 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import HeroSectionAfterLogin from './HeroSectionAfterLogin';
 import HeroSectionBeforeLogin from './HeroSectionBeforeLogin';
-
-interface User {
-    userId: string;
-    username: string;
-  }
+import { useData } from '@/context/dataContext';
 
 const HeroSection = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState<User | null>(null);
-  useEffect(() => {
-    const loggedUser = localStorage.getItem("logged User");
-    if (loggedUser) {
-      setIsLoggedIn(JSON.parse(loggedUser));
-    }
-  }, []);
+  const {isLoggedIn} = useData();
   return (
     <>
-      {(isLoggedIn?.userId && isLoggedIn?.username) ? <HeroSectionAfterLogin/> : <HeroSectionBeforeLogin/>}
+      {(isLoggedIn) ? <HeroSectionAfterLogin/> : <HeroSectionBeforeLogin/>}
     </>
   )
 }

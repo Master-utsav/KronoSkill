@@ -1,35 +1,26 @@
 'use client';
-import React, { useEffect, useState } from "react";
+import React from "react";
 import AnimatedTooltip  from "./ui/animated-tooltip";
 import { WavyBackground } from "./ui/wavy-background";
-import axios from "axios";
-import toast from "react-hot-toast";
+import { useData } from "@/context/dataContext";
+import {helix} from "ldrs"
+import Skill from "@/models/skill";
+helix.register();
+
+interface Instructor {
+  id: number;
+  channelLink: string;
+  channelName: string;
+  image: string;
+  skill: string[];
+}
 
 const Instructor = () => {
-  const [instructors , setInstructors] = useState([]);
-  
-  const getInstructors = async () => {
-    try {
-      const response = await axios.get('/api/manager/instructors');
-      const Arraydata = response.data.instructors;
-      const newData = Arraydata.map((item:any, index: number) => ({
-        id: index,
-        channelLink: item.channelLink,
-        channelName: item.channelName,
-        image: item.image,
-        skill: item.skill[0]
-      }));
-      setInstructors(newData);
-    } catch (error: any) {
-      console.log("Fetching request failed", error);
-      if (error.response && error.response.data && error.response.data.error) {
-        toast.error(error.response.data.error);
-      }
-    }
-  }
-  useEffect(() => {
-    getInstructors();
-  }, [])
+  const {data , loading , isLoggedIn} = useData();
+  const instructors : Instructor[] = data.instructor || [];
+  const newInstructorData = instructors.map((items) => {
+    return { ...items, skill: items.skill[0] };
+  })
   
   return (
     <div className="relative w-full px-2 h-auto overflow-hidden flex items-center  justify-center" style={{backgroundColor: "rgb(248,248,248)"}}>
@@ -41,9 +32,10 @@ const Instructor = () => {
         Explore the Visionaries Leading Your Technological Journey
         </p>
         <div className="flex flex-wrap items-center justify-center mb-10  mt-10 px-2">
-          {instructors && 
-           <AnimatedTooltip items={instructors}/>
-          }
+          {!loading ? 
+          (instructors && 
+           <AnimatedTooltip items={newInstructorData}/>
+          ) : (isLoggedIn ? (<l-helix size="60" speed="1.3" color="#0c80fc70"></l-helix>) : (<l-helix size="60" speed="1.3" color="orchid"></l-helix>)) } 
         </div>
         </WavyBackground>
       </div>

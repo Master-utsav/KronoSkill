@@ -20,7 +20,7 @@ const getChannelAvatar = async (channelId: string) => {
       params: {
         part: 'snippet',
         id: channelId,
-        key: process.env.YOUTUBE_V3_API_KEY,
+        key: process.env.NEXT_PRIVATE_YOUTUBE_V3_API_KEY,
       },
     });
    

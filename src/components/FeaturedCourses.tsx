@@ -1,10 +1,12 @@
 'use client'
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BackgroundGradient } from "./ui/background-gradient";
-import courseData from "../data/music_courses.json";
 import Link from "next/link";
 import { Button } from "./ui/moving-border";
-import axios from "axios";
+import { useData } from "@/context/dataContext";
+import {helix} from "ldrs";
+
+helix.register();
 
 interface Course {
   _id: string;
@@ -14,27 +16,10 @@ interface Course {
 }
 
 const FeaturedCourses = () => {
-  const [featuredCourses, setFeaturedCourses] = useState<Course[]>([]);
+  const {data , loading , isLoggedIn} = useData();
+
+  const featuredCourses: Course[] = data.featuredCourses || [];
   
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await axios.get("/api/manager/course_skills_set");
-        const data = res.data.courses;
-        if (Array.isArray(data)) {
-          setFeaturedCourses(data);
-        } else {
-          console.log("Data fetched is not in expected format:", data);
-        }
-      } catch (error) {
-        console.log("Error fetching courses data", error);
-        // Handle error if needed
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
   return (
     <div className="py-12 bg-gray-900 rounded-lg">
       <div>
@@ -47,7 +32,8 @@ const FeaturedCourses = () => {
           </p>
         </div>
         <div className="mt-10 mx-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center animate-opac">
+          {!loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center animate-opac">
             {featuredCourses.map((course: Course, index: number) => {
               const fullDescription = course.description.join(" ");
               const shortDescription = fullDescription.length > 220 ? fullDescription.slice(0, 220) + "..." : fullDescription;
@@ -69,6 +55,12 @@ const FeaturedCourses = () => {
               );
             })}
           </div>
+          ) : (
+            <div className="flex justify-center items-center">
+              {isLoggedIn ? (<l-helix size="60" speed="1.3" color="#0c80fc70"></l-helix>) : (<l-helix size="60" speed="1.3" color="orchid"></l-helix>)}
+            </div>
+            )}
+          
         </div>
         <div className="mt-20 text-center">
           <Link href={"/courses"}>

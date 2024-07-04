@@ -1,7 +1,18 @@
 "use client"
+import Link from "next/link";
 import Tooltip from "./ui/tooltip";
 
 function Footer() {
+
+  const email:string = process.env.NEXT_PUBLIC_GMAIL!;
+  const subject = "Inquiry about services"; 
+  const body = "Hello, I'm interested in your services."; 
+
+  const encodedSubject = encodeURIComponent(subject);
+  const encodedBody = encodeURIComponent(body);
+
+  const gmailLink = `mailto:${email}?subject=${encodedSubject}&body=${encodedBody}`;
+
   return (
     <footer className="bg-black text-gray-400 py-12">
       <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4 sm:px-6 lg:px-8">
@@ -17,35 +28,35 @@ function Footer() {
           <ul>
             <li>
               <a
-                href="#"
+                href="#home"
                 className="hover:text-white transition-colors duration-300"
               >
                 Home
               </a>
             </li>
             <li>
-              <a
-                href="#"
+              <Link
+                href={"#playlist"}
                 className="hover:text-white transition-colors duration-300"
               >
-                About
-              </a>
+                Playlist
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
+              <Link
+                href={"#home"}
                 className="hover:text-white transition-colors duration-300"
               >
                 Courses
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
+              <Link
+                href={"/contact"}
                 className="hover:text-white transition-colors duration-300"
               >
-                Contact
-              </a>
+                Contact me
+              </Link>
             </li>
           </ul>
         </div>
@@ -120,8 +131,8 @@ function Footer() {
           <h2 className="text-white text-lg font-semibold mb-4">Contact Us</h2>
           <p>Madhya Pradesh, India</p>
           <p>Indore</p>
-          <p>Email: info@youtubeschool.com</p>
-          <p>Developer: master_utsav</p>
+          <Link href={gmailLink} className="hover:text-blue-300 transition-all delay-75 ease-in-out block">{`Email: ${email} `}</Link>
+          <Link href={"https://www.linkedin.com/in/master-utsav"} className="hover:text-blue-300 transition-all delay-75 ease-in-out block">Website by : master_utsav</Link>
           <p>About: CSE student, 2nd Year</p>
         </div>
       </div>

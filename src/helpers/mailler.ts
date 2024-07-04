@@ -90,7 +90,7 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
           <div class="content">
             <p>Hi there,</p>
             <p>We received a request to reset your password. Please click the button below to set a new password:</p>
-            <a href="${process.env.DOMAIN}/resetpassword?token=${hashedToken}" class="button">Reset Password</a>
+            <a href="${process.env.NEXT_PUBLIC_DOMAIN}/resetpassword?token=${hashedToken}" class="button">Reset Password</a>
             <p>If you did not request a password reset, you can ignore this email.</p>
           </div>
           <div class="footer">
@@ -101,11 +101,12 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
       </html>
     `;
     const transporter = nodemailer.createTransport({
-      host:  process.env.MAILER_HOST,
+      host:  process.env.NEXT_PRIVATE_MAILER_HOST,
       port: 2525,
+      // service: "gmail",
       auth: {
-        user: process.env.MAILER_USER, 
-        pass: process.env.MAILER_PASS, 
+        user: process.env.NEXT_PRIVATE_MAILER_USER, 
+        pass: process.env.NEXT_PRIVATE_MAILER_PASS, 
       },
     });
    

@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Bookmark from "@/components/bookmark";
 import Tooltip from "@/components/ui/tooltip";
+import { useData } from "@/context/dataContext";
 
 helix.register();
 
@@ -39,46 +40,46 @@ interface Playlist {
   isBookMarked: boolean; // Added this line
 }
 
+interface Instructor {
+  id: number;
+  channelLink: string;
+  channelName: string;
+  image: string;
+  skill: string[];
+}
+interface InstructorPlaylist {
+  id: number;
+  channelLink: string;
+  channelName: string;
+  image: string;
+}
+
+
 const Course = ({ params }: ParamsProps) => {
   const [skillDescription, setSkillDescription] = useState<SkillInterface[]>([]);
-  const [instructorData, setInstructorData] = useState<[]>([]);
+  const [instructorData, setInstructorData] = useState<InstructorPlaylist[]>([]);
   const [playlistData, setPlaylistData] = useState<Playlist[]>([]);
   const [expandedDescriptions, setExpandedDescriptions] = useState<{ [key: number]: boolean }>({});
   const [isRatingSubmited , setIsRatingSubmited] = useState<{ [key: number] : boolean}>({});
   const [checked, setChecked] = useState<{ [key: number] : boolean}>({});;
-  const [userId, setUserId] = useState<string>("");
   const router = useRouter();
-
+   
   const paramsId = params?.id;
   const headTitle = paramsId?.split("-").join(" ");
   setColors(headTitle);
+
+  const {data , userdata} = useData();
+  const userId = userdata?.userId;
+
  
   useEffect(() => {
+    const playlists:Playlist[] | [] = data.playlist || [];  
+    const instructors: Instructor[] = data.instructor || [];
+
     const fetchData = async () => {
       const data = await getSkillDescription();
       setSkillDescription(data);
 
-      const loggedUser = localStorage.getItem("logged User");
-      if (loggedUser) {
-        const user = JSON.parse(loggedUser);
-        setUserId(user.userId);
-      }
-
-      const instructors = await getInstructorsOfThatSkill();
-      if (!Array.isArray(instructors)) {
-        throw new Error("Instructors data is not an array");
-      }
-      const newData: any = instructors
-        .filter((item: any) => item.skill.includes(headTitle))
-        .map((item: any, index: number) => ({
-          id: index,
-          channelLink: item.channelLink,
-          channelName: item.channelName,
-          image: item.image,
-        }));
-      setInstructorData(newData);
-
-      const playlists = await getPlayListData();
       if (!Array.isArray(playlists)) {
         throw new Error("Playlists data is not an array");
       }
@@ -118,14 +119,28 @@ const Course = ({ params }: ParamsProps) => {
           isBookMarked : !!isBookMarked,
         };
       });
+      if (!Array.isArray(instructors)) {
+        throw new Error("Instructors data is not an array");
+      }
+      console.log(instructors)
+      const newData = instructors
+        .filter((item) => item.skill?.includes(headTitle))
+        .map((item, index) => ({
+          id: index,
+          channelLink: item.channelLink,
+          channelName: item.channelName,
+          image: item.image,
+        }));
+      console.log(newData);
+      setInstructorData(newData);
       setPlaylistData(processedPlaylists);
-
     };
 
     fetchData();
 
-  }, [headTitle , userId]);
+  }, [data.playlist, data.instructor ,headTitle, userId]);
   
+
   const handleBookmarks = async(userAction: "add" | "remove", playlistUrl: string , index: number) => {
     if(userId === ""){
       toast.error("Please Login");
@@ -225,7 +240,7 @@ const Course = ({ params }: ParamsProps) => {
           </div>
         )}
          {playlistData.length > 0 ? (
-          <div className="min-h-screen w-full rounded-md flex flex-col  relative mx-auto py-2 md:py-2 md:space-y-1">
+          <div className="min-h-screen w-full rounded-md flex flex-col  relative mx-auto py-2 md:py-2 md:space-y-1 ">
               <CursorBorderGlowCard
                 className="max-w-[90%] w-full mx-auto flex flex-wrap content-center item-center justify-center rounded-none md:rounded-2xl  shadow-input bg-white/20 dark:bg-black/50  animate-slidedown md:py-2 py-5"
                 bg_card_cursor_color="transparent"
@@ -235,7 +250,7 @@ const Course = ({ params }: ParamsProps) => {
                 box_border_shadow={box_border_shadow}
               >
                 {playlistData.map((playlist, index) => (
-                  <div key={playlist.playlistUrl || index} className="flex flex-col">
+                  <div key={playlist.playlistUrl || index} className="flex flex-col min-w-[100%]">
                   <div
                     className="min-w-[100%] md:min-h-[32vh] bg-transparent rounded-none md:rounded-2xl md:px-2 flex md:flex-row flex-col md:justify-between justify-center items-center relative gap-2 py-4 md:py-0"
                   >
@@ -514,31 +529,5 @@ export const getSkillDescription = async () => {
     return [];
   }
 };
-
-export const getInstructorsOfThatSkill = async () => {
-  try {
-    const response = await axios.get("/api/manager/instructors");
-    return response.data.instructors;
-  } catch (error:any) {
-    console.log(error);
-    if (error.response && error.response.data && error.response.data.message) {
-      toast.error(error.response.data.message);
-    }
-    return [];
-  }
-};
-
-export const getPlayListData = async() => {
-  try{
-    const response = await axios.get("/api/manager/playlist");
-    return response.data.playlists;
-  }
-  catch(error){
-    console.log(error);
-    return [];
-  }
-}
-
-
 
 export default Course;

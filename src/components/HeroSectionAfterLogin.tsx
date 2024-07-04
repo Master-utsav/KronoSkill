@@ -3,26 +3,21 @@ import React, { useEffect, useState } from 'react'
 import ProductivityComponent from './ui/master_light'
 import { Button } from './ui/moving-border'
 import Link from 'next/link'
+import { useData } from '@/context/dataContext';
 
+interface UserData  {
+  userId : string,
+  username : string,
+  firstname : string,
+  uuid : string,
+}
 
 const HeroSectionAfterLogin = () => {
-      
-  const [userData , setUserData] = useState({
-    userId : "",
-    username : "",
-    firstname : "",
-    uuid : "",
-  })
-
-  useEffect(() => {
-    const loggedUser = localStorage.getItem("logged User");
-    if (loggedUser) {
-        setUserData(JSON.parse(loggedUser));
-    }
-  }, []);
+      const {userdata} = useData();
+      const userData: UserData | undefined = userdata;
   
   return ( 
-    <div className="h-auto  rounded-md flex flex-col items-center justify-center z-10 overflow-hidden mx-auto py-10 md:py-0 relative  dark:bg-black/[0.96]  dark:bg-dot-white/[0.1] ">
+    <div id="home" className="h-auto  rounded-md flex flex-col items-center justify-center z-10 overflow-hidden mx-auto py-10 md:py-0 relative  dark:bg-black/[0.96]  dark:bg-dot-white/[0.1] ">
     <ProductivityComponent
       bg_color="#00000000"
       light_ray1="#0000ff3c"
@@ -33,7 +28,7 @@ const HeroSectionAfterLogin = () => {
       <div className="p-4 w-full mt-5 md:mt-40 md:mb-10 md:m-5 text-center z-50 space-y-3 flex flex-col ">
         <div>
         <h1 className="md:mt-0 text-center text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-1">
-            Welcome, <span className=' bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-[#065cf1e4] animate-pulse'>{(userData?.firstname).charAt(0).toUpperCase() + (userData?.firstname).slice(1).toLowerCase()}</span>
+            Welcome, {userData ? <span className=' bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-[#065cf1e4] animate-pulse'>{(userData?.firstname).charAt(0).toUpperCase() + (userData?.firstname).slice(1).toLowerCase()}</span> : <span className=' bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-[#065cf1e4] animate-pulse'>User</span>}
             </h1>
         <h1 className="mt-0   text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-2 animate-slidein">
         Unleash Your Potential with Elite Skills!

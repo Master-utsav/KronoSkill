@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { GoBookmarkFill } from "react-icons/go";
 import { helix } from "ldrs";
-import { TbTruckReturn } from "react-icons/tb";
+import { useData } from "@/context/dataContext";
 
 helix.register();
 
@@ -36,6 +36,13 @@ interface Playlist {
   isBookMarked: boolean;
 }
 
+interface UserData  {
+  userId : string,
+  username : string,
+  firstname : string,
+  uuid : string,
+}
+
 const ProfilePage = ({ params }: ParamsProps) => {
   const paramsId = params?.id;
   const [playlistData, setPlaylistData] = useState<Playlist[]>([]);
@@ -46,25 +53,18 @@ const ProfilePage = ({ params }: ParamsProps) => {
     [key: number]: boolean;
   }>({});
   const [checked, setChecked] = useState<{ [key: number]: boolean }>({});
-  const [userData, setUserData] = useState({ userId: "", uuid: "" });
-
+  const {userdata , data} = useData();
+  const userData: UserData | undefined = userdata;
   const router = useRouter();
+  const userId = userData?.userId;
 
   useEffect(() => {
-    const loggedUser = localStorage.getItem("logged User");
-    if (loggedUser) {
-      setUserData(JSON.parse(loggedUser));
+    const playlists : Playlist[] | [] = data.playlist || [];
+    if (!Array.isArray(playlists)) {
+      toast.error("Playlists data is not an array");
     }
-    const userId = userData.userId;
-
     const fetchData = async () => {
-      const playlists = await getPlayListData();
-      if (!Array.isArray(playlists)) {
-        throw new Error("Playlists data is not an array");
-      }
-
       const bookmarkedPlaylistUrls = await getBookmarkPlaylist(userId);
-
       if(bookmarkedPlaylistUrls === undefined){
         return [];
       }
@@ -118,7 +118,7 @@ const ProfilePage = ({ params }: ParamsProps) => {
     };
 
     fetchData();
-  }, [userData.userId]);
+  }, [data.playlist, userId]);
 
   console.log(playlistData);
   const handleBookmarks = async (
@@ -126,14 +126,14 @@ const ProfilePage = ({ params }: ParamsProps) => {
     playlistUrl: string,
     index: number
   ) => {
-    if (userData.userId === "") {
+    if (userData && userData.userId === "") {
       toast.error("Please Login");
       router.push("/login");
       return;
     }
     try {
       const respone = await axios.post("/api/users/bookmark", {
-        userId: userData.userId,
+        userId: userData?.userId,
         playlistUrl: playlistUrl,
         action: userAction,
       });
@@ -166,14 +166,15 @@ const ProfilePage = ({ params }: ParamsProps) => {
     playlistUrl: string,
     index: number
   ) => {
-    if (userData.userId === "") {
+    if (userData?.userId === "") {
       toast.error("Please Login");
       router.push("/login");
       return;
     }
+
     try {
       const response = await axios.post("/api/users/rating", {
-        userId: userData.userId,
+        userId: userData?.userId,
         playlistUrl: playlistUrl,
         rateNumber: rating,
       });
@@ -195,13 +196,10 @@ const ProfilePage = ({ params }: ParamsProps) => {
       [index]: !prevState[index],
     }));
   };
-
-
  
-  console.log(paramsId , userData.uuid)
   return (
     <>
-      {paramsId === userData.uuid ? (
+      {userData!== undefined && paramsId === userData?.uuid? (
         <div className="w-[100vw] h-[100vh] overflow-x-hidden">
           <ProductivityComponent
             bg_color="#00ff0000"
@@ -224,9 +222,9 @@ const ProfilePage = ({ params }: ParamsProps) => {
                 box_border_shadow={box_border_shadow}
               >
                 {playlistData.map((playlist, index) => (
-                  <div key={playlist.playlistUrl || index} className="flex flex-col">
+                  <div key={playlist.playlistUrl || index} className="flex flex-col min-w-[100%]">
                   <div
-                    className="min-w-[100%] md:min-h-[32vh] bg-transparent rounded-none md:rounded-2xl md:px-2 flex md:flex-row flex-col md:justify-between justify-center items-center relative gap-2 py-4 md:py-0"
+                    className="min-w-[100%] md:min-h-[32vh] bg-transparent rounded-none md:rounded-2xl md:px-2 flex md:flex-row flex-col md:justify-between justify-center items-center relative gap-2 py-4 md:py-0 "
                   >
                     <div className="md:w-[70%] w-[80%] text-start md:pl-4 ">
                       <div className="flex justify-between items-start">
@@ -368,17 +366,11 @@ let box_border: string = "#08c2f5";
 let box_border_shadow: string = "#08c2f51a";
 let bookmark_hover: string = "#08c2f54d";
 
-export const getPlayListData = async () => {
-  try {
-    const response = await axios.get("/api/manager/playlist");
-    return response.data.playlists;
-  } catch (error) {
-    console.log(error);
+ export const getBookmarkPlaylist = async (userId: string | undefined) => {
+  if (!userId){
+    toast.error("please login")
     return [];
-  }
-};
-
- export const getBookmarkPlaylist = async (userId: string) => {
+  };
   try {
     const response = await axios.post("/api/users/get_bookmarks", { userId });
     return response.data.playlistUrls;
