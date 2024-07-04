@@ -29,7 +29,7 @@ interface User {
     confirmpassword: string,
 }
 
-export const schema: ZodType<User> = z
+const schema: ZodType<User> = z
   .object({
     firstname: z.string().min(1, "required").regex(/^[a-zA-Z]+$/, "only alphabets are allowed"),
     lastname: z.string().min(1, "required").regex(/^[a-zA-Z]+$/, "only alphabets are allowed"),
