@@ -57,7 +57,7 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
           <div class="content">
             <p>Hi there,</p>
             <p>Thank you for signing up with us. Please click the button below to verify your email address:</p>
-            <a href="${process.env.DOMAIN}/verifyemail?token=${hashedToken}" class="button">Verify Email</a>
+            <a href="${process.env.NEXT_PUBLIC_DOMAIN}/verifyemail?token=${hashedToken}" class="button">Verify Email</a>
             <p>If you did not sign up for this account, you can ignore this email.</p>
           </div>
           <div class="footer">
