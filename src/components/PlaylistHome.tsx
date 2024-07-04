@@ -2,8 +2,7 @@
 import React from "react";
 import { StickyScroll } from "./ui/sticky-scroll-reveal";
 import { useData } from "@/context/dataContext";
-import {helix} from "ldrs"
-helix.register();
+
 
 interface PlaylistContent {
   title: string;

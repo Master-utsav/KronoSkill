@@ -1,10 +1,22 @@
-import Navbar from "@/components/Navbar";
-import "./globals.css";
+// template.tsx
+import React, { useEffect } from 'react';
 
-export default function Template({ children }: { children: React.ReactNode }) {
-  return (
+// Import CSS globally
+import './globals.css';
 
-        <div className="animate-zoomin ">{children}</div>
-  
-  );
+// Import helix conditionally
+let helix: any;
+if (typeof window !== 'undefined') {
+    helix = require('ldrs').helix;
+    helix.register();
 }
+
+const Template = ({ children }: { children: React.ReactNode }) => {
+    return (
+        <div className="animate-zoomin">
+            {children}
+        </div>
+    );
+}
+
+export default Template;

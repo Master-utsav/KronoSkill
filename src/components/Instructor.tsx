@@ -3,9 +3,7 @@ import React from "react";
 import AnimatedTooltip  from "./ui/animated-tooltip";
 import { WavyBackground } from "./ui/wavy-background";
 import { useData } from "@/context/dataContext";
-import {helix} from "ldrs"
-import Skill from "@/models/skill";
-helix.register();
+
 
 interface Instructor {
   id: number;

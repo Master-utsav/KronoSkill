@@ -2,8 +2,7 @@
 import React from "react";
 import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
 import { useData } from "@/context/dataContext";
-import {helix} from "ldrs"
-helix.register();
+
 
 interface QuoteContent{
   name: string;

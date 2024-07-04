@@ -171,7 +171,7 @@ const config: Config = {
   plugins: [
     addVariablesForColors,
     gridSVG,
-    require("daisyui"),
+    // require("daisyui"),
     require("tailwind-scrollbar"),
   ],
 };

@@ -134,7 +134,7 @@ export default function Course({ params }: ParamsProps){
       if (!Array.isArray(instructors)) {
         throw new Error("Instructors data is not an array");
       }
-      console.log(instructors)
+
       const newData = instructors
         .filter((item) => item.skill?.includes(headTitle))
         .map((item, index) => ({
@@ -143,7 +143,7 @@ export default function Course({ params }: ParamsProps){
           channelName: item.channelName,
           image: item.image,
         }));
-      console.log(newData);
+     
       setInstructorData(newData);
       setPlaylistData(processedPlaylists);
     };

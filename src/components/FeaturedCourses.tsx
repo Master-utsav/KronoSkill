@@ -4,9 +4,6 @@ import { BackgroundGradient } from "./ui/background-gradient";
 import Link from "next/link";
 import { Button } from "./ui/moving-border";
 import { useData } from "@/context/dataContext";
-import {helix} from "ldrs";
-
-helix.register();
 
 interface Course {
   _id: string;

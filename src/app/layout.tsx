@@ -6,6 +6,7 @@ import { DataProvider } from "@/context/dataContext";
 import { Toaster } from "react-hot-toast";
 import ClockTimer from "@/components/clockTimer";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
