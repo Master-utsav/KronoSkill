@@ -1,5 +1,6 @@
 import User from "@/models/userModel";
 import nodemailer from "nodemailer";
+
 import bcryptjs from "bcryptjs";
 
 export const sendEmail = async ({ email, emailType, userId }: any) => {
@@ -103,18 +104,14 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
       </html>
     `;
     const transporter = nodemailer.createTransport({
-      // host:  process.env.NEXT_PRIVATE_MAILER_HOST,
-      // port: 2525,
-      service: "gmail",
+      host: process.env.NEXT_PRIVATE_MAILER_HOST ,
+      port:  2525,
       auth: {
         user: process.env.NEXT_PRIVATE_MAILER_USER, 
         pass: process.env.NEXT_PRIVATE_MAILER_PASS, 
       },
     });
-   
-
-    
-
+  
     const mailOptions = {
       from: process.env.NEXT_PUBLIC_GMAIL, // sender address
       to: email, // list of receivers
@@ -124,8 +121,11 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
     };
 
     const mailResponse = await transporter.sendMail(mailOptions);
+
+    console.log(mailResponse);
     return mailResponse;
   } catch (error: any) {
+    console.log(error);
     throw new Error(error.message);
   }
 };

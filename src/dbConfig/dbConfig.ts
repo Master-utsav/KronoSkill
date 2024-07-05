@@ -7,7 +7,7 @@ export async function connect() {
 
         // Set maximum listeners for connected and error events
         connection.setMaxListeners(15); // Adjust the number as per your needs
-
+       
         connection.on('connected', () => {
             console.log("MongoDB connected");
         });
