@@ -106,6 +106,7 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
     const transporter = nodemailer.createTransport({
       host: process.env.NEXT_PRIVATE_MAILER_HOST ,
       port:  2525,
+      secure: false,
       auth: {
         user: process.env.NEXT_PRIVATE_MAILER_USER, 
         pass: process.env.NEXT_PRIVATE_MAILER_PASS, 
