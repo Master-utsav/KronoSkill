@@ -103,9 +103,9 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
       </html>
     `;
     const transporter = nodemailer.createTransport({
-      host:  process.env.NEXT_PRIVATE_MAILER_HOST,
-      port: 2525,
-      // service: "gmail",
+      // host:  process.env.NEXT_PRIVATE_MAILER_HOST,
+      // port: 2525,
+      service: "gmail",
       auth: {
         user: process.env.NEXT_PRIVATE_MAILER_USER, 
         pass: process.env.NEXT_PRIVATE_MAILER_PASS, 
@@ -116,7 +116,7 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
     
 
     const mailOptions = {
-      from: "musicAcademy@music.com", // sender address
+      from: process.env.NEXT_PUBLIC_GMAIL, // sender address
       to: email, // list of receivers
       subject:
         emailType === "VERIFY" ? "VERIFY your email" : "Reset your password", // Subject line
