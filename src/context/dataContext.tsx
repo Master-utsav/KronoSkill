@@ -121,16 +121,17 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
     
-    const loggedUser = localStorage.getItem("logged User");
-    if (loggedUser) {
-      let data = JSON.parse(loggedUser);
-      setUserdata(data);
-      if(data.userId && data.username ){
-        setIsLoggedIn(true);
+    if (typeof window !== 'undefined') {
+      const loggedUser = localStorage.getItem("logged User");
+      if (loggedUser) {
+        const data = JSON.parse(loggedUser);
+        setUserdata(data);
+        if (data.userId && data.username) {
+          setIsLoggedIn(true);
+        }
+      } else {
+        setIsLoggedIn(false);
       }
-    }
-    else{
-      setIsLoggedIn(false);
     }
     
     fetchData();

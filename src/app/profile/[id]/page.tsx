@@ -46,12 +46,8 @@ interface UserData  {
 export default function ProfilePage ({ params }: ParamsProps){
   const paramsId = params?.id;
   const [playlistData, setPlaylistData] = useState<Playlist[]>([]);
-  const [expandedDescriptions, setExpandedDescriptions] = useState<{
-    [key: number]: boolean;
-  }>({});
-  const [isRatingSubmited, setIsRatingSubmited] = useState<{
-    [key: number]: boolean;
-  }>({});
+  const [expandedDescriptions, setExpandedDescriptions] = useState<{[key: number]: boolean}>({});
+  const [isRatingSubmited, setIsRatingSubmited] = useState<{[key: number]: boolean}>({});
   const [checked, setChecked] = useState<{ [key: number]: boolean }>({});
   const {userdata , data} = useData();
   const userData: UserData | undefined = userdata;
@@ -78,8 +74,8 @@ export default function ProfilePage ({ params }: ParamsProps){
     }
   };
 
+  const playlists : Playlist[] | [] = data.playlist || [];
   useEffect(() => {
-    const playlists : Playlist[] | [] = data.playlist || [];
     if (!Array.isArray(playlists)) {
       toast.error("Playlists data is not an array");
     }
@@ -138,9 +134,8 @@ export default function ProfilePage ({ params }: ParamsProps){
     };
 
     fetchData();
-  }, [data.playlist, userId]);
+  }, [playlists, userId]);
 
-  console.log(playlistData);
   const handleBookmarks = async (
     userAction: "add" | "remove",
     playlistUrl: string,
@@ -210,6 +205,7 @@ export default function ProfilePage ({ params }: ParamsProps){
       }
     }
   };
+  
   const handleToggleDescription = (index: number) => {
     setExpandedDescriptions((prevState) => ({
       ...prevState,

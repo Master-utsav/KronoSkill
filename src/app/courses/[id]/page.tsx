@@ -71,13 +71,12 @@ export default function Course({ params }: ParamsProps){
   const {data , userdata} = useData();
   const userId = userdata?.userId;
   
+  const playlists:Playlist[] | [] = data.playlist || [];  
+  const instructors: Instructor[] = data.instructor || [];
+  const skillDescription: SkillInterface[] = data.skills || [];
   
   useEffect(() => {
-    const fetchData = async () => {
-      
-      const playlists:Playlist[] | [] = data.playlist || [];  
-      const instructors: Instructor[] = data.instructor || [];
-      const skillDescription: SkillInterface[] = data.skills || [];
+    const fetchData = () => {
       
       const headTitleSkillSet: SkillInterface[] = skillDescription?.filter((skill) => skill.skill === headTitle) ?? [];
       const description =  headTitleSkillSet.length > 0 ? headTitleSkillSet[0].description : "";
@@ -141,7 +140,7 @@ export default function Course({ params }: ParamsProps){
 
     fetchData();
 
-  }, [data.playlist, data.instructor, data.skills, headTitle, userId]);
+  }, [headTitle, instructors, playlists, skillDescription, userId]);
   
   const handleBookmarks = async(userAction: "add" | "remove", playlistUrl: string , index: number) => {
     if(userId === ""){
