@@ -52,20 +52,3 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
-  try {
-    const skills = await Skill.find();
-
-    return NextResponse.json(
-      { skills, message: "fetched successfully" },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.log(error);
-
-    return NextResponse.json(
-      { error: "internal server error" },
-      { status: 500 }
-    );
-  }
-}

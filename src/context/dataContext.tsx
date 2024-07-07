@@ -28,6 +28,10 @@ interface PlaylistContent {
   thumbnail: string;
   playlistUrl: string;
 }
+interface SkillInterface {
+  skill: string;
+  description: string;
+}
 
 interface Playlist {
   playlistUrl: string;
@@ -54,11 +58,12 @@ interface Instructor {
 interface DataContextProps {
   data: {
     featuredCourses?: Course[];
-    qoutesData?: Quote[];
+    quotes?: Quote[];
     playlistHome?: PlaylistContent[];
     instructor?: Instructor[];
     NavbarCourses?: Course[];
     playlist?: Playlist[];
+    skills?: SkillInterface[];
   };
   userdata?: UserData ;
   isLoggedIn: boolean;
@@ -75,37 +80,31 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      try {
-        const [res1, res2, res3, res4] = await Promise.all([
-          axios.get('/api/manager/course_skills_set'),
-          axios.get("/api/manager/playlist"),
-          axios.get('/api/manager/quote'),
-          axios.get('/api/manager/instructors'),
-        ]);
 
-        const featuredCourses: Course[] = res1.data.courses;
+      try {
+        const res = await axios.get('/api/manager/homepage_data')
+        const data = res.data.data
+        console.log(res);
+        const featuredCourses: Course[] = data.courses;
         if (!Array.isArray(featuredCourses)) {
-          console.log('Data fetched from /api/manager/course_skills_set is not in expected format:', featuredCourses);
+          console.log('Data fetched from /api/manager/homepage_data is not in expected format:', featuredCourses);
         }
 
         const NavbarCourses: Course[] = featuredCourses.slice().reverse();
   
-        const playlistData = res2.data;
+        const playlistData = data;
         let playlistHome: PlaylistContent[] = [];
         if (playlistData && playlistData.playlists && Array.isArray(playlistData.playlists)) {
           playlistHome = playlistData.playlists.slice(0, 8);
         }
 
         const playlist: Playlist[] = playlistData.playlists;
- 
 
-        const quotes = res3.data;
-        let qoutesData: Quote[] = [];
-        if (quotes && quotes.quotes && Array.isArray(quotes.quotes)) {
-          qoutesData = quotes.quotes;
-        }
+        const quotes: Quote[] = data.quotes;
+      
+        const skills: SkillInterface[] = data.skills;
 
-        const InstructorArraydata = res4.data.instructors;
+        const InstructorArraydata = data.instructors;
         const instructor: Instructor[] = InstructorArraydata.map((item: Instructor, index: number) => ({
           id: index,
           channelLink: item.channelLink,
@@ -114,7 +113,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
           skill: item.skill,
         }));
 
-        setData({ featuredCourses, NavbarCourses, qoutesData, playlistHome, instructor , playlist });
+        setData({ featuredCourses, NavbarCourses, quotes, playlistHome, instructor , playlist , skills});
         setLoading(false);
       } catch (error) {
         console.error('Failed to fetch data', error);
@@ -124,16 +123,19 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     
     const loggedUser = localStorage.getItem("logged User");
     if (loggedUser) {
-      const data = JSON.parse(loggedUser);
-      setUserdata(JSON.parse(loggedUser));
-      if(data.userId && data.username){
+      let data = JSON.parse(loggedUser);
+      setUserdata(data);
+      if(data.userId && data.username ){
         setIsLoggedIn(true);
       }
+    }
+    else{
+      setIsLoggedIn(false);
     }
     
     fetchData();
   }, []);
-
+  
   return (
     <DataContext.Provider value={{ data, loading , userdata , isLoggedIn  }}>
       {children}

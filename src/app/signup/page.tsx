@@ -42,7 +42,7 @@ const schema: ZodType<User> = z
     path: ["confirmpassword"]
 })
 
-export default function SignUp() {
+export const SignUp = () => {
 
   const {register , handleSubmit , formState : {errors}} = useForm<User>({
     mode: "all",

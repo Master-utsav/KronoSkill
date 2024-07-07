@@ -11,7 +11,7 @@ interface QuoteContent{
 }
 const Quotes = () => {
   const {data , loading , isLoggedIn} = useData();
-  const qoutes: QuoteContent[] = data.qoutesData || [];
+  const qoutes: QuoteContent[] = data.quotes || [];
   
   return (
      <div className="h-[30rem] w-full mt-5 dark:bg-grid-white/[0.08] relative flex flex-col items-center justify-center overflow-hidden">

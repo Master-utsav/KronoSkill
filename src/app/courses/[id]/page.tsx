@@ -56,12 +56,12 @@ interface InstructorPlaylist {
 
 
 export default function Course({ params }: ParamsProps){
-  const [skillDescription, setSkillDescription] = useState<SkillInterface[]>([]);
   const [instructorData, setInstructorData] = useState<InstructorPlaylist[]>([]);
+  const [description , setDescription] = useState<string>();
   const [playlistData, setPlaylistData] = useState<Playlist[]>([]);
   const [expandedDescriptions, setExpandedDescriptions] = useState<{ [key: number]: boolean }>({});
   const [isRatingSubmited , setIsRatingSubmited] = useState<{ [key: number] : boolean}>({});
-  const [checked, setChecked] = useState<{ [key: number] : boolean}>({});;
+  const [checked, setChecked] = useState<{ [key: number] : boolean}>({});
   const router = useRouter();
    
   const paramsId = params?.id;
@@ -70,27 +70,18 @@ export default function Course({ params }: ParamsProps){
 
   const {data , userdata} = useData();
   const userId = userdata?.userId;
-
-  async function getSkillDescription(){
-    try {
-      const res = await axios.get("/api/manager/skill_description");
-      return res.data.skills;
-    } catch (error:any) {
-      console.log(error);
-      if (error.response && error.response.data && error.response.data.message) {
-        toast.error(error.response.data.message);
-      }
-      return [];
-    }
-  };
- 
+  
+  
   useEffect(() => {
-    const playlists:Playlist[] | [] = data.playlist || [];  
-    const instructors: Instructor[] = data.instructor || [];
-
     const fetchData = async () => {
-      const data = await getSkillDescription();
-      setSkillDescription(data);
+      
+      const playlists:Playlist[] | [] = data.playlist || [];  
+      const instructors: Instructor[] = data.instructor || [];
+      const skillDescription: SkillInterface[] = data.skills || [];
+      
+      const headTitleSkillSet: SkillInterface[] = skillDescription?.filter((skill) => skill.skill === headTitle) ?? [];
+      const description =  headTitleSkillSet.length > 0 ? headTitleSkillSet[0].description : "";
+      setDescription(description);
 
       if (!Array.isArray(playlists)) {
         throw new Error("Playlists data is not an array");
@@ -150,9 +141,8 @@ export default function Course({ params }: ParamsProps){
 
     fetchData();
 
-  }, [data.playlist, data.instructor ,headTitle, userId]);
+  }, [data.playlist, data.instructor, data.skills, headTitle, userId]);
   
-
   const handleBookmarks = async(userAction: "add" | "remove", playlistUrl: string , index: number) => {
     if(userId === ""){
       toast.error("Please Login");
@@ -174,18 +164,19 @@ export default function Course({ params }: ParamsProps){
       }
     }
   }
+
   const handleCheckedState = (index: number) => {
     setChecked((prevState) => ({
       ...prevState,
       [index]: !prevState[index],
     }));
   };
+
   const handleClick = (index:number, playlistUrl:string) => {
     const currentCheckedState = checked[index];
     const action = currentCheckedState ? "remove" : "add";
     handleBookmarks(action, playlistUrl , index);
   };
-
 
   const handleRatingSubmit = async (rating: number, playlistUrl: string , index:number ) => {
     if(userId === ""){
@@ -216,12 +207,6 @@ export default function Course({ params }: ParamsProps){
     }));
 
   };
-  
-  
-  const headTitleSkillSet: SkillInterface[] =
-    skillDescription?.filter((skill) => skill.skill === headTitle) ?? [];
-  const description =
-    headTitleSkillSet.length > 0 ? headTitleSkillSet[0].description : "";
 
   return (
     <div className="w-[100vw] h-[100vh] overflow-x-hidden">

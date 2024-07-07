@@ -79,13 +79,4 @@ export async function POST(request: NextRequest) {
     }
 }
 
-export async function GET() {
-    try {
-        const playlists = await Playlists.find();
-        return NextResponse.json({ playlists, message: "fetched successfully" }, { status: 200 });
-    } catch (error) {
-        console.log(error);
-        return NextResponse.json({ message: "internal server error" }, { status: 500 });
-    }
-}
 

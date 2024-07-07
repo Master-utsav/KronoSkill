@@ -44,12 +44,4 @@ export async function POST(request: NextRequest) {
     }
 }
 
-export async function GET() {
-    try {
-        const courses = await Course.find();
-        return NextResponse.json({courses , message : "Uploaded successfully"} , {status : 200});
-    } catch (error) {
-        console.error(error);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
-    }
-}
+

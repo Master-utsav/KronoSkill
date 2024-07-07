@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { HoveredLink, Menu, MenuItem} from "./ui/navbar-menu";
 import { cn } from "@/utils/cn";
 import Link from "next/link";
-import axios from "axios";
+import { LuUserCheck } from "react-icons/lu";
 import { CgProfile } from "react-icons/cg";
 import { CiBookmark } from "react-icons/ci";
 import { MdLogout } from "react-icons/md";
@@ -67,6 +67,12 @@ const Navbar = ({ className }: { className?: string }) => {
                       <div className="flex justify-start items-center gap-2 hover:text-blue-400 delay-100  duration-300 transition-all  hover:text-xl ease-in-out">
                         <MdOutlineAdminPanelSettings/>
                         <p>Admin</p>
+                      </div>
+                      </HoveredLink>
+                      <HoveredLink href={"/sendverificationemail"}>
+                      <div className="flex justify-start items-center gap-2 hover:text-red-400 delay-100 duration-300 transition-all hover:text-xl ease-in-out">
+                        <LuUserCheck/>
+                        <p>verfication</p>
                       </div>
                       </HoveredLink>
                       <HoveredLink href={"/logout"}>

@@ -72,14 +72,3 @@ export async function POST(request: NextRequest) {
     }
 }
 
-export async function GET(){
-
-    try {
-        const instructors = await Instructor.find();
-        return NextResponse.json({instructors , message : "Fetched successfully"} , {status : 200});
-    } catch (error) {
-        console.error(error);
-        return NextResponse.json({ message: "error in fetching insturctors" }, { status: 500 });
-    }
-
-}
