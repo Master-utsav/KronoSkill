@@ -13,7 +13,7 @@ if (typeof window !== 'undefined') {
 
 const Template = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className="animate-zoomin">
+        <div className="animate-zoomin bg-black">
             {children}
         </div>
     );

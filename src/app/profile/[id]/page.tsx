@@ -74,8 +74,8 @@ export default function ProfilePage ({ params }: ParamsProps){
     }
   };
 
-  const playlists : Playlist[] | [] = data.playlist || [];
   useEffect(() => {
+    const playlists : Playlist[] | [] = data.playlist || [];
     if (!Array.isArray(playlists)) {
       toast.error("Playlists data is not an array");
     }
@@ -134,7 +134,7 @@ export default function ProfilePage ({ params }: ParamsProps){
     };
 
     fetchData();
-  }, [playlists, userId]);
+  }, [data.playlist, userId]);
 
   const handleBookmarks = async (
     userAction: "add" | "remove",
@@ -205,7 +205,7 @@ export default function ProfilePage ({ params }: ParamsProps){
       }
     }
   };
-  
+
   const handleToggleDescription = (index: number) => {
     setExpandedDescriptions((prevState) => ({
       ...prevState,
