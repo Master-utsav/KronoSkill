@@ -16,7 +16,7 @@ const ProductivityComponent: React.FC<MasterBeams> = ({ bg_color, light_ray1, li
   } as React.CSSProperties;
 
   return (
-      <div className='container absolute z-10 opacity-50' style={style}>
+      <div className='container absolute z-10 opacity-50 bg-black' style={style}>
        <div className="light-rays"></div>
         <div className="light-rays2"></div>
           <div className="light-rays3"></div>
