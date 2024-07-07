@@ -70,7 +70,7 @@ export const Menu = ({
   return (
     <nav
       onMouseLeave={() => setActive(null)} // resets the state
-      className="relative md:text-xl text-base rounded-full boder border-transparent dark:bg-black/60  dark:border-white/[0.2] bg-white/60 shadow-input flex justify-center md:space-x-12 space-x-4 md:px-2 px-2 md:py-6 py-3 backdrop-blur-xl"
+      className="relative md:text-xl text-base rounded-full boder  bg-black/60  border-white/[0.2] shadow-input flex justify-center md:space-x-12 space-x-4 md:px-2 px-2 md:py-6 py-3 backdrop-blur-xl"
      style={{WebkitBackdropFilter: "blur(20px)"}}>
       {children}
     </nav>
@@ -98,10 +98,10 @@ export const ProductItem = ({
         className="flex-shrink-0 rounded-md shadow-2xl"
       />
       <div>
-        <h4 className="text-xl font-bold mb-1 text-black dark:text-white">
+        <h4 className="text-xl font-bold mb-1 text-white">
           {title}
         </h4>
-        <p className="text-neutral-700 text-sm max-w-[10rem] dark:text-neutral-300">
+        <p className="text-sm max-w-[10rem] text-neutral-300">
           {description}
         </p>
       </div>
@@ -113,7 +113,7 @@ export const HoveredLink = ({ children, ...rest }: any) => {
   return (
     <Link
       {...rest}
-      className="text-neutral-700 dark:text-neutral-300 hover:text-black delay-50 duration-100 transition-all ease-in-out dark:hover:text-white "
+      className="text-neutral-300  delay-50 duration-100 transition-all ease-in-out hover:text-white "
     >
       {children}
     </Link>
