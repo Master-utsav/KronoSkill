@@ -9,7 +9,7 @@ import React from "react";
 import { TracingBeam } from "@/components/ui/tracing-beam";
 import "./globals.css"
 
-const Page = () => {
+export default function Home() {
   return (
     <TracingBeam className="md:px-6 h-full">
       <main className="min-h-screen antialiased " >
@@ -25,5 +25,5 @@ const Page = () => {
   );
 };
 
-export default Page;
+
 

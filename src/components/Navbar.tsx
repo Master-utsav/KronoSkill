@@ -70,7 +70,7 @@ const Navbar = ({ className }: { className?: string }) => {
                       </div>
                       </HoveredLink>
                       <HoveredLink href={"/sendverificationemail"}>
-                      <div className="flex justify-start items-center gap-2 hover:text-red-400 delay-100 duration-300 transition-all hover:text-xl ease-in-out">
+                      <div className="flex justify-start items-center gap-2 hover:text-green-600 delay-100 duration-300 transition-all hover:text-xl ease-in-out">
                         <LuUserCheck/>
                         <p>verfication</p>
                       </div>
