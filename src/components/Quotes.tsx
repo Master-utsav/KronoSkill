@@ -14,7 +14,7 @@ const Quotes = () => {
   const qoutes: QuoteContent[] = data.quotes || [];
   
   return (
-     <div className="h-[30rem] w-full mt-5 bg-grid-white/[0.08] relative flex flex-col items-center justify-center overflow-hidden">
+     <div className="h-[30rem] w-full mt-5 bg-black bg-grid-white/[0.08] relative flex flex-col items-center justify-center overflow-hidden">
         <h2 className="text-3xl font-bold text-center mb-8 z-10">Echoes of Innovation: Voices Shaping the Future</h2>
         <div className="flex justify-center w-full overflow-hidden px-4 sm:px-6 lg:px-8">
         {!loading ? (<div className="w-full max-w-6xl">

@@ -18,7 +18,7 @@ const PlaylistHome = () => {
   const playlistHome = playlistContent.slice(0, 8);
 
   return (
-    <div id="playlist" className="p-10 content-center">
+    <div id="playlist" className="p-10 content-center bg-black">
       <h1 className="md:mt-5 mt-2 md:mb-2 text-center text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-1 md:pb-2 pb-1">
         Top Playlist
       </h1>
