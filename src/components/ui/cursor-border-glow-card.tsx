@@ -2,7 +2,6 @@
 import React, { useEffect } from "react";
 import "@/css/cursor_glow_border_card.css";
 
-
 interface CursorBorderProps{
     bg_card_cursor_color?: string;
     cursor_color?: string;
