@@ -100,7 +100,7 @@ async function handelClick() {
               borderRadius="2rem"
               borderClassName="bg-[radial-gradient(var(--cyan-500)_40%,transparent_60%)]"
               disabled={isdisabled}
-              className="bg-white dark:bg-slate-900/60 text-4xl h-32 w-64 text-black dark:text-white border-neutral-200 dark:border-slate-800"
+              className="bg-slate-900/60 text-4xl h-32 w-64  text-white border-slate-800"
             >
               Verify Email
             </Button>
