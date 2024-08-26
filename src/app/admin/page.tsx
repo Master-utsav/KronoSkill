@@ -31,7 +31,7 @@ interface SkillDescription_Body { // if we just want to add additional skill sec
     description: string;
   }
 
-export const Admin = () => {
+export default function Admin(){
   return (
     <section>
        TODO : we have to create a full basic form here 
